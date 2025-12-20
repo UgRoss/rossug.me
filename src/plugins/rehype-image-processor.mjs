@@ -1,5 +1,5 @@
 import { visit } from 'unist-util-visit'
-import { themeConfig } from '../config.ts'
+import { themeConfig } from '../config.js'
 
 /**
  * Rehype plugin that processes images in markdown content:
