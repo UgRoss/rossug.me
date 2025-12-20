@@ -34,7 +34,7 @@ export default defineConfig({
   },
   integrations: [
     tailwind({
-      applyBaseStyles: false,
+      applyBaseStyles: false
     }),
     playformInline({
       Exclude: [(file) => file.toLowerCase().includes('katex')]
