@@ -88,4 +88,12 @@ const slug = slugify(book.title)
       trigger.addEventListener('click', handleBookClick as EventListener)
     })
   })
+
+  // Clean up listeners before Astro prepares the next page (for view transitions)
+  document.addEventListener('astro:before-preparation', () => {
+    const triggers = document.querySelectorAll('.book-card-trigger')
+    triggers.forEach((trigger) => {
+      trigger.removeEventListener('click', handleBookClick as EventListener)
+    })
+  })
 </script>
