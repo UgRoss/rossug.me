@@ -12,7 +12,7 @@ export default function BookModal({ allBooks }: BookModalProps) {
   const [renderBook, setRenderBook] = useState<Book | null>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [mounted, setMounted] = useState(false)
-  const timeoutRef = useRef<NodeJS.Timeout>()
+  const timeoutRef = useRef<NodeJS.Timeout>(null)
 
   useEffect(() => {
     setMounted(true)

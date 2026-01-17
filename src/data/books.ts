@@ -6,7 +6,8 @@ export interface Book {
   author: string
   coverUrl: string
   status: BookStatus
-  rating: number // 1-5
+  // 0 represents "not rated", 1-5 represents the rating
+  rating: 0 | 1 | 2 | 3 | 4 | 5
   summary: string
   notes?: string[]
   highlights?: string[]
