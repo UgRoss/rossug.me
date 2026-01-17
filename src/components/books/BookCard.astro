@@ -1,5 +1,6 @@
 ---
 import type { Book } from '@/data/books'
+import { slugify } from '@/data/books'
 
 interface Props {
   book: Book
@@ -9,11 +10,15 @@ interface Props {
 const { book, layout = 'grid' } = Astro.props
 
 const isList = layout === 'list'
+const slug = slugify(book.title)
 ---
 
 <div
-  class:list={['group cursor-pointer book-card', isList ? 'flex gap-6 items-start' : 'space-y-3']}
-  data-book={JSON.stringify(book)}
+  class:list={[
+    'group cursor-pointer book-card-trigger',
+    isList ? 'flex gap-6 items-start' : 'space-y-3'
+  ]}
+  data-book-slug={slug}
 >
   <div
     class:list={[
@@ -54,3 +59,27 @@ const isList = layout === 'list'
     }
   </div>
 </div>
+
+<script>
+  function handleBookClick(e: Event) {
+    const target = e.currentTarget as HTMLElement
+    const slug = target.getAttribute('data-book-slug')
+    if (slug) {
+      const newUrl = `?book=${slug}`
+      window.history.pushState({ bookSlug: slug }, '', newUrl)
+      // Dispatch custom event for React component to pick up instantly
+      window.dispatchEvent(new CustomEvent('book-change', { detail: { slug } }))
+    }
+  }
+
+  // Attach listeners using event delegation or direct attachment
+  // Since this is inside an Astro component, it runs once per component? No, scripts are bundled.
+  // Better to use astro:page-load to attach triggers safely
+  document.addEventListener('astro:page-load', () => {
+    const triggers = document.querySelectorAll('.book-card-trigger')
+    triggers.forEach((trigger) => {
+      trigger.removeEventListener('click', handleBookClick) // prevent duplicates
+      trigger.addEventListener('click', handleBookClick)
+    })
+  })
+</script>

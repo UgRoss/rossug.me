@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config'
+import react from '@astrojs/react'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import tailwind from '@astrojs/tailwind'
@@ -40,7 +41,8 @@ export default defineConfig({
       Exclude: [(file) => file.toLowerCase().includes('katex')]
     }),
     mdx(),
-    sitemap()
+    sitemap(),
+    react()
   ],
   vite: {
     resolve: {

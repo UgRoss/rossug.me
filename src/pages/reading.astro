@@ -1,7 +1,7 @@
 ---
 import IndexLayout from '@/layouts/IndexLayout.astro'
 import BookCard from '@/components/books/BookCard.astro'
-import BookModal from '@/components/books/BookModal.astro'
+import BookModal from '@/components/books/BookModal'
 import { BOOKS } from '@/data/books'
 
 const currentlyReading = BOOKS.filter((b) => b.status === 'reading')
@@ -38,5 +38,5 @@ const finishedBooks = BOOKS.filter((b) => b.status === 'finished')
     </div>
   </div>
 
-  <BookModal allBooks={BOOKS} />
+  <BookModal client:load allBooks={BOOKS} />
 </IndexLayout>
