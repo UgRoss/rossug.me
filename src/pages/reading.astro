@@ -17,22 +17,36 @@ const finishedBooks = BOOKS.filter((b) => b.status === 'finished')
 
     <div class="space-y-16">
       {/* Currently Reading Section */}
-      <section class="space-y-6">
-        <h2 class="text-xs font-semibold text-neutral-400 uppercase tracking-widest">
-          Currently Reading
-        </h2>
-        <div class="grid gap-8">
-          {currentlyReading.map((book) => <BookCard book={book} layout="list" />)}
-        </div>
-      </section>
+      {
+        currentlyReading.length > 0 && (
+          <section class="space-y-6">
+            <h2 class="text-xs font-semibold text-neutral-400 uppercase tracking-widest">
+              Currently Reading
+            </h2>
+            <div class="grid gap-8">
+              {currentlyReading.map((book) => (
+                <BookCard book={book} layout="list" />
+              ))}
+            </div>
+          </section>
+        )
+      }
 
       {/* Finished Books Grid */}
-      <section class="space-y-6">
-        <h2 class="text-xs font-semibold text-neutral-400 uppercase tracking-widest">Finished</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-6 gap-y-10">
-          {finishedBooks.map((book) => <BookCard book={book} layout="grid" />)}
-        </div>
-      </section>
+      {
+        finishedBooks.length > 0 && (
+          <section class="space-y-6">
+            <h2 class="text-xs font-semibold text-neutral-400 uppercase tracking-widest">
+              Finished
+            </h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-6 gap-y-10">
+              {finishedBooks.map((book) => (
+                <BookCard book={book} layout="grid" />
+              ))}
+            </div>
+          </section>
+        )
+      }
     </div>
   </div>
 
