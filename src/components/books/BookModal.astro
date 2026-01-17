@@ -175,6 +175,7 @@ const { allBooks } = Astro.props
       }
 
       dialog.showModal()
+      document.body.style.overflow = 'hidden'
 
       // Update URL
       if (updateHistory) {
@@ -199,6 +200,7 @@ const { allBooks } = Astro.props
 
       setTimeout(() => {
         dialog.close()
+        document.body.style.overflow = ''
         if (updateHistory) {
           const url = new URL(window.location.href)
           url.searchParams.delete('book')
