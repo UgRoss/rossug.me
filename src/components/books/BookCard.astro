@@ -13,9 +13,10 @@ const isList = layout === 'list'
 const slug = slugify(book.title)
 ---
 
-<div
+<a
+  href={`?book=${slug}`}
   class:list={[
-    'group cursor-pointer book-card-trigger',
+    'group cursor-pointer book-card-trigger w-full text-left block',
     isList ? 'flex gap-6 items-start' : 'space-y-3'
   ]}
   data-book-slug={slug}
@@ -58,11 +59,15 @@ const slug = slugify(book.title)
       )
     }
   </div>
-</div>
+</a>
 
 <script>
-  function handleBookClick(e: Event) {
+  function handleBookClick(e: MouseEvent) {
     const target = e.currentTarget as HTMLElement
+    // Allow default browser behavior for modifier clicks (new tab, new window, etc.)
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+
+    e.preventDefault()
     const slug = target.getAttribute('data-book-slug')
     if (slug) {
       const newUrl = `?book=${slug}`
@@ -78,8 +83,9 @@ const slug = slugify(book.title)
   document.addEventListener('astro:page-load', () => {
     const triggers = document.querySelectorAll('.book-card-trigger')
     triggers.forEach((trigger) => {
-      trigger.removeEventListener('click', handleBookClick) // prevent duplicates
-      trigger.addEventListener('click', handleBookClick)
+      // Cast to event type compatible with our handler
+      trigger.removeEventListener('click', handleBookClick as EventListener)
+      trigger.addEventListener('click', handleBookClick as EventListener)
     })
   })
 </script>
