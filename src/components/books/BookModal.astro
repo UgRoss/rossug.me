@@ -1,0 +1,294 @@
+---
+import { Sparkles, X, Star, Loader2 } from '@lucide/astro'
+import type { Book } from '@/data/books'
+
+const { allBooks } = Astro.props
+---
+
+<dialog
+  id="book-modal"
+  class="bg-transparent p-0 w-full h-full fixed inset-0 z-[100] open:flex items-center justify-center pointer-events-none backdrop:bg-neutral-900/40 backdrop:backdrop-blur-sm"
+  data-all-books={JSON.stringify(allBooks)}
+>
+  <div class="w-full h-full flex items-center justify-center p-6 sm:p-12 pointer-events-auto">
+    <div
+      class="relative w-full max-w-3xl max-h-[85vh] overflow-y-auto bg-white rounded-3xl shadow-2xl flex flex-col sm:flex-row opacity-0 scale-95 translate-y-4 transition-all duration-300 ease-out"
+      id="modal-content"
+    >
+      <button
+        id="close-modal-btn"
+        class="absolute top-6 right-6 p-2 rounded-full hover:bg-neutral-100 transition-colors z-10"
+      >
+        <X size={20} class="text-neutral-400" />
+      </button>
+
+      <div
+        class="w-full sm:w-1/3 p-8 bg-neutral-50 flex flex-col items-center sm:items-start text-center sm:text-left gap-6 border-r border-neutral-100"
+      >
+        <div class="w-40 h-60 rounded-xl overflow-hidden shadow-2xl shrink-0">
+          <img id="modal-cover" src="" alt="" class="w-full h-full object-cover" />
+        </div>
+        <div class="space-y-2 w-full">
+          <h2 id="modal-title" class="text-xl font-bold leading-tight"></h2>
+          <p id="modal-author" class="text-neutral-500"></p>
+          <div id="modal-rating" class="flex justify-center sm:justify-start gap-1 pt-2">
+            {/* Stars injected via JS */}
+          </div>
+        </div>
+
+        <button
+          id="ai-insight-btn"
+          disabled
+          class="w-full mt-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-neutral-900 text-white rounded-xl text-xs font-semibold hover:bg-neutral-800 transition-all disabled:opacity-50"
+        >
+          <Sparkles size={14} />
+          Gemini Key Takeaway
+        </button>
+      </div>
+
+      <div class="w-full sm:w-2/3 p-8 sm:p-10 space-y-8">
+        <div
+          id="ai-insight-container"
+          class="hidden p-5 bg-purple-50 border border-purple-100 rounded-2xl text-sm text-purple-900 italic"
+        >
+          <div
+            class="flex items-center gap-2 mb-2 font-bold not-italic uppercase tracking-wider text-[10px] text-purple-400"
+          >
+            <Sparkles size={10} />
+            AI Key Takeaway
+          </div>
+          <p id="ai-insight-text"></p>
+        </div>
+
+        <section class="space-y-4">
+          <h3 class="text-xs font-semibold text-neutral-400 uppercase tracking-widest">Summary</h3>
+          <p
+            id="modal-summary"
+            class="text-neutral-600 leading-relaxed italic border-l-2 border-neutral-100 pl-4"
+          >
+          </p>
+        </section>
+
+        <section id="notes-section" class="space-y-4 hidden">
+          <h3 class="text-xs font-semibold text-neutral-400 uppercase tracking-widest">My Notes</h3>
+          <ul id="modal-notes" class="space-y-3"></ul>
+        </section>
+
+        <section id="highlights-section" class="space-y-4 hidden">
+          <h3 class="text-xs font-semibold text-neutral-400 uppercase tracking-widest">
+            Highlights
+          </h3>
+          <div id="modal-highlights" class="space-y-6"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  // Lucide icons are server-side, so we use raw SVG for client-side dynamic generation.
+
+  function initModal() {
+    const dialog = document.getElementById('book-modal') as HTMLDialogElement
+    const modalContent = document.getElementById('modal-content')
+    const closeBtn = document.getElementById('close-modal-btn')
+    const bookCards = document.querySelectorAll('.book-card')
+    const allBooks = JSON.parse(dialog?.getAttribute('data-all-books') || '[]')
+
+    if (!dialog || !modalContent) return
+
+    // Elements to populate
+    const coverEl = document.getElementById('modal-cover') as HTMLImageElement
+    const titleEl = document.getElementById('modal-title')
+    const authorEl = document.getElementById('modal-author')
+    const ratingEl = document.getElementById('modal-rating')
+    const summaryEl = document.getElementById('modal-summary')
+    const notesList = document.getElementById('modal-notes')
+    const notesSection = document.getElementById('notes-section')
+    const highlightsList = document.getElementById('modal-highlights')
+    const highlightsSection = document.getElementById('highlights-section')
+
+    const starSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`
+    const filledStarClass = 'fill-yellow-400 text-yellow-400'
+    const emptyStarClass = 'text-neutral-200'
+
+    function slugify(text: string): string {
+      return text
+        .toString()
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\-]+/g, '')
+        .replace(/\-\-+/g, '-')
+    }
+
+    function openModal(book: any, updateHistory = true) {
+      if (!dialog || !modalContent) return
+
+      // Populate data
+      coverEl.src = book.coverUrl
+      titleEl!.textContent = book.title
+      authorEl!.textContent = book.author
+      summaryEl!.textContent = book.summary
+
+      // Rating
+      ratingEl!.innerHTML = ''
+      for (let i = 0; i < 5; i++) {
+        const star = document.createElement('div')
+        star.innerHTML = starSvg
+        const svg = star.firstChild as HTMLElement
+        if (i < book.rating) {
+          svg.setAttribute('class', `lucide lucide-star ${filledStarClass}`)
+        } else {
+          svg.setAttribute('class', `lucide lucide-star ${emptyStarClass}`)
+        }
+        ratingEl!.appendChild(svg)
+      }
+
+      // Notes
+      notesList!.innerHTML = ''
+      if (book.notes && book.notes.length > 0) {
+        notesSection!.classList.remove('hidden')
+        book.notes.forEach((note: string) => {
+          const li = document.createElement('li')
+          li.className = 'text-sm text-neutral-600 flex gap-3'
+          li.innerHTML = `<span class="text-neutral-300">•</span> ${note}`
+          notesList!.appendChild(li)
+        })
+      } else {
+        notesSection!.classList.add('hidden')
+      }
+
+      // Highlights
+      highlightsList!.innerHTML = ''
+      if (book.highlights && book.highlights.length > 0) {
+        highlightsSection!.classList.remove('hidden')
+        book.highlights.forEach((h: string) => {
+          const bq = document.createElement('blockquote')
+          bq.className =
+            'text-sm text-neutral-600 font-medium leading-relaxed bg-neutral-50 p-4 rounded-xl border-l-4 border-neutral-200'
+          bq.innerHTML = `&ldquo;${h}&rdquo;`
+          highlightsList!.appendChild(bq)
+        })
+      } else {
+        highlightsSection!.classList.add('hidden')
+      }
+
+      dialog.showModal()
+
+      // Update URL
+      if (updateHistory) {
+        const slug = slugify(book.title)
+        const newUrl = `?book=${slug}`
+        history.pushState({ bookSlug: slug }, '', newUrl)
+      }
+
+      // Animation entrance
+      requestAnimationFrame(() => {
+        modalContent!.classList.remove('opacity-0', 'scale-95', 'translate-y-4')
+        modalContent!.classList.add('opacity-100', 'scale-100', 'translate-y-0')
+      })
+    }
+
+    function closeModal(updateHistory = true) {
+      if (!dialog || !modalContent) return
+
+      // Animation exit
+      modalContent.classList.remove('opacity-100', 'scale-100', 'translate-y-0')
+      modalContent.classList.add('opacity-0', 'scale-95', 'translate-y-4')
+
+      setTimeout(() => {
+        dialog.close()
+        if (updateHistory) {
+          const url = new URL(window.location.href)
+          url.searchParams.delete('book')
+          history.pushState({}, '', url.toString())
+        }
+      }, 300)
+    }
+
+    // Event Listeners
+    bookCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        const bookData = JSON.parse(card.getAttribute('data-book') || '{}')
+        openModal(bookData)
+      })
+    })
+
+    closeBtn?.addEventListener('click', () => closeModal())
+
+    dialog?.addEventListener('click', (e) => {
+      const rect = modalContent?.getBoundingClientRect()
+      if (
+        rect &&
+        (e.clientX < rect.left ||
+          e.clientX > rect.right ||
+          e.clientY < rect.top ||
+          e.clientY > rect.bottom)
+      ) {
+        closeModal()
+      }
+    })
+
+    // Handle initial check and external triggers
+    const params = new URLSearchParams(window.location.search)
+    const initialBookSlug = params.get('book')
+    if (initialBookSlug) {
+      const book = allBooks.find((b: any) => slugify(b.title) === initialBookSlug)
+      if (book) {
+        openModal(book, false)
+      }
+    }
+
+    // Return functions that might be needed by external listeners
+    return { openModal, closeModal, dialog, allBooks, slugify }
+  }
+
+  // Setup on initial load and every navigation
+  document.addEventListener('astro:page-load', () => {
+    const { openModal, closeModal, dialog, allBooks, slugify } = initModal() || {}
+
+    // Popstate listener needs to be outside or managed carefully to avoid multiple listeners
+    // But since it's on window, one global one is better.
+    // However, if we are in initModal, we can attach it once.
+    // To prevent leaks, we can use an AbortController or check for existence.
+  })
+
+  // Global popstate handler (exists across transitions if set once)
+  // But wait, slugify and allBooks need to be accessible.
+  // Best to put popstate inside astro:page-load and hope it cleans up or handle it globally.
+  window.addEventListener('popstate', () => {
+    const dialog = document.getElementById('book-modal') as HTMLDialogElement
+    const allBooks = JSON.parse(dialog?.getAttribute('data-all-books') || '[]')
+    if (!dialog) return
+
+    const urlParams = new URLSearchParams(window.location.search)
+    const bookSlug = urlParams.get('book')
+
+    // Simple version of slugify for popstate
+    const slugify = (text: string) =>
+      text
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\-]+/g, '')
+        .replace(/\-\-+/g, '-')
+
+    if (bookSlug) {
+      const book = allBooks.find((b: any) => slugify(b.title) === bookSlug)
+      if (book && !dialog.open) {
+        // We can't easily call openModal here if it's trapped in initModal.
+        // Let's refactor openModal to be more accessible or just use its logic.
+        // Actually, let's just trigger a click on the corresponding card!
+        const card = document.querySelector(`.book-card[data-book*='${book.id}']`) as HTMLElement
+        if (card) card.click()
+      }
+    } else {
+      if (dialog && dialog.open) {
+        // Trigger close
+        const closeBtn = document.getElementById('close-modal-btn')
+        closeBtn?.click()
+      }
+    }
+  })
+</script>

@@ -1,10 +1,42 @@
 ---
 import IndexLayout from '@/layouts/IndexLayout.astro'
+import BookCard from '@/components/books/BookCard.astro'
+import BookModal from '@/components/books/BookModal.astro'
+import { BOOKS } from '@/data/books'
+
+const currentlyReading = BOOKS.filter((b) => b.status === 'reading')
+const finishedBooks = BOOKS.filter((b) => b.status === 'finished')
 ---
 
 <IndexLayout title="Reading - RossUG" description="Reading list and book notes">
-  <div class="py-8">
-    <h1 class="text-3xl font-bold mb-4">Reading</h1>
-    <p class="text-neutral-600 dark:text-neutral-400">Reading list coming soon...</p>
+  <div class="space-y-12">
+    <header class="space-y-2">
+      <h1 class="text-3xl font-bold tracking-tight">Books</h1>
+      <p class="text-neutral-500">
+        A collection of books I&apos;ve read or am currently exploring.
+      </p>
+    </header>
+
+    <div class="space-y-16">
+      {/* Currently Reading Section */}
+      <section class="space-y-6">
+        <h2 class="text-xs font-semibold text-neutral-400 uppercase tracking-widest">
+          Currently Reading
+        </h2>
+        <div class="grid gap-8">
+          {currentlyReading.map((book) => <BookCard book={book} layout="list" />)}
+        </div>
+      </section>
+
+      {/* Finished Books Grid */}
+      <section class="space-y-6">
+        <h2 class="text-xs font-semibold text-neutral-400 uppercase tracking-widest">Finished</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-6 gap-y-10">
+          {finishedBooks.map((book) => <BookCard book={book} layout="grid" />)}
+        </div>
+      </section>
+    </div>
   </div>
+
+  <BookModal allBooks={BOOKS} />
 </IndexLayout>
