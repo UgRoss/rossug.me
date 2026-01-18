@@ -89,7 +89,7 @@ export default function BookModal({ allBooks }: BookModalProps) {
               </button>
 
               <div className="flex flex-col sm:flex-row overflow-y-auto sm:overflow-y-hidden w-full h-full">
-                <div className="w-full sm:w-1/3 p-8 bg-neutral-50 flex flex-col items-center sm:items-start text-center sm:text-left gap-6 border-r border-neutral-100 shrink-0">
+                <div className="w-full sm:w-1/3 p-8 bg-neutral-50 dark:bg-neutral-800 flex flex-col items-center sm:items-start text-center sm:text-left gap-6 border-r border-neutral-100 dark:border-neutral-700 shrink-0">
                   <div className="w-40 h-60 rounded-xl overflow-hidden shadow-2xl shrink-0">
                     <img
                       src={renderBook.coverUrl}
