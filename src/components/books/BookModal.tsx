@@ -82,10 +82,10 @@ export default function BookModal({ allBooks }: BookModalProps) {
             <>
               <button
                 onClick={() => handleOpenChange(false)}
-                className="absolute top-6 right-6 p-2 rounded-full hover:bg-neutral-100 transition-colors z-[110] bg-white/80 backdrop-blur-md shadow-sm"
+                className="absolute top-6 right-6 p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors z-[110] bg-white/80 dark:bg-neutral-800/80 backdrop-blur-md shadow-sm"
                 aria-label="Close"
               >
-                <X size={20} className="text-neutral-400" />
+                <X size={20} className="text-neutral-400 dark:text-neutral-300" />
               </button>
 
               <div className="flex flex-col sm:flex-row overflow-y-auto sm:overflow-y-hidden w-full h-full">
