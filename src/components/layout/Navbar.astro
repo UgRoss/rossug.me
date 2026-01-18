@@ -1,15 +1,19 @@
 ---
-import { Home, BookOpen, PenTool, Library } from '@lucide/astro'
+import Icon from '@/components/ui/Icon.astro'
+import house from '@/assets/icons/house.svg?raw'
+import penTool from '@/assets/icons/pen-tool.svg?raw'
+import library from '@/assets/icons/library.svg?raw'
+import bookOpen from '@/assets/icons/book-open.svg?raw'
 
 // Get the current path to determine active state
 const currentPath = Astro.url.pathname
 
 // Navigation items configuration
 const navItems = [
-  { id: 'home', label: 'Home', icon: Home, path: '/' },
-  { id: 'blog', label: 'Blog', icon: PenTool, path: '/blog' },
-  { id: 'notes', label: 'Notes', icon: BookOpen, path: '/notes' },
-  { id: 'reading', label: 'Reading', icon: Library, path: '/reading' }
+  { id: 'home', label: 'Home', path: '/', icon: house },
+  { id: 'blog', label: 'Blog', path: '/blog', icon: penTool },
+  { id: 'notes', label: 'Notes', path: '/notes', icon: library },
+  { id: 'reading', label: 'Reading', path: '/reading', icon: bookOpen }
 ]
 
 // Function to check if a nav item is active
@@ -28,7 +32,6 @@ const isActive = (path: string) => {
     {
       navItems.map((item) => {
         const active = isActive(item.path)
-        const Icon = item.icon
         return (
           <a
             href={item.path}
@@ -39,7 +42,7 @@ const isActive = (path: string) => {
                 : 'text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-white dark:hover:bg-neutral-700'
             ]}
           >
-            <Icon size={16} />
+            {item.icon && <Icon icon={item.icon} size={16} />}
             <span class="hidden sm:inline">{item.label}</span>
           </a>
         )

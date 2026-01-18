@@ -19,7 +19,6 @@
     "@astrojs/rss": "^4.0.14",
     "@astrojs/sitemap": "^3.6.0",
     "@astrojs/tailwind": "^5.1.2",
-    "@lucide/astro": "^0.562.0",
     "@playform/inline": "^0.1.2",
     "@radix-ui/react-dialog": "^1.1.15",
     "astro": "^5.16.5",
