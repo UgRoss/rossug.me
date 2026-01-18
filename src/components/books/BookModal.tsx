@@ -1,27 +1,31 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
+import { slugify } from 'astro-toolkit/utils'
 import { Sparkles, X, Star } from 'lucide-react'
 import type { Book } from '@/data/books'
-import { slugify } from '@/data/books'
 
 interface BookModalProps {
   allBooks: Book[]
 }
 
+interface BookChangeEvent extends CustomEvent {
+  detail: {
+    slug: string | null
+  }
+}
+
 export default function BookModal({ allBooks }: BookModalProps) {
   const [renderBook, setRenderBook] = useState<Book | null>(null)
   const [isOpen, setIsOpen] = useState(false)
-  const mounted = useRef(false)
 
   useEffect(() => {
-    mounted.current = true
-  }, [])
-
-  // -- Effects --
-  useEffect(() => {
-    const handleUrlChange = (e?: any) => {
+    const handleUrlChange = (e?: PopStateEvent | BookChangeEvent) => {
       // If event provides slug, use it directly (faster than URL parsing)
-      let bookSlug = e?.detail?.slug
+      let bookSlug: string | null | undefined
+
+      if (e && 'detail' in e) {
+        bookSlug = e.detail.slug
+      }
 
       if (!bookSlug) {
         const params = new URLSearchParams(window.location.search)
@@ -43,11 +47,11 @@ export default function BookModal({ allBooks }: BookModalProps) {
 
     handleUrlChange()
     window.addEventListener('popstate', handleUrlChange)
-    window.addEventListener('book-change', handleUrlChange)
+    window.addEventListener('book-change', handleUrlChange as EventListener)
 
     return () => {
       window.removeEventListener('popstate', handleUrlChange)
-      window.removeEventListener('book-change', handleUrlChange)
+      window.removeEventListener('book-change', handleUrlChange as EventListener)
     }
   }, [allBooks])
 
@@ -73,10 +77,7 @@ export default function BookModal({ allBooks }: BookModalProps) {
     <Dialog.Root open={isOpen} onOpenChange={handleOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-[9999] bg-neutral-900/40 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-        <Dialog.Content
-          className="fixed left-[50%] top-[50%] z-[9999] w-full max-w-3xl sm:min-h-[450px] max-h-[85vh] translate-x-[-50%] translate-y-[-50%] rounded-3xl bg-white shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-100 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] overflow-hidden outline-none"
-          aria-describedby={undefined}
-        >
+        <Dialog.Content className="fixed left-[50%] top-[50%] z-[9999] w-full max-w-5xl sm:min-h-[450px] max-h-[85vh] translate-x-[-50%] translate-y-[-50%] rounded-3xl bg-white dark:bg-neutral-900 shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-100 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] overflow-hidden outline-none">
           {renderBook && (
             <>
               <button
@@ -101,19 +102,21 @@ export default function BookModal({ allBooks }: BookModalProps) {
                       {renderBook.title}
                     </Dialog.Title>
                     <p className="text-neutral-500">{renderBook.author}</p>
-                    <div className="flex justify-center sm:justify-start gap-1 pt-2">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          size={14}
-                          className={
-                            i < renderBook.rating
-                              ? 'fill-yellow-400 text-yellow-400'
-                              : 'text-neutral-200'
-                          }
-                        />
-                      ))}
-                    </div>
+                    {renderBook.rating && renderBook.rating > 0 ? (
+                      <div className="flex justify-center sm:justify-start gap-1 pt-2">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            size={14}
+                            className={
+                              i < renderBook.rating
+                                ? 'fill-yellow-400 text-yellow-400'
+                                : 'text-neutral-200'
+                            }
+                          />
+                        ))}
+                      </div>
+                    ) : null}
                   </div>
 
                   <button
