@@ -24,27 +24,30 @@ const finalWidth = shouldUseCustomWidth ? `${widthValue}rem` : '25rem'
     {fadeAnimation && <ClientRouter />}
     <slot name="head" />
   </head>
-  <body
-    data-centered={themeConfig.general.centeredLayout}
-    style={`
-      max-width: ${finalWidth};
-      ${shouldUseCustomWidth ? `--content-width: ${widthValue}rem;` : ''}
-    `}
-  >
-    <FaviconThemeSwitcher />
-    <Navbar />
+  <body>
+    <div
+      class="app-wrapper"
+      data-centered={themeConfig.general.centeredLayout}
+      style={`
+        max-width: ${finalWidth};
+        ${shouldUseCustomWidth ? `--content-width: ${widthValue}rem;` : ''}
+      `}
+    >
+      <FaviconThemeSwitcher />
+      <Navbar />
 
-    {
-      fadeAnimation ? (
-        <TransitionWrapper type={type} class="layout-wrapper">
-          <slot />
-        </TransitionWrapper>
-      ) : (
-        <div class="layout-wrapper">
-          <slot />
-        </div>
-      )
-    }
+      {
+        fadeAnimation ? (
+          <TransitionWrapper type={type} class="layout-wrapper">
+            <slot />
+          </TransitionWrapper>
+        ) : (
+          <div class="layout-wrapper">
+            <slot />
+          </div>
+        )
+      }
+    </div>
   </body>
 </html>
 

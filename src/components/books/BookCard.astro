@@ -1,0 +1,99 @@
+---
+import type { Book } from '@/data/books'
+import { slugify } from 'astro-toolkit/utils'
+
+interface Props {
+  book: Book
+  layout?: 'list' | 'grid'
+}
+
+const { book, layout = 'grid' } = Astro.props
+
+const isList = layout === 'list'
+const slug = slugify(book.title)
+---
+
+<a
+  href={`?book=${slug}`}
+  class:list={[
+    'group cursor-pointer book-card-trigger w-full text-left block',
+    isList ? 'flex gap-6 items-start' : 'space-y-3'
+  ]}
+  data-book-slug={slug}
+>
+  <div
+    class:list={[
+      'relative shrink-0 rounded-lg overflow-hidden shadow-md group-hover:shadow-xl transition-all duration-500 bg-neutral-100',
+      isList ? 'w-24 h-36' : 'aspect-[2/3] w-full group-hover:-translate-y-1'
+    ]}
+  >
+    <img
+      src={book.coverUrl}
+      alt={book.title}
+      class:list={[
+        'w-full h-full object-cover transition-all duration-700',
+        !isList && 'grayscale group-hover:grayscale-0'
+      ]}
+      loading="lazy"
+    />
+  </div>
+
+  <div class:list={['space-y-1', isList ? 'py-1' : '']}>
+    <h3
+      class:list={[
+        'font-bold group-hover:text-neutral-600 transition-colors',
+        isList ? 'text-lg' : 'text-sm leading-tight'
+      ]}
+    >
+      {book.title}
+    </h3>
+    <p class:list={['font-medium text-neutral-400', isList ? 'text-sm' : 'text-[11px]']}>
+      {book.author}
+    </p>
+
+    {
+      isList && (
+        <p class="text-sm text-neutral-600 leading-relaxed max-w-md line-clamp-2 mt-1">
+          {book.summary}
+        </p>
+      )
+    }
+  </div>
+</a>
+
+<script>
+  function handleBookClick(e: MouseEvent) {
+    const target = e.currentTarget as HTMLElement
+    // Allow default browser behavior for modifier clicks (new tab, new window, etc.)
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+
+    e.preventDefault()
+    const slug = target.getAttribute('data-book-slug')
+    if (slug) {
+      const newUrl = `?book=${slug}`
+      window.history.pushState({ bookSlug: slug }, '', newUrl)
+      // Dispatch custom event for React component to pick up instantly
+      window.dispatchEvent(new CustomEvent('book-change', { detail: { slug } }))
+    }
+  }
+
+  // Attach listeners using event delegation or direct attachment
+  // Since this is inside an Astro component, it runs once per component? No, scripts are bundled.
+  // Better to use astro:page-load to attach triggers safely
+  document.addEventListener('astro:page-load', () => {
+    const triggers = document.querySelectorAll('.book-card-trigger')
+    triggers.forEach((trigger) => {
+      // Cast to event type compatible with our handler
+      trigger.removeEventListener('click', handleBookClick as EventListener)
+      trigger.addEventListener('click', handleBookClick as EventListener)
+    })
+  })
+
+  // Clean up listeners before Astro prepares the next page (for view transitions)
+  document.addEventListener('astro:before-preparation', () => {
+    const triggers = document.querySelectorAll('.book-card-trigger')
+    triggers.forEach((trigger) => {
+      trigger.removeEventListener('click', handleBookClick as EventListener)
+    })
+  })
+</script>
