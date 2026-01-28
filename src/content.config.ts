@@ -30,6 +30,7 @@ const notes = defineCollection({
       title: z.string(),
       // Transform string to Date object
       pubDate: z.coerce.date(),
+      updateDate: z.coerce.date().optional(),
       category: z.string(),
       excerpt: z.string().optional()
     })
