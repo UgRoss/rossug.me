@@ -1,0 +1,50 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content'
+import PostLayout from '@/layouts/PostLayout.astro'
+import { render } from 'astro:content'
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes')
+  return notes
+    .filter((note) => !note.id.startsWith('_'))
+    .map((note) => ({
+      params: { slug: note.id },
+      props: note
+    }))
+}
+
+type Props = CollectionEntry<'notes'>
+
+const note = Astro.props
+const { Content, remarkPluginFrontmatter } = await render(note)
+
+const readingTime = remarkPluginFrontmatter.readingTime
+const toc = remarkPluginFrontmatter.toc || []
+---
+
+<PostLayout 
+  title={note.data.title}
+  pubDate={note.data.pubDate}
+  readingTime={readingTime} 
+  toc={toc}
+>
+  <div class="mb-4">
+    <a 
+      href={`/notes?category=${encodeURIComponent(note.data.category)}`}
+      class="inline-block text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
+    >
+      {note.data.category}
+    </a>
+  </div>
+  
+  <Content />
+  
+  <div class="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-800">
+    <a 
+      href="/notes"
+      class="inline-flex items-center text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+    >
+      ← Back to all notes
+    </a>
+  </div>
+</PostLayout>

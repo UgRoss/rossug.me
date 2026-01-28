@@ -1,5 +1,6 @@
 import { themeConfig } from '@/config'
 import type { DateFormat } from '@/types'
+import { formatDistanceToNow } from 'date-fns'
 
 const MONTHS_EN = [
   'Jan',
@@ -17,6 +18,13 @@ const MONTHS_EN = [
 ]
 
 const VALID_SEPARATORS = ['.', '-', '/']
+
+/**
+ * Format date as "time ago" (e.g., "1 month ago", "2 years ago")
+ */
+export function timeAgo(date: Date): string {
+  return formatDistanceToNow(date, { addSuffix: true })
+}
 
 /**
  * @param date
