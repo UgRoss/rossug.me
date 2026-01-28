@@ -1,0 +1,37 @@
+---
+import FormattedDate from '@/components/widgets/FormattedDate.astro'
+
+interface Props {
+  id: string
+  title: string
+  pubDate: Date
+  category: string
+  excerpt?: string
+}
+
+const { id, title, pubDate, category, excerpt } = Astro.props
+---
+
+<article class="group bg-white dark:bg-neutral-900 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 p-6 border border-neutral-100 dark:border-neutral-800">
+  <div class="flex items-center justify-between mb-3">
+    <button
+      data-category-filter={category}
+      class="category-tag inline-block text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
+    >
+      {category}
+    </button>
+    <FormattedDate date={pubDate} context="list" />
+  </div>
+  
+  <a href={`/notes/${id}`} class="block mb-2">
+    <h3 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100 group-hover:text-neutral-600 dark:group-hover:text-neutral-300 transition-colors">
+      {title}
+    </h3>
+  </a>
+  
+  {excerpt && (
+    <p class="text-neutral-600 dark:text-neutral-400 text-sm leading-relaxed">
+      {excerpt}
+    </p>
+  )}
+</article>

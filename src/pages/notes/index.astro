@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content'
+import IndexLayout from '@/layouts/IndexLayout.astro'
+import NoteCard from '@/components/notes/NoteCard.astro'
+import NotesList from '@/components/notes/NotesList'
+
+// Get all notes and sort by date (newest first)
+const allNotes = await getCollection('notes')
+const sortedNotes = allNotes
+  .filter((note) => !note.id.startsWith('_'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+
+// Extract unique categories
+const categories = [...new Set(sortedNotes.map((note) => note.data.category))].sort()
+---
+
+<IndexLayout title="Notes - RossUG" description="TILs (Today I Learned) and quick technical snippets">
+  <div class="py-8">
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold mb-2">Notes</h1>
+      <p class="text-neutral-600 dark:text-neutral-400">
+        TILs (Today I Learned) and quick technical snippets.
+      </p>
+    </div>
+
+    <!-- React component for filtering controls -->
+    <NotesList 
+      client:only="react"
+      notes={sortedNotes.map((note) => ({
+        id: note.id,
+        title: note.data.title,
+        pubDate: note.data.pubDate,
+        category: note.data.category,
+        excerpt: note.data.excerpt,
+        cardHtml: ''
+      }))}
+      categories={categories}
+    />
+
+    <!-- Render all cards initially, React will handle showing/hiding -->
+    <div id="notes-container" class="grid gap-6">
+      {sortedNotes.map((note) => (
+        <div data-note-card data-note-id={note.id} data-category={note.data.category} data-title={note.data.title}>
+          <NoteCard
+            id={note.id}
+            title={note.data.title}
+            pubDate={note.data.pubDate}
+            category={note.data.category}
+            excerpt={note.data.excerpt}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</IndexLayout>
