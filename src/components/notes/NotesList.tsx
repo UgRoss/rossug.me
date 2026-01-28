@@ -40,10 +40,10 @@ export default function NotesList({ notes, categories }: NotesListProps) {
     
     const params = new URLSearchParams()
     if (selectedCategory !== 'all') {
-      params.set('category', encodeURIComponent(selectedCategory))
+      params.set('category', selectedCategory)
     }
     if (searchQuery) {
-      params.set('search', encodeURIComponent(searchQuery))
+      params.set('search', searchQuery)
     }
     
     const newUrl = params.toString() 
