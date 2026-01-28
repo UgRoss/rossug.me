@@ -91,6 +91,8 @@ export default function NotesList({ notes, categories }: NotesListProps) {
     const handleCategoryClick = (e: Event) => {
       const target = e.target as HTMLElement
       if (target.matches('[data-category-filter]')) {
+        e.preventDefault() // Prevent link navigation
+        e.stopPropagation() // Stop event from bubbling to the link
         const category = target.getAttribute('data-category-filter')
         if (category) {
           setSelectedCategory(category)
@@ -103,8 +105,9 @@ export default function NotesList({ notes, categories }: NotesListProps) {
       }
     }
 
-    document.addEventListener('click', handleCategoryClick)
-    return () => document.removeEventListener('click', handleCategoryClick)
+    // Use capture phase to catch the event before it reaches the link
+    document.addEventListener('click', handleCategoryClick, true)
+    return () => document.removeEventListener('click', handleCategoryClick, true)
   }, [])
 
   const handleReset = () => {

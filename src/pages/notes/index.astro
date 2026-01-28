@@ -25,7 +25,7 @@ const categories = [...new Set(sortedNotes.map((note) => note.data.category))].s
 
     <!-- React component for filtering controls -->
     <NotesList 
-      client:only="react"
+      client:load
       notes={sortedNotes.map((note) => ({
         id: note.id,
         title: note.data.title,

@@ -1,5 +1,5 @@
 ---
-import FormattedDate from '@/components/widgets/FormattedDate.astro'
+import { timeAgo } from '@/utils/date'
 
 interface Props {
   id: string
@@ -10,31 +10,40 @@ interface Props {
 }
 
 const { id, title, pubDate, category, excerpt } = Astro.props
+const timeAgoText = timeAgo(pubDate)
 ---
 
-<article class="group bg-white dark:bg-neutral-900 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-5 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700">
-  <div class="flex items-start justify-between mb-3 gap-3">
-    <button
-      data-category-filter={category}
-      aria-label={`Filter by ${category} category`}
-      class="category-tag inline-block text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
-    >
-      {category}
-    </button>
-    <div class="text-xs text-neutral-500 dark:text-neutral-500 shrink-0">
-      <FormattedDate date={pubDate} context="list" />
+<a 
+  href={`/notes/${id}`} 
+  class="group block bg-white dark:bg-neutral-900 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 p-5 border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700"
+>
+  <article>
+    <div class="flex items-start justify-between mb-3 gap-3">
+      <button
+        data-category-filter={category}
+        aria-label={`Filter by ${category} category`}
+        class="category-tag inline-block text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors z-10 relative"
+      >
+        {category}
+      </button>
+      <time 
+        datetime={pubDate.toISOString()}
+        class="text-xs text-neutral-500 dark:text-neutral-500 shrink-0"
+      >
+        {timeAgoText}
+      </time>
     </div>
-  </div>
-  
-  <a href={`/notes/${id}`} class="block mb-2 group-hover:translate-x-0.5 transition-transform">
-    <h3 class="text-lg font-bold text-neutral-900 dark:text-neutral-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug">
-      {title}
-    </h3>
-  </a>
-  
-  {excerpt && (
-    <p class="text-neutral-600 dark:text-neutral-400 text-sm leading-relaxed line-clamp-2">
-      {excerpt}
-    </p>
-  )}
-</article>
+    
+    <div class="mb-2 group-hover:translate-x-0.5 transition-transform">
+      <h3 class="text-lg font-bold text-neutral-900 dark:text-neutral-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug">
+        {title}
+      </h3>
+    </div>
+    
+    {excerpt && (
+      <p class="text-neutral-600 dark:text-neutral-400 text-sm leading-relaxed line-clamp-2">
+        {excerpt}
+      </p>
+    )}
+  </article>
+</a>
