@@ -5,7 +5,6 @@ import { ChevronDown, Check, Search } from 'lucide-react'
 interface Note {
   id: string
   title: string
-  pubDate: Date
   category: string
   excerpt?: string
 }
