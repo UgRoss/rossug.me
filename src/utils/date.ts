@@ -19,7 +19,7 @@ const MONTHS_EN = [
 const VALID_SEPARATORS = ['.', '-', '/']
 
 /**
- * Format date as "time ago" (e.g., "1 month", "2 years")
+ * Format date as "time ago" (e.g., "1 month ago", "2 years ago")
  */
 export function timeAgo(date: Date): string {
   const now = new Date()
