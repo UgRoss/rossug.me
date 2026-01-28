@@ -30,7 +30,7 @@ const toc = remarkPluginFrontmatter.toc || []
 >
   <div class="mb-4">
     <a 
-      href={`/notes?category=${note.data.category}`}
+      href={`/notes?category=${encodeURIComponent(note.data.category)}`}
       class="inline-block text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
     >
       {note.data.category}

@@ -41,10 +41,10 @@ export default function NotesList({ notes, categories }: NotesListProps) {
     
     const params = new URLSearchParams()
     if (selectedCategory !== 'all') {
-      params.set('category', selectedCategory)
+      params.set('category', encodeURIComponent(selectedCategory))
     }
     if (searchQuery) {
-      params.set('search', searchQuery)
+      params.set('search', encodeURIComponent(searchQuery))
     }
     
     const newUrl = params.toString() 
@@ -88,6 +88,9 @@ export default function NotesList({ notes, categories }: NotesListProps) {
 
   // Handle category tag clicks from NoteCard
   useEffect(() => {
+    const container = document.getElementById('notes-container')
+    if (!container) return
+
     const handleCategoryClick = (e: Event) => {
       const target = e.target as HTMLElement
       if (target.matches('[data-category-filter]')) {
@@ -105,9 +108,29 @@ export default function NotesList({ notes, categories }: NotesListProps) {
       }
     }
 
-    // Use capture phase to catch the event before it reaches the link
-    document.addEventListener('click', handleCategoryClick, true)
-    return () => document.removeEventListener('click', handleCategoryClick, true)
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement
+      if (target.matches('[data-category-filter]') && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault()
+        e.stopPropagation()
+        const category = target.getAttribute('data-category-filter')
+        if (category) {
+          setSelectedCategory(category)
+          const filtersElement = document.getElementById('notes-filters')
+          if (filtersElement) {
+            filtersElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
+        }
+      }
+    }
+
+    // Use capture phase and scope to notes container only
+    container.addEventListener('click', handleCategoryClick, true)
+    container.addEventListener('keydown', handleKeyDown, true)
+    return () => {
+      container.removeEventListener('click', handleCategoryClick, true)
+      container.removeEventListener('keydown', handleKeyDown, true)
+    }
   }, [])
 
   const handleReset = () => {

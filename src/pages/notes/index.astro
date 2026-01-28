@@ -39,7 +39,7 @@ const categories = [...new Set(sortedNotes.map((note) => note.data.category))].s
     <!-- Render all cards initially, React will handle showing/hiding -->
     <div id="notes-container" class="grid gap-6">
       {sortedNotes.map((note) => (
-        <div data-note-card data-note-id={note.id} data-category={note.data.category} data-title={note.data.title}>
+        <div data-note-card data-note-id={note.id} data-category={note.data.category}>
           <NoteCard
             id={note.id}
             title={note.data.title}
