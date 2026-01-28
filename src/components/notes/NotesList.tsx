@@ -117,9 +117,9 @@ export default function NotesList({ notes, categories }: NotesListProps) {
   }
 
   return (
-    <div id="notes-filters" className="mb-8 space-y-4">
+    <div id="notes-filters" className="mb-8 space-y-3">
       {/* Filter Controls */}
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className="flex flex-col sm:flex-row gap-3">
         {/* Search Input */}
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
@@ -129,7 +129,7 @@ export default function NotesList({ notes, categories }: NotesListProps) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             aria-label="Search notes by title"
-            className="w-full pl-10 pr-4 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-300 dark:focus:ring-neutral-600"
+            className="w-full pl-10 pr-4 py-2 text-sm border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-300 dark:focus:ring-neutral-600"
           />
         </div>
 
@@ -137,11 +137,11 @@ export default function NotesList({ notes, categories }: NotesListProps) {
         <Select.Root value={selectedCategory} onValueChange={setSelectedCategory}>
           <Select.Trigger 
             aria-label="Filter notes by category"
-            className="inline-flex items-center justify-between gap-2 px-4 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-300 dark:focus:ring-neutral-600 min-w-[180px]"
+            className="inline-flex items-center justify-between gap-2 px-3 py-2 text-sm border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-300 dark:focus:ring-neutral-600 sm:min-w-[140px]"
           >
             <Select.Value />
             <Select.Icon>
-              <ChevronDown className="w-4 h-4" />
+              <ChevronDown className="w-3.5 h-3.5" />
             </Select.Icon>
           </Select.Trigger>
 
@@ -174,18 +174,20 @@ export default function NotesList({ notes, categories }: NotesListProps) {
             </Select.Content>
           </Select.Portal>
         </Select.Root>
+      </div>
 
-        {/* Clear Filters Button */}
-        {(selectedCategory !== 'all' || searchQuery !== '') && (
+      {/* Clear Filters Button - Moved below to prevent container resizing */}
+      {(selectedCategory !== 'all' || searchQuery !== '') && (
+        <div className="flex justify-end">
           <button
             type="button"
             onClick={handleReset}
-            className="px-4 py-2 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
+            className="text-xs text-neutral-500 dark:text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 underline transition-colors"
           >
             Clear filters
           </button>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Results count */}
       <p className="text-sm text-neutral-600 dark:text-neutral-400">
