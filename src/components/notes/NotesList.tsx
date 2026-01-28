@@ -8,7 +8,6 @@ interface Note {
   pubDate: Date
   category: string
   excerpt?: string
-  cardHtml: string
 }
 
 interface NotesListProps {
@@ -78,7 +77,11 @@ export default function NotesList({ notes, categories }: NotesListProps) {
       const isVisible = filteredNotes.some((note) => note.id === noteId)
       
       if (card instanceof HTMLElement) {
-        card.style.display = isVisible ? 'block' : 'none'
+        if (isVisible) {
+          card.classList.remove('hidden')
+        } else {
+          card.classList.add('hidden')
+        }
       }
     })
   }, [filteredNotes, mounted])
@@ -125,13 +128,17 @@ export default function NotesList({ notes, categories }: NotesListProps) {
             placeholder="Search notes..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            aria-label="Search notes by title"
             className="w-full pl-10 pr-4 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-300 dark:focus:ring-neutral-600"
           />
         </div>
 
         {/* Category Select */}
         <Select.Root value={selectedCategory} onValueChange={setSelectedCategory}>
-          <Select.Trigger className="inline-flex items-center justify-between gap-2 px-4 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-300 dark:focus:ring-neutral-600 min-w-[180px]">
+          <Select.Trigger 
+            aria-label="Filter notes by category"
+            className="inline-flex items-center justify-between gap-2 px-4 py-2 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-300 dark:focus:ring-neutral-600 min-w-[180px]"
+          >
             <Select.Value />
             <Select.Icon>
               <ChevronDown className="w-4 h-4" />
@@ -171,6 +178,7 @@ export default function NotesList({ notes, categories }: NotesListProps) {
         {/* Clear Filters Button */}
         {(selectedCategory !== 'all' || searchQuery !== '') && (
           <button
+            type="button"
             onClick={handleReset}
             className="px-4 py-2 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
           >

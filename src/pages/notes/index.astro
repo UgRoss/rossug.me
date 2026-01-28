@@ -31,8 +31,7 @@ const categories = [...new Set(sortedNotes.map((note) => note.data.category))].s
         title: note.data.title,
         pubDate: note.data.pubDate,
         category: note.data.category,
-        excerpt: note.data.excerpt,
-        cardHtml: ''
+        excerpt: note.data.excerpt
       }))}
       categories={categories}
     />
