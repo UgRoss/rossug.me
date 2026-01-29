@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config'
 import react from '@astrojs/react'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
-import tailwind from '@astrojs/tailwind'
+import tailwindcss from '@tailwindcss/vite'
 import playformInline from '@playform/inline'
 import remarkMath from 'remark-math'
 import remarkDirective from 'remark-directive'
@@ -34,9 +34,6 @@ export default defineConfig({
     rehypePlugins: [rehypeKatex, rehypeCleanup, rehypeImageProcessor, rehypeCopyCode]
   },
   integrations: [
-    tailwind({
-      applyBaseStyles: false
-    }),
     playformInline({
       Exclude: [(file) => file.toLowerCase().includes('katex')]
     }),
@@ -45,6 +42,7 @@ export default defineConfig({
     react()
   ],
   vite: {
+    plugins: [tailwindcss()],
     resolve: {
       alias: {
         '@': path.resolve('./src')

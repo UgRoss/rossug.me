@@ -30,16 +30,16 @@ Based on the excellent [astro-chiri](https://github.com/the3ash/astro-chiri) the
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Start development server
-npm run dev
+pnpm run dev
 
 # Build for production
-npm run build
+pnpm run build
 
 # Preview production build
-npm run preview
+pnpm run preview
 ```
 
 ## 🎨 Configuration
@@ -57,10 +57,10 @@ Posts are stored in `src/content/posts/` as Markdown or MDX files.
 
 ```bash
 # Create a new post
-npm run new <title>
+pnpm run new <title>
 
 # Create a draft (prefix with underscore)
-npm run new _title
+pnpm run new _title
 ```
 
 ### Post Frontmatter
@@ -89,4 +89,3 @@ MIT
 
 - Theme design by [astro-chiri](https://github.com/the3ash/astro-chiri)
 - Built with [Astro](https://astro.build)
-

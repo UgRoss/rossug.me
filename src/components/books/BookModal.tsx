@@ -76,13 +76,13 @@ export default function BookModal({ allBooks }: BookModalProps) {
   return (
     <Dialog.Root open={isOpen} onOpenChange={handleOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-[9999] bg-neutral-900/40 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-        <Dialog.Content className="fixed left-[50%] top-[50%] z-[9999] w-full max-w-5xl sm:min-h-[450px] max-h-[85vh] translate-x-[-50%] translate-y-[-50%] rounded-3xl bg-white dark:bg-neutral-900 shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-100 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] overflow-hidden outline-none">
+        <Dialog.Overlay className="fixed inset-0 z-9999 bg-neutral-900/40 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+        <Dialog.Content className="fixed left-[50%] top-[50%] z-9999 w-full max-w-5xl sm:min-h-[450px] max-h-[85vh] translate-x-[-50%] translate-y-[-50%] rounded-3xl bg-white dark:bg-neutral-900 shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-100 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] overflow-hidden outline-none">
           {renderBook && (
             <>
               <button
                 onClick={() => handleOpenChange(false)}
-                className="absolute top-6 right-6 p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors z-[110] bg-white/80 dark:bg-neutral-800/80 backdrop-blur-md shadow-sm"
+                className="absolute top-6 right-6 p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors z-110 bg-white/80 dark:bg-neutral-800/80 backdrop-blur-md shadow-sm"
                 aria-label="Close"
               >
                 <X size={20} className="text-neutral-400 dark:text-neutral-300" />
