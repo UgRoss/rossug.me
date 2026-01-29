@@ -1,9 +1,8 @@
+@import 'tailwindcss';
 @import './fonts.css';
 @import './post.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@plugin "@tailwindcss/typography";
 
 @layer base {
   :root {

@@ -1,16 +1,4 @@
-/* Base styles for all elements */
-.prose * {
-  margin: 0;
-  padding: 0;
-  font-size: var(--font-size-m);
-}
-
-/* Main content container */
-.prose {
-  margin-bottom: 8rem;
-}
-
-/* Post title section */
+/* Custom Typography & Layout */
 .prose .title {
   margin-bottom: 2.5em;
 }
@@ -19,33 +7,12 @@
   margin: 0 0 0.375rem 0;
 }
 
-/* Headings (h1-h5)
- Adjust size or spacing below if needed. */
-.prose h1,
-.prose h2,
-.prose h3,
-.prose h4,
-.prose h5 {
-  font-size: var(--font-size-m);
-  font-weight: var(--font-weight-bold);
-  line-height: 1.75;
-  margin: 3.75em 0 1.75em 0;
-}
-
-/* Bold text */
-.prose strong,
-.prose b {
-  font-weight: var(--font-weight-bold);
-}
-
-/* Italic text */
 .prose em {
   font-family: var(--serif);
   font-style: italic;
   letter-spacing: 0;
 }
 
-/* Links */
 .prose a {
   color: var(--primary);
   text-decoration: underline;
@@ -58,26 +25,89 @@
   text-decoration-color: var(--text-primary);
 }
 
-/* Paragraphs */
-.prose p {
-  line-height: 1.75;
-  margin: 1.75em 0;
+.prose blockquote {
+  border-left: 2px solid var(--border);
+  margin: 0 0 1.75em 0.125em;
+  padding: 0 0 0 1.375em;
+  text-align: left;
 }
 
-/* Tables */
+.prose blockquote p {
+  margin: 0;
+}
+
+.prose blockquote cite {
+  display: inline-block;
+  margin-top: 0.5em;
+}
+
+/* Custom Lists */
+.prose ul:not(.contains-task-list) {
+  list-style-type: none;
+  padding-left: 0;
+  margin-left: 1rem;
+}
+
+.prose ul:not(.contains-task-list) li {
+  position: relative;
+  padding-left: 0.5rem;
+}
+
+.prose ul:not(.contains-task-list) li::before {
+  content: '•';
+  position: absolute;
+  left: -1.25rem;
+  top: -0.05em;
+  width: 1.5rem;
+  text-align: center;
+  color: var(--text-tertiary);
+}
+
+.prose ol {
+  list-style-position: outside;
+  padding-left: 0;
+  margin-left: 1.25rem;
+  counter-reset: item;
+}
+
+.prose ol li {
+  display: block;
+  position: relative;
+  padding-left: 0.25rem;
+}
+
+.prose ol li::before {
+  content: counter(item) '.';
+  counter-increment: item;
+  position: absolute;
+  left: -1.15rem;
+  width: 1.5rem;
+  text-align: left;
+  color: var(--text-secondary);
+  opacity: 0.75;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings:
+    'tnum' 1,
+    'zero' 0,
+    'cv01' 1,
+    'cv02' 1,
+    'calt' 1,
+    'ss03' 1,
+    'liga' 1,
+    'ordn' 1;
+}
+
+/* Custom Tables */
 .prose table {
   table-layout: fixed;
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  margin: 1.75em 0;
-  font-size: var(--font-size-m);
   border: 1px solid var(--border);
   border-radius: 8px;
   overflow: hidden;
 }
 
-/* Table cells */
 .prose th,
 .prose td {
   border: none;
@@ -101,7 +131,25 @@
   font-weight: var(--font-weight-bold);
 }
 
-/* Images */
+/* Custom Horizontal Rule */
+.prose hr {
+  margin: 3.75em 0;
+  height: auto;
+  border: none;
+  background: none;
+  text-align: center;
+  position: relative;
+}
+
+.prose hr::before {
+  content: '***';
+  font-family: var(--mono);
+  color: var(--text-tertiary);
+  font-size: 0.875em;
+  letter-spacing: 0.25em;
+}
+
+/* Custom Image Handling & Captions */
 .prose img {
   max-width: 100%;
   height: auto;
@@ -169,8 +217,8 @@
   margin-bottom: 2em;
 }
 
-/* Inline code */
-.prose code {
+/* Custom Inline Code */
+.prose :not(pre) > code {
   padding: 2.5px 3.5px;
   border-radius: 5px;
   background-color: var(--code-bg);
@@ -180,110 +228,9 @@
   font-feature-settings:
     'liga' 0,
     'calt' 0;
-  -webkit-font-feature-settings:
-    'liga' 0,
-    'calt' 0;
 }
 
-/* Blockquotes */
-.prose blockquote {
-  border-left: 2px solid var(--border);
-  margin: 0 0 1.75em 0.125em;
-  padding: 0 0 0 1.375em;
-  text-align: left;
-}
-
-.prose blockquote p {
-  margin: 0;
-}
-
-.prose blockquote cite {
-  display: inline-block;
-  margin-top: 0.5em;
-}
-
-/* Unordered lists */
-.prose ul {
-  list-style-type: none;
-  padding-left: 0;
-  margin-left: 1rem;
-  margin-bottom: 1.75em;
-  line-height: 1.75;
-}
-
-.prose ul ul {
-  margin-left: 0.625rem;
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
-}
-
-.prose ul li {
-  position: relative;
-  padding-left: 0.5rem;
-  margin-bottom: 0.5em;
-}
-
-.prose ul li:last-child {
-  margin-bottom: 0;
-}
-
-.prose ul li > ul {
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
-}
-
-.prose ul li::before {
-  content: '•';
-  position: absolute;
-  left: -1.25rem;
-  top: -0.05em;
-  width: 1.5rem;
-  text-align: center;
-  color: var(--text-tertiary);
-}
-
-/* Ordered lists */
-.prose ol {
-  list-style-position: outside;
-  padding-left: 0;
-  margin-left: 1.25rem;
-  margin-bottom: 1.75em;
-  counter-reset: item;
-}
-
-.prose ol li {
-  display: block;
-  position: relative;
-  padding-left: 0.25rem;
-  margin-bottom: 0.5em;
-}
-
-.prose ol li:last-child {
-  margin-bottom: 0;
-}
-
-.prose ol li::before {
-  content: counter(item) '.';
-  counter-increment: item;
-  position: absolute;
-  left: -1.15rem;
-  width: 1.5rem;
-  text-align: left;
-  color: var(--text-secondary);
-  opacity: 0.75;
-  font-variant-numeric: tabular-nums;
-  font-feature-settings:
-    'tnum' 1,
-    'zero' 0,
-    'cv01' 1,
-    'cv02' 1,
-    'calt' 1,
-    'ss03' 1,
-    'liga' 1,
-    'ordn' 1;
-}
-
-/* Task lists */
+/* Custom Task Lists */
 .prose ul.contains-task-list {
   list-style: none;
   margin-left: 0;
@@ -303,7 +250,6 @@
   margin-bottom: 0;
 }
 
-/* Task list checkboxes */
 .prose ul.contains-task-list li.task-list-item input[type='checkbox'] {
   margin-right: 0.5em;
   position: relative;
@@ -345,38 +291,7 @@
   white-space: nowrap;
 }
 
-/* .prose ul.contains-task-list li.task-list-item:has(input[type='checkbox']:checked) {
-  text-decoration: line-through;
-} */
-
-/* Subscript and superscript */
-.prose sup,
-.prose sub,
-.prose sup a {
-  margin: 0 0.125em;
-  font-size: 0.875em;
-  line-height: 1;
-}
-
-/* Horizontal rule */
-.prose hr {
-  margin: 3.75em 0;
-  height: auto;
-  border: none;
-  background: none;
-  text-align: center;
-  position: relative;
-}
-
-.prose hr::before {
-  content: '***';
-  font-family: var(--mono);
-  color: var(--text-tertiary);
-  font-size: 0.875em;
-  letter-spacing: 0.25em;
-}
-
-/* Keyboard input */
+/* Keyboard input & Highlights */
 .prose kbd {
   font-family: var(--mono);
   font-size: var(--font-size-s);
@@ -386,17 +301,15 @@
   min-width: 1.75em;
   display: inline-block;
   text-align: center;
-  /* box-shadow: inset 0 -2.5px 0 var(--border); */
 }
 
-/* Highlighted text */
 .prose mark {
   background-color: var(--mark);
   color: var(--text-primary);
   padding: 3px 1px;
 }
 
-/* Footnotes */
+/* Custom Footnotes */
 .prose .footnotes {
   margin-top: 4rem;
   padding-top: 1.75rem;
@@ -413,11 +326,6 @@
   background-color: var(--border);
 }
 
-.prose cite {
-  font-style: normal;
-}
-
-/* Footnote references */
 .prose [data-footnote-backref] {
   position: relative;
   font-family: var(--mono);
@@ -426,7 +334,6 @@
 }
 
 .prose [data-footnote-ref] {
-  font-size: 1em;
   font-variant-numeric: tabular-nums;
   font-feature-settings:
     'tnum' 1,
@@ -453,9 +360,9 @@
   color: var(--text-primary);
 }
 
-/* Code blocks */
+/* Custom Code Block Styling (Astro specific) */
 .prose pre {
-  background-color: var(--astro-code-background);
+  background-color: var(--astro-code-background) !important;
   border-radius: 8px;
   padding: 1.25em 1.5em;
   margin: 2em 0;
@@ -489,31 +396,25 @@
   font-size: var(--font-size-s);
 }
 
-/* KaTeX Math Rendering */
-
-/* Hide MathML fallback to prevent duplication */
+/* KaTeX Math Rendering Customizations */
 .katex-mathml {
   display: none !important;
 }
 
-/* Ensure display math is centered */
 .katex-display {
   text-align: center;
   margin: 1.75em 0;
 }
 
-/* Reset any conflicting styles that might interfere with KaTeX */
 .katex * {
   box-sizing: content-box;
 }
 
-/* Ensure KaTeX elements inherit color properly */
 .katex,
 .katex * {
   color: inherit;
 }
 
-/* Specific fixes for common CSS framework conflicts */
 .katex .base,
 .katex .strut,
 .katex .mathit,
@@ -525,15 +426,20 @@
   vertical-align: baseline;
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .katex,
-  .katex * {
-    color: inherit;
-  }
+/* External Embeds */
+.prose iframe {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border: none;
+  border-radius: 6px;
+  margin: 1.75em 0;
 }
 
-/* Reading Time */
+.prose iframe[src*='spotify.com'] {
+  aspect-ratio: auto;
+}
+
+/* Reading Time Utility */
 .reading-time {
   color: var(--text-secondary);
   letter-spacing: -0.025em;
@@ -541,18 +447,4 @@
 
 .reading-time .separator {
   margin: 0 0.25em;
-}
-
-/* Video */
-.prose iframe {
-  width: 100%;
-  aspect-ratio: 16/9;
-  border: none;
-  border-radius: 6px;
-  margin: 0.25em 0 0 0;
-}
-
-/* Spotify */
-.prose iframe[src*='spotify.com'] {
-  aspect-ratio: auto;
 }
