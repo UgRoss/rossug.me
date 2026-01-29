@@ -1,8 +1,9 @@
 @import 'tailwindcss';
-@plugin "@tailwindcss/typography";
 @import './fonts.css';
 @import './prose.css';
 @import './reading-time.css';
+
+@plugin "@tailwindcss/typography";
 
 @layer base {
   :root {
@@ -96,7 +97,7 @@
   }
 
   html {
-    font-family: theme('fontFamily.sans');
+    font-family: var(--font-sans);
     font-size: var(--font-size-m);
     font-weight: var(--font-weight-regular);
     line-height: 1.6;
@@ -123,11 +124,11 @@
   }
 
   a {
-    @apply text-[var(--text-primary)] no-underline transition-colors duration-200;
+    @apply text-(--text-primary) no-underline transition-colors duration-200;
   }
 
   a:hover {
-    @apply text-[var(--text-secondary)];
+    @apply text-(--text-secondary);
   }
 
   h1,
@@ -140,7 +141,7 @@
   }
 
   code {
-    font-family: theme('fontFamily.mono');
+    font-family: var(--font-mono);
   }
 
   pre {
