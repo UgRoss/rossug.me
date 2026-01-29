@@ -1,0 +1,9 @@
+/* Reading Time Utility */
+.reading-time {
+  color: var(--text-secondary);
+  letter-spacing: -0.025em;
+}
+
+.reading-time .separator {
+  margin: 0 0.25em;
+}

@@ -1,8 +1,8 @@
 @import 'tailwindcss';
-@import './fonts.css';
-@import './post.css';
-
 @plugin "@tailwindcss/typography";
+@import './fonts.css';
+@import './prose.css';
+@import './reading-time.css';
 
 @layer base {
   :root {

@@ -41,18 +41,6 @@
   margin-top: 0.5em;
 }
 
-/* Custom Lists */
-.prose ul:not(.contains-task-list) {
-  list-style-type: none;
-  padding-left: 0;
-  margin-left: 1rem;
-}
-
-.prose ul:not(.contains-task-list) li {
-  position: relative;
-  padding-left: 0.5rem;
-}
-
 .prose ul:not(.contains-task-list) li::before {
   content: '•';
   position: absolute;
@@ -61,40 +49,6 @@
   width: 1.5rem;
   text-align: center;
   color: var(--text-tertiary);
-}
-
-.prose ol {
-  list-style-position: outside;
-  padding-left: 0;
-  margin-left: 1.25rem;
-  counter-reset: item;
-}
-
-.prose ol li {
-  display: block;
-  position: relative;
-  padding-left: 0.25rem;
-}
-
-.prose ol li::before {
-  content: counter(item) '.';
-  counter-increment: item;
-  position: absolute;
-  left: -1.15rem;
-  width: 1.5rem;
-  text-align: left;
-  color: var(--text-secondary);
-  opacity: 0.75;
-  font-variant-numeric: tabular-nums;
-  font-feature-settings:
-    'tnum' 1,
-    'zero' 0,
-    'cv01' 1,
-    'cv02' 1,
-    'calt' 1,
-    'ss03' 1,
-    'liga' 1,
-    'ordn' 1;
 }
 
 /* Custom Tables */
@@ -235,6 +189,7 @@
   list-style: none;
   margin-left: 0;
   white-space: nowrap;
+  padding-inline-start: 0;
 }
 
 .prose ul.contains-task-list li::before {
@@ -292,16 +247,6 @@
 }
 
 /* Keyboard input & Highlights */
-.prose kbd {
-  font-family: var(--mono);
-  font-size: var(--font-size-s);
-  border: 1px solid var(--text-tertiary);
-  padding: 1px 4px;
-  border-radius: 5px;
-  min-width: 1.75em;
-  display: inline-block;
-  text-align: center;
-}
 
 .prose mark {
   background-color: var(--mark);
@@ -360,42 +305,6 @@
   color: var(--text-primary);
 }
 
-/* Custom Code Block Styling (Astro specific) */
-.prose pre {
-  background-color: var(--astro-code-background) !important;
-  border-radius: 8px;
-  padding: 1.25em 1.5em;
-  margin: 2em 0;
-  overflow-x: auto;
-}
-
-@media (max-width: 768px) {
-  .prose pre {
-    padding: 1em 1.25em;
-  }
-}
-
-.prose pre > code {
-  font-family: var(--mono);
-  font-feature-settings:
-    'liga' 0,
-    'calt' 0;
-  display: block;
-  white-space: pre;
-  word-break: normal;
-  overflow-wrap: normal;
-  padding: 0;
-  margin: 0;
-  background: none;
-  border: none;
-  line-height: 1.5;
-  border-radius: 0;
-}
-
-.prose pre > code * {
-  font-size: var(--font-size-s);
-}
-
 /* KaTeX Math Rendering Customizations */
 .katex-mathml {
   display: none !important;
@@ -437,14 +346,4 @@
 
 .prose iframe[src*='spotify.com'] {
   aspect-ratio: auto;
-}
-
-/* Reading Time Utility */
-.reading-time {
-  color: var(--text-secondary);
-  letter-spacing: -0.025em;
-}
-
-.reading-time .separator {
-  margin: 0 0.25em;
 }
