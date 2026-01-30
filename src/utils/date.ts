@@ -1,21 +1,6 @@
 import { themeConfig } from '@/config'
 import type { DateFormat } from '@/types'
-import { formatDistanceToNow } from 'date-fns'
-
-const MONTHS_EN = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec'
-]
+import { format, formatDistanceToNow } from 'date-fns'
 
 const VALID_SEPARATORS = ['.', '-', '/']
 
@@ -27,41 +12,43 @@ export function timeAgo(date: Date): string {
 }
 
 /**
- * @param date
- * @param format
- * @returns
+ * Format date according to the specified format string
+ * @param date - The date to format
+ * @param formatOverride - Optional format override
+ * @returns Formatted date string
  */
-export function formatDate(date: Date, format?: string): string {
-  const formatStr = (format || themeConfig.date.dateFormat).trim()
+export function formatDate(date: Date, formatOverride?: string): string {
+  const formatStr = (formatOverride || themeConfig.date.dateFormat).trim()
   const configSeparator = themeConfig.date.dateSeparator || '-'
 
   const separator = VALID_SEPARATORS.includes(configSeparator.trim()) ? configSeparator.trim() : '.'
 
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1
-  const day = date.getDate()
-  const monthName = MONTHS_EN[date.getMonth()]
-
-  const pad = (num: number) => String(num).padStart(2, '0')
-
   switch (formatStr) {
     case 'YYYY-MM-DD':
-      return `${year}${separator}${pad(month)}${separator}${pad(day)}`
+      return format(date, `yyyy${separator}MM${separator}dd`)
 
     case 'MM-DD-YYYY':
-      return `${pad(month)}${separator}${pad(day)}${separator}${year}`
+      return format(date, `MM${separator}dd${separator}yyyy`)
 
     case 'DD-MM-YYYY':
-      return `${pad(day)}${separator}${pad(month)}${separator}${year}`
+      return format(date, `dd${separator}MM${separator}yyyy`)
 
-    case 'MONTH DAY YYYY':
+    case 'MONTH DAY YYYY': {
+      const monthName = format(date, 'MMM')
+      const day = format(date, 'd')
+      const year = format(date, 'yyyy')
       return `<span class="month">${monthName}</span> ${day} ${year}`
+    }
 
-    case 'DAY MONTH YYYY':
+    case 'DAY MONTH YYYY': {
+      const day = format(date, 'd')
+      const monthName = format(date, 'MMM')
+      const year = format(date, 'yyyy')
       return `${day} <span class="month">${monthName}</span> ${year}`
+    }
 
     default:
-      return `${year}${separator}${pad(month)}${separator}${pad(day)}`
+      return format(date, `yyyy${separator}MM${separator}dd`)
   }
 }
 
