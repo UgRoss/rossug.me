@@ -1,0 +1,220 @@
+---
+import IndexLayout from '@/layouts/IndexLayout.astro'
+---
+
+<IndexLayout title="Uses - RossUG" description="Tools, software, and gear I use">
+  <div class="uses-page">
+    <h1>Uses</h1>
+    
+    <p class="intro">
+      Here's a collection of the tools, software, and gear I use for development, 
+      design, and productivity. This page is regularly updated as my setup evolves.
+    </p>
+
+    <section class="uses-section">
+      <div class="section-header">
+        <span class="section-icon">💻</span>
+        <h2>Development</h2>
+      </div>
+      <div class="uses-grid">
+        <div class="use-item">
+          <h3>Editor</h3>
+          <p>Visual Studio Code with custom themes and extensions</p>
+        </div>
+        <div class="use-item">
+          <h3>Terminal</h3>
+          <p>iTerm2 with Oh My Zsh for enhanced command-line experience</p>
+        </div>
+        <div class="use-item">
+          <h3>Version Control</h3>
+          <p>Git with GitHub for code hosting and collaboration</p>
+        </div>
+        <div class="use-item">
+          <h3>Languages</h3>
+          <p>TypeScript, JavaScript, Python, and Go for various projects</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="uses-section">
+      <div class="section-header">
+        <span class="section-icon">🛠️</span>
+        <h2>Tools & Services</h2>
+      </div>
+      <div class="uses-grid">
+        <div class="use-item">
+          <h3>Design</h3>
+          <p>Figma for UI/UX design and prototyping</p>
+        </div>
+        <div class="use-item">
+          <h3>Notes</h3>
+          <p>Obsidian for personal knowledge management</p>
+        </div>
+        <div class="use-item">
+          <h3>Communication</h3>
+          <p>Slack, Discord, and email for team collaboration</p>
+        </div>
+        <div class="use-item">
+          <h3>Browser</h3>
+          <p>Arc Browser for development and daily browsing</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="uses-section">
+      <div class="section-header">
+        <span class="section-icon">⚡</span>
+        <h2>Productivity</h2>
+      </div>
+      <div class="uses-grid">
+        <div class="use-item">
+          <h3>Task Management</h3>
+          <p>Linear for project management and issue tracking</p>
+        </div>
+        <div class="use-item">
+          <h3>Time Tracking</h3>
+          <p>Toggl Track for monitoring time spent on projects</p>
+        </div>
+        <div class="use-item">
+          <h3>Focus</h3>
+          <p>Noise-canceling headphones and lo-fi music playlists</p>
+        </div>
+        <div class="use-item">
+          <h3>Reading</h3>
+          <p>Pocket for saving articles and long-form content</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="uses-section">
+      <div class="section-header">
+        <span class="section-icon">🖥️</span>
+        <h2>Hardware</h2>
+      </div>
+      <div class="uses-grid">
+        <div class="use-item">
+          <h3>Computer</h3>
+          <p>MacBook Pro for development and creative work</p>
+        </div>
+        <div class="use-item">
+          <h3>Display</h3>
+          <p>External monitor for extended workspace</p>
+        </div>
+        <div class="use-item">
+          <h3>Input</h3>
+          <p>Mechanical keyboard and precision mouse</p>
+        </div>
+        <div class="use-item">
+          <h3>Audio</h3>
+          <p>Quality headphones for calls and focused work</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="uses-note">
+      <p>
+        💡 <strong>Note:</strong> This is a living document that I update as my tools 
+        and workflow evolve. Feel free to reach out if you have questions about any 
+        of these tools or want to share your own setup!
+      </p>
+    </div>
+  </div>
+</IndexLayout>
+
+<style>
+  .uses-page {
+    padding: 2rem 0;
+    max-width: 100%;
+  }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+  }
+
+  .intro {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+  }
+
+  .uses-section {
+    margin-bottom: 3rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .section-header h2 {
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-bold);
+    margin: 0;
+    color: var(--text-primary);
+  }
+
+  .uses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .use-item {
+    padding: 1.25rem;
+    background-color: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    transition: all 0.2s ease-out;
+  }
+
+  .use-item:hover {
+    background-color: var(--selection);
+    border-color: var(--text-tertiary);
+    transform: translateY(-2px);
+  }
+
+  .use-item h3 {
+    font-size: 1rem;
+    font-weight: var(--font-weight-bold);
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+  }
+
+  .use-item p {
+    font-size: var(--font-size-m);
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .uses-note {
+    margin-top: 3rem;
+    padding: 1.5rem;
+    background-color: var(--code-bg);
+    border-left: 3px solid var(--text-tertiary);
+    border-radius: 0.25rem;
+  }
+
+  .uses-note p {
+    margin: 0;
+    line-height: 1.7;
+    color: var(--text-primary);
+  }
+
+  @media (max-width: 768px) {
+    .uses-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
