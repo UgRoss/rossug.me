@@ -1,88 +1,27 @@
 ---
+import { getEntry, render } from 'astro:content'
 import IndexLayout from '@/layouts/IndexLayout.astro'
 import { themeConfig } from '@/config'
+
+const entry = await getEntry('pages', 'colophon')
+if (!entry) {
+  return Astro.redirect('/404')
+}
+const { Content } = await render(entry)
 ---
 
-<IndexLayout title="Colophon - RossUG" description="About this website">
-  <div class="prose">
-    <h1>Colophon</h1>
-    
-    <p>
-      This website is the personal site of <strong>{themeConfig.site.author}</strong>, 
-      a place for sharing thoughts, projects, and experiences.
-    </p>
-
-    <h2>Technology</h2>
-    <p>
-      The site is built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a>, 
-      a modern static site generator that delivers fast, content-focused websites. 
-      It uses the <a href="https://github.com/the3ash/astro-chiri" target="_blank" rel="noopener noreferrer">Chiri</a> theme 
-      as a foundation, customized to fit personal preferences.
-    </p>
-
-    <h2>Design</h2>
-    <p>
-      The design philosophy focuses on simplicity, readability, and performance. 
-      The site features a clean, minimal aesthetic with careful attention to typography 
-      and spacing. It supports both light and dark color schemes that adapt to your 
-      system preferences.
-    </p>
-
-    <h2>Typography</h2>
-    <p>
-      The site uses system fonts for optimal performance and native feel across 
-      different platforms and devices.
-    </p>
-
-    <h2>Hosting & Deployment</h2>
-    <p>
-      The site is hosted and automatically deployed through modern web infrastructure, 
-      ensuring fast load times and global availability.
-    </p>
-
-    <h2>Source</h2>
-    <p>
-      The source code for this website is available on 
-      <a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>.
-    </p>
+<IndexLayout
+  title={`${entry.data.title} - ${themeConfig.site.title}`}
+  description={entry.data.description}
+>
+  <div class="colophon-page-container mx-auto max-w-2xl py-8">
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold text-(--text-primary)">{entry.data.title}</h1>
+    </header>
+    <article
+      class="prose prose-neutral dark:prose-invert max-w-none text-(--text-primary) prose-headings:text-(--text-primary) prose-strong:text-(--text-primary)"
+    >
+      <Content />
+    </article>
   </div>
 </IndexLayout>
-
-<style>
-  .prose {
-    padding: 2rem 0;
-  }
-
-  .prose h1 {
-    font-size: 2rem;
-    font-weight: var(--font-weight-bold);
-    margin-bottom: 1.5rem;
-    color: var(--text-primary);
-  }
-
-  .prose h2 {
-    font-size: 1.25rem;
-    font-weight: var(--font-weight-bold);
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
-    color: var(--text-primary);
-  }
-
-  .prose p {
-    margin-bottom: 1rem;
-    line-height: 1.7;
-    color: var(--text-primary);
-  }
-
-  .prose a {
-    color: var(--text-primary);
-    text-decoration: underline;
-    text-decoration-color: var(--text-tertiary);
-    text-underline-offset: 0.2em;
-    transition: text-decoration-color 0.2s ease-out;
-  }
-
-  .prose a:hover {
-    text-decoration-color: var(--text-secondary);
-  }
-</style>
