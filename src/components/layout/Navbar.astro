@@ -1,19 +1,22 @@
 ---
 import Icon from '@/components/ui/Icon.astro'
-import house from '@/assets/icons/house.svg?raw'
-import penTool from '@/assets/icons/pen-tool.svg?raw'
-import library from '@/assets/icons/library.svg?raw'
-import bookOpen from '@/assets/icons/book-open.svg?raw'
 
 // Get the current path to determine active state
 const currentPath = Astro.url.pathname
 
+interface NavItem {
+  id: string
+  label: string
+  path: string
+  icon?: string
+}
+
 // Navigation items configuration
-const navItems = [
-  { id: 'home', label: 'Home', path: '/', icon: house },
-  { id: 'blog', label: 'Blog', path: '/blog', icon: penTool },
-  { id: 'notes', label: 'Notes', path: '/notes', icon: library },
-  { id: 'reading', label: 'Reading', path: '/reading', icon: bookOpen }
+const navItems: NavItem[] = [
+  { id: 'home', label: 'Home', path: '/' },
+  { id: 'blog', label: 'Blog', path: '/blog' },
+  { id: 'notes', label: 'Notes', path: '/notes' },
+  { id: 'reading', label: 'Reading', path: '/reading' }
 ]
 
 // Function to check if a nav item is active

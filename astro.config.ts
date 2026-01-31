@@ -17,14 +17,18 @@ import { themeConfig } from './src/config'
 import { imageConfig } from './src/utils/image-config'
 import path from 'path'
 
+import cloudflare from '@astrojs/cloudflare';
+
 export default defineConfig({
   site: themeConfig.site.website,
+
   image: {
     service: {
       entrypoint: 'astro/assets/services/sharp',
       config: imageConfig
     }
   },
+
   markdown: {
     shikiConfig: {
       theme: 'css-variables',
@@ -33,6 +37,7 @@ export default defineConfig({
     remarkPlugins: [remarkMath, remarkDirective, remarkEmbeddedMedia, remarkReadingTime, remarkTOC],
     rehypePlugins: [rehypeKatex, rehypeCleanup, rehypeImageProcessor, rehypeCopyCode]
   },
+
   integrations: [
     playformInline({
       Exclude: [(file) => file.toLowerCase().includes('katex')]
@@ -41,6 +46,7 @@ export default defineConfig({
     sitemap(),
     react()
   ],
+
   vite: {
     plugins: [tailwindcss()],
     resolve: {
@@ -49,7 +55,10 @@ export default defineConfig({
       }
     }
   },
+
   devToolbar: {
     enabled: false
-  }
+  },
+
+  adapter: cloudflare()
 })
