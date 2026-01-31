@@ -1,59 +1,42 @@
 ---
 import { themeConfig } from '@/config'
+
 const today = new Date()
+
+const navLinks = [
+  { label: 'Colophon', href: '/colophon' },
+  { label: 'Uses', href: '/uses' },
+  { label: 'RSS', href: '/rss.xml' }
+]
 ---
 
-<footer>
-  <div class="footer-content">
-    <div class="copyright">
-      <span class="date">
-        &copy;
-        {today.getFullYear()}
-      </span>
+<footer class="mt-8 py-8 border-t border-(--border)">
+  <div
+    class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 font-medium"
+  >
+    <div class="text-(--text-secondary) text-[length:var(--font-size-m)]">
+      &copy; {today.getFullYear()}
       {themeConfig.site.author}
     </div>
-    <div class="powered-by">
-      Powered by{' '}
-      <a href="https://astro.build">Astro</a> &{' '}
-      <a href="https://github.com/the3ash/astro-chiri">Chiri</a>
+
+    <div class="flex items-center gap-2 text-[length:var(--font-size-m)]">
+      {
+        navLinks.map((link, index) => (
+          <>
+            {index > 0 && (
+              <span class="text-(--text-tertiary)" aria-hidden="true">
+                ·
+              </span>
+            )}
+            <a
+              href={link.href}
+              class="text-(--text-secondary) hover:text-(--text-primary) transition-colors"
+            >
+              {link.label}
+            </a>
+          </>
+        ))
+      }
     </div>
   </div>
 </footer>
-<style>
-  footer {
-    font-size: var(--font-size-s);
-    font-weight: var(--font-weight-light);
-    line-height: 1.75;
-    color: var(--text-secondary);
-    opacity: 0.75;
-    margin-top: 4rem;
-  }
-
-  .footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    width: 100%;
-  }
-
-  .copyright,
-  .powered-by {
-    white-space: nowrap;
-  }
-
-  .copyright .date {
-    opacity: 1;
-  }
-
-  footer a {
-    color: var(--text-secondary);
-    text-decoration: none;
-    transition: color 0.2s ease-out;
-  }
-
-  footer a:hover {
-    color: var(--text-primary);
-  }
-</style>

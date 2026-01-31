@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content'
 import IndexLayout from '@/layouts/IndexLayout.astro'
 import NoteCard from '@/components/notes/NoteCard.astro'
 import NotesList from '@/components/notes/NotesList'
+import { themeConfig } from '@/config'
 
 // Get all notes and sort by date (newest first)
 const allNotes = await getCollection('notes')
@@ -14,7 +15,7 @@ const sortedNotes = allNotes
 const categories = [...new Set(sortedNotes.map((note) => note.data.category))].sort()
 ---
 
-<IndexLayout title="Notes - RossUG" description="TILs (Today I Learned) and quick technical snippets">
+<IndexLayout title={`Notes - ${themeConfig.site.title}`} description="TILs (Today I Learned) and quick technical snippets">
   <div class="py-8">
     <div class="mb-8">
       <h1 class="text-3xl font-bold mb-2">Notes</h1>

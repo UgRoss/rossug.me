@@ -1,0 +1,35 @@
+---
+import { getEntry, render } from 'astro:content'
+import IndexLayout from '@/layouts/IndexLayout.astro'
+import { themeConfig } from '@/config'
+
+const entry = await getEntry('pages', 'uses')
+if (!entry) {
+  return Astro.redirect('/404')
+}
+const { Content } = await render(entry)
+---
+
+<IndexLayout
+  title={`${entry.data.title} - ${themeConfig.site.title}`}
+  description={entry.data.description}
+>
+  <div class="uses-page-container mx-auto max-w-2xl py-8">
+    <header class="mb-8">
+      <h1 class="text-3xl font-bold text-(--text-primary)">{entry.data.title}</h1>
+    </header>
+    <article
+      class="prose prose-neutral dark:prose-invert max-w-none text-(--text-primary) prose-headings:text-(--text-primary) prose-strong:text-(--text-primary)"
+    >
+      <Content />
+    </article>
+  </div>
+</IndexLayout>
+
+<style is:global>
+  /* Ensure the workspace image generated in MDX looks good */
+  .prose img {
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
+  }
+</style>

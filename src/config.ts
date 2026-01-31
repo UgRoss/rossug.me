@@ -4,8 +4,8 @@ export const themeConfig: ThemeConfig = {
   // SITE INFO ///////////////////////////////////////////////////////////////////////////////////////////
   site: {
     website: 'https://rossug.me/', // Site domain
-    title: 'RossUG', // Site title
-    author: 'UgRoss', // Author name
+    title: 'rossug.me', // Site title
+    author: 'Rostyslav Ugryniuk', // Author name
     description: 'Minimal personal site built with Astro and TailwindCSS', // Site description
     language: 'en-US' // Default language
   },
