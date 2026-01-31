@@ -3,12 +3,13 @@ import IndexLayout from '@/layouts/IndexLayout.astro'
 import BookCard from '@/components/books/BookCard.astro'
 import BookModal from '@/components/books/BookModal'
 import { BOOKS } from '@/data/books'
+import { themeConfig } from '@/config'
 
 const currentlyReading = BOOKS.filter((b) => b.status === 'reading')
 const finishedBooks = BOOKS.filter((b) => b.status === 'finished')
 ---
 
-<IndexLayout title="Reading - RossUG" description="Reading list and book notes">
+<IndexLayout title={`Reading - ${themeConfig.site.title}`} description="Reading list and book notes">
   <div class="space-y-12">
     <header class="space-y-2">
       <h1 class="text-3xl font-bold tracking-tight">Books</h1>
