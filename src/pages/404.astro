@@ -1,13 +1,45 @@
 ---
 import { themeConfig } from '@/config'
-import IndexLayout from '@/layouts/IndexLayout.astro'
+import BaseHead from '@/components/layout/BaseHead.astro'
+import ThemeManager from '@/components/ui/ThemeManager.astro'
+import '@/styles/global.css'
+
+const title = `404 - ${themeConfig.site.title}`
+const description = 'Page Not Found'
 ---
 
-<IndexLayout title={`404 - ${themeConfig.site.title}`} description="Not Found">
-  <style>
-    .error-container {
-      color: var(--text-secondary);
+<!doctype html>
+<html lang={themeConfig.site.language || 'en-US'}>
+  <head>
+    <ThemeManager />
+    <BaseHead title={title} description={description} />
+  </head>
+  <body class="bg-(--bg) text-(--text-primary) antialiased">
+    <main class="flex min-h-screen flex-col items-center justify-center p-4 text-center">
+      <h1 class="text-8xl font-bold tracking-tighter animate-bounce-slow mb-6">404</h1>
+      <p class="text-(--text-secondary) max-w-xs mb-8">
+        Oops! It looks like this page has drifted off into the digital void.
+      </p>
+      <a href="/" class="font-bold hover:text-(--text-secondary) transition-colors duration-200">
+        ← Back to Home
+      </a>
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  @keyframes bounce-slow {
+    0%,
+    100% {
+      transform: translateY(-5%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
     }
-  </style>
-  <p class="error-container">Page Not Found...</p>
-</IndexLayout>
+    50% {
+      transform: translateY(0);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+  .animate-bounce-slow {
+    animation: bounce-slow 3s infinite;
+  }
+</style>
