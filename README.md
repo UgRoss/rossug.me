@@ -32,6 +32,9 @@ Based on the excellent [astro-chiri](https://github.com/the3ash/astro-chiri) the
 # Install dependencies
 pnpm install
 
+# Setup AI agent guidelines
+pnpm run symlinks
+
 # Start development server
 pnpm run dev
 
