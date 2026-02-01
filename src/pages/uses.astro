@@ -1,7 +1,8 @@
 ---
 import { getEntry, render } from 'astro:content'
-import IndexLayout from '@/layouts/IndexLayout.astro'
+
 import { themeConfig } from '@/config'
+import IndexLayout from '@/layouts/IndexLayout.astro'
 
 const entry = await getEntry('pages', 'uses')
 if (!entry) {
@@ -11,8 +12,8 @@ const { Content } = await render(entry)
 ---
 
 <IndexLayout
-  title={`${entry.data.title} - ${themeConfig.site.title}`}
   description={entry.data.description}
+  title={`${entry.data.title} - ${themeConfig.site.title}`}
 >
   <div class="uses-page-container mx-auto max-w-2xl py-8">
     <header class="mb-8">

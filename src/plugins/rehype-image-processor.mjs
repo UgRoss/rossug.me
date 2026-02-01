@@ -1,4 +1,5 @@
 import { visit } from 'unist-util-visit'
+
 import { themeConfig } from '../config.js'
 
 /**
@@ -41,14 +42,14 @@ export default function rehypeImageProcessor() {
         // Enhanced image properties with performance optimizations
         imgNode.properties = {
           ...imgNode.properties,
+          class: [...(imgNode.properties.class || []), 'img-placeholder'],
           'data-preview': themeConfig.post.imageViewer ? 'true' : 'false',
-          // Add lazy loading for better performance
-          loading: 'lazy',
           // Add decoding hint for better performance
           decoding: 'async',
           // Add fetchpriority for critical images (first image gets high priority)
           fetchpriority: newNodes.length === 0 ? 'high' : 'auto',
-          class: [...(imgNode.properties.class || []), 'img-placeholder']
+          // Add lazy loading for better performance
+          loading: 'lazy'
         }
 
         if (!alt || alt.includes('_')) {
@@ -57,27 +58,27 @@ export default function rehypeImageProcessor() {
         }
 
         const figure = {
-          type: 'element',
-          tagName: 'figure',
-          properties: {
-            className: ['image-caption-wrapper']
-          },
           children: [
             imgNode,
             {
-              type: 'element',
-              tagName: 'figcaption',
-              properties: {
-                className: ['img-caption']
-              },
               children: [
                 {
                   type: 'text',
                   value: alt
                 }
-              ]
+              ],
+              properties: {
+                className: ['img-caption']
+              },
+              tagName: 'figcaption',
+              type: 'element'
             }
-          ]
+          ],
+          properties: {
+            className: ['image-caption-wrapper']
+          },
+          tagName: 'figure',
+          type: 'element'
         }
 
         newNodes.push(figure)

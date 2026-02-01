@@ -1,9 +1,10 @@
 ---
 import { getCollection } from 'astro:content'
-import IndexLayout from '@/layouts/IndexLayout.astro'
+
 import NoteCard from '@/components/notes/NoteCard.astro'
 import NotesList from '@/components/notes/NotesList'
 import { themeConfig } from '@/config'
+import IndexLayout from '@/layouts/IndexLayout.astro'
 
 // Get all notes and sort by date (newest first)
 const allNotes = await getCollection('notes')
@@ -15,7 +16,7 @@ const sortedNotes = allNotes
 const categories = [...new Set(sortedNotes.map((note) => note.data.category))].sort()
 ---
 
-<IndexLayout title={`Notes - ${themeConfig.site.title}`} description="TILs (Today I Learned) and quick technical snippets">
+<IndexLayout description="TILs (Today I Learned) and quick technical snippets" title={`Notes - ${themeConfig.site.title}`}>
   <div class="py-8">
     <div class="mb-8">
       <h1 class="text-3xl font-bold mb-2">Notes</h1>
@@ -26,26 +27,26 @@ const categories = [...new Set(sortedNotes.map((note) => note.data.category))].s
 
     <!-- React component for filtering controls -->
     <NotesList 
+      categories={categories}
       client:load
       notes={sortedNotes.map((note) => ({
-        id: note.id,
-        title: note.data.title,
         category: note.data.category,
-        excerpt: note.data.excerpt
+        excerpt: note.data.excerpt,
+        id: note.id,
+        title: note.data.title
       }))}
-      categories={categories}
     />
 
     <!-- Render all cards initially, React will handle showing/hiding -->
-    <div id="notes-container" class="grid gap-6">
+    <div class="grid gap-6" id="notes-container">
       {sortedNotes.map((note) => (
-        <div data-note-card data-note-id={note.id} data-category={note.data.category}>
+        <div data-category={note.data.category} data-note-card data-note-id={note.id}>
           <NoteCard
-            id={note.id}
-            title={note.data.title}
-            pubDate={note.data.pubDate}
             category={note.data.category}
             excerpt={note.data.excerpt}
+            id={note.id}
+            pubDate={note.data.pubDate}
+            title={note.data.title}
           />
         </div>
       ))}

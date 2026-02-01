@@ -179,10 +179,10 @@
 
       if (fetchUrl) {
         fetch(fetchUrl, {
-          mode: 'cors',
           headers: {
-            Accept: 'application/json'
-          }
+          Accept: 'application/json'
+        },
+        mode: 'cors'
         })
           .then((res) => {
             if (!res.ok) throw new Error(`Response ${res.status}`)

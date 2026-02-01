@@ -4,9 +4,9 @@ import { themeConfig } from '@/config'
 const today = new Date()
 
 const navLinks = [
-  { label: 'Colophon', href: '/colophon' },
-  { label: 'Uses', href: '/uses' },
-  { label: 'RSS', href: '/rss.xml' }
+  { href: '/colophon', label: 'Colophon' },
+  { href: '/uses', label: 'Uses' },
+  { href: '/rss.xml', label: 'RSS' }
 ]
 ---
 
@@ -24,13 +24,13 @@ const navLinks = [
         navLinks.map((link, index) => (
           <>
             {index > 0 && (
-              <span class="text-(--text-tertiary)" aria-hidden="true">
+              <span aria-hidden="true" class="text-(--text-tertiary)">
                 ·
               </span>
             )}
             <a
-              href={link.href}
               class="text-(--text-secondary) hover:text-(--text-primary) transition-colors"
+              href={link.href}
             >
               {link.label}
             </a>

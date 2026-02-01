@@ -1,22 +1,22 @@
 import type { CollectionEntry } from 'astro:content'
 
+// PostList component props interface
+export interface PostListProps {
+  posts: CollectionEntry<'posts'>[]
+}
+
 // Reading time interface
 export interface ReadingTime {
-  text: string
   minutes: number
+  text: string
   time: number
   words: number
 }
 
 // TOC item interface
 export interface TOCItem {
-  level: number
-  text: string
   id: string
   index: number
-}
-
-// PostList component props interface
-export interface PostListProps {
-  posts: CollectionEntry<'posts'>[]
+  level: number
+  text: string
 }

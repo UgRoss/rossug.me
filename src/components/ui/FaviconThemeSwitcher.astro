@@ -61,8 +61,8 @@
               style = style.replace(/fill\s*:\s*[^;]+;?/gi, '')
               node.setAttribute('style', style)
             }
-            for (let i = 0; i < node.childNodes.length; i++) {
-              setFillRecursively(node.childNodes[i])
+            for (const childNode of node.childNodes) {
+              setFillRecursively(childNode)
             }
           }
         }

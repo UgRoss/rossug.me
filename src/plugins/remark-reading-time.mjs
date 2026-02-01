@@ -12,8 +12,8 @@ export default function remarkReadingTime() {
     const minutes = Math.max(1, Math.round(readingTime.minutes))
     file.data.astro.frontmatter.minutesRead = `${minutes}min`
     file.data.astro.frontmatter.readingTime = {
-      text: `${minutes}min`,
       minutes: minutes,
+      text: `${minutes}min`,
       time: readingTime.time,
       words: readingTime.words
     }

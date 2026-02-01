@@ -2,25 +2,25 @@
 import { themeConfig } from '@/config'
 ---
 
-<a href="/" class="back-button">
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<a class="back-button" href="/">
+  <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M2.5 6.5H9.5C11.1569 6.5 12.5 7.84315 12.5 9.5V9.5C12.5 11.1569 11.1569 12.5 9.5 12.5H7.5M2.5 6.5L5.5 9.5M2.5 6.5L5.5 3.5"
       stroke="currentColor"
-      stroke-width="1.25"
       stroke-linecap="round"
-      stroke-linejoin="round"></path>
+      stroke-linejoin="round"
+      stroke-width="1.25"></path>
   </svg>
   index
 </a>
 
 <script
-  is:inline
   define:vars={{
-    contentWidth: themeConfig.general.contentWidth,
     centeredLayout: themeConfig.general.centeredLayout,
+    contentWidth: themeConfig.general.contentWidth,
     toc: themeConfig.post.toc
   }}
+  is:inline
 >
   ;(function () {
     // Adjust back button position based on layout and screen size

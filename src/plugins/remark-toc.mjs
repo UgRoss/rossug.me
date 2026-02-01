@@ -31,10 +31,10 @@ export default function remarkTOC() {
       node.data.hProperties.id = id
 
       headings.push({
-        level,
-        text,
         id,
-        index: headingIndex
+        index: headingIndex,
+        level,
+        text
       })
 
       headingIndex++

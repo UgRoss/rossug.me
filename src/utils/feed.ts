@@ -1,12 +1,15 @@
 import type { APIContext, ImageMetadata } from 'astro'
+import type { CollectionEntry } from 'astro:content'
+
 import { getImage } from 'astro:assets'
-import { getCollection, type CollectionEntry } from 'astro:content'
+import { getCollection } from 'astro:content'
 import { Feed } from 'feed'
 import MarkdownIt from 'markdown-it'
 import { parse as htmlParser } from 'node-html-parser'
-import sanitizeHtml from 'sanitize-html'
-import { themeConfig } from '@/config'
 import path from 'node:path'
+import sanitizeHtml from 'sanitize-html'
+
+import { themeConfig } from '@/config'
 
 const markdownParser = new MarkdownIt({
   html: true,
@@ -17,6 +20,38 @@ const markdownParser = new MarkdownIt({
 const imagesGlob = import.meta.glob<{ default: ImageMetadata }>(
   '/src/content/posts/_assets/**/*.{jpeg,jpg,png,gif,webp}'
 )
+
+/**
+ * Generate Atom 1.0 feed
+ */
+export async function generateAtom(context: APIContext) {
+  const feed = await generateFeedInstance(context)
+  const atomXml = feed
+    .atom1()
+    .replace(
+      '<?xml version="1.0" encoding="utf-8"?>',
+      '<?xml version="1.0" encoding="utf-8"?>\n<?xml-stylesheet type="text/xsl" href="/feeds/atom-style.xsl"?>'
+    )
+  return new Response(atomXml, {
+    headers: { 'Content-Type': 'application/atom+xml; charset=utf-8' }
+  })
+}
+
+/**
+ * Generate RSS 2.0 feed
+ */
+export async function generateRSS(context: APIContext) {
+  const feed = await generateFeedInstance(context)
+  const rssXml = feed
+    .rss2()
+    .replace(
+      '<?xml version="1.0" encoding="utf-8"?>',
+      '<?xml version="1.0" encoding="utf-8"?>\n<?xml-stylesheet type="text/xsl" href="/feeds/rss-style.xsl"?>'
+    )
+  return new Response(rssXml, {
+    headers: { 'Content-Type': 'application/rss+xml; charset=utf-8' }
+  })
+}
 
 /**
  * Fix relative image paths in HTML content and convert them to absolute URLs
@@ -68,8 +103,8 @@ async function fixRelativeImagePaths(
           } else {
             // Production environment: use getImage optimization
             const processedImage = await getImage({
-              src: metadata,
               format: 'webp',
+              src: metadata,
               width: 800
             })
 
@@ -100,25 +135,25 @@ async function fixRelativeImagePaths(
  */
 async function generateFeedInstance(context: APIContext) {
   const siteUrl = (context.site?.toString() || themeConfig.site.website).replace(/\/$/, '')
-  const { title = '', description = '', author = '', language = 'en-US' } = themeConfig.site
+  const { author = '', description = '', language = 'en-US', title = '' } = themeConfig.site
 
   const feed = new Feed({
-    title: title,
-    description: description,
-    id: siteUrl,
-    link: siteUrl,
-    language: language,
-    copyright: `Copyright © ${new Date().getFullYear()} ${author}`,
-    updated: new Date(),
-    generator: 'Astro Chiri Feed Generator',
-    feedLinks: {
-      rss: `${siteUrl}/rss.xml`,
-      atom: `${siteUrl}/atom.xml`
-    },
     author: {
-      name: author,
-      link: siteUrl
-    }
+      link: siteUrl,
+      name: author
+    },
+    copyright: `Copyright © ${new Date().getFullYear()} ${author}`,
+    description: description,
+    feedLinks: {
+      atom: `${siteUrl}/atom.xml`,
+      rss: `${siteUrl}/rss.xml`
+    },
+    generator: 'Astro Chiri Feed Generator',
+    id: siteUrl,
+    language: language,
+    link: siteUrl,
+    title: title,
+    updated: new Date()
   })
 
   const posts = await getCollection(
@@ -136,56 +171,24 @@ async function generateFeedInstance(context: APIContext) {
     const rawHtml = markdownParser.render(post.body || '')
     const processedHtml = await fixRelativeImagePaths(rawHtml, siteUrl, post.id)
     const cleanHtml = sanitizeHtml(processedHtml, {
-      allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'div', 'span']),
       allowedAttributes: {
         ...sanitizeHtml.defaults.allowedAttributes,
         '*': ['class', 'id'],
         a: ['href', 'title', 'target', 'rel'],
         img: ['src', 'alt', 'title', 'width', 'height']
-      }
+      },
+      allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'div', 'span'])
     })
 
     feed.addItem({
-      title: post.data.title,
-      id: postUrl,
-      link: postUrl,
       content: cleanHtml,
       date: post.data.pubDate,
-      published: post.data.pubDate
+      id: postUrl,
+      link: postUrl,
+      published: post.data.pubDate,
+      title: post.data.title
     })
   }
 
   return feed
-}
-
-/**
- * Generate RSS 2.0 feed
- */
-export async function generateRSS(context: APIContext) {
-  const feed = await generateFeedInstance(context)
-  const rssXml = feed
-    .rss2()
-    .replace(
-      '<?xml version="1.0" encoding="utf-8"?>',
-      '<?xml version="1.0" encoding="utf-8"?>\n<?xml-stylesheet type="text/xsl" href="/feeds/rss-style.xsl"?>'
-    )
-  return new Response(rssXml, {
-    headers: { 'Content-Type': 'application/rss+xml; charset=utf-8' }
-  })
-}
-
-/**
- * Generate Atom 1.0 feed
- */
-export async function generateAtom(context: APIContext) {
-  const feed = await generateFeedInstance(context)
-  const atomXml = feed
-    .atom1()
-    .replace(
-      '<?xml version="1.0" encoding="utf-8"?>',
-      '<?xml version="1.0" encoding="utf-8"?>\n<?xml-stylesheet type="text/xsl" href="/feeds/atom-style.xsl"?>'
-    )
-  return new Response(atomXml, {
-    headers: { 'Content-Type': 'application/atom+xml; charset=utf-8' }
-  })
 }

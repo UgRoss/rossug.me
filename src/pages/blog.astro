@@ -1,9 +1,9 @@
 ---
-import IndexLayout from '@/layouts/IndexLayout.astro'
 import { themeConfig } from '@/config'
+import IndexLayout from '@/layouts/IndexLayout.astro'
 ---
 
-<IndexLayout title={`Blog - ${themeConfig.site.title}`} description="Blog posts and articles">
+<IndexLayout description="Blog posts and articles" title={`Blog - ${themeConfig.site.title}`}>
   <div class="py-8">
     <h1 class="text-3xl font-bold mb-4">Blog</h1>
     <p class="text-neutral-600 dark:text-neutral-400">Blog posts coming soon...</p>

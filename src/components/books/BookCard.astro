@@ -1,10 +1,11 @@
 ---
-import type { Book } from '@/data/books'
 import { slugify } from 'astro-toolkit/utils'
+
+import type { Book } from '@/data/books'
 
 interface Props {
   book: Book
-  layout?: 'list' | 'grid'
+  layout?: 'grid' | 'list'
 }
 
 const { book, layout = 'grid' } = Astro.props
@@ -14,12 +15,12 @@ const slug = slugify(book.title)
 ---
 
 <a
-  href={`?book=${slug}`}
   class:list={[
     'group cursor-pointer book-card-trigger w-full text-left block',
     isList ? 'flex gap-6 items-start' : 'space-y-3'
   ]}
   data-book-slug={slug}
+  href={`?book=${slug}`}
 >
   <div
     class:list={[
@@ -28,13 +29,13 @@ const slug = slugify(book.title)
     ]}
   >
     <img
-      src={book.coverUrl}
       alt={book.title}
       class:list={[
         'w-full h-full object-cover transition-all duration-700',
         !isList && 'grayscale group-hover:grayscale-0'
       ]}
       loading="lazy"
+      src={book.coverUrl}
     />
   </div>
 
