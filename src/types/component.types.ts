@@ -7,39 +7,11 @@ export interface BaseHeadProps {
   title: string
 }
 
-// Cached repository data interface
-export interface CachedRepoData {
-  data: GitHubRepoData
-  timestamp: number
-}
-
-// GitHub card UI elements interface
-export interface CardElements {
-  avatar: HTMLElement | null
-  desc: HTMLElement | null
-  forks: HTMLElement | null
-  license: HTMLElement | null
-  stars: HTMLElement | null
-}
-
 // FormattedDate component props interface
 export interface FormattedDateProps {
   context?: 'default' | 'list' | 'post'
   date: Date
   format?: string
-}
-
-// GitHub repository data interface
-export interface GitHubRepoData {
-  description?: string
-  forks_count?: number
-  license?: {
-    spdx_id: string
-  }
-  owner?: {
-    avatar_url: string
-  }
-  stargazers_count?: number
 }
 
 // ImageOptimizer component props interface
@@ -61,14 +33,6 @@ export interface ImageOptimizerProps {
 export interface LayoutProps extends TransitionProps {
   description?: string
   title?: string
-}
-
-// LinkCard metadata interface (fetched from URL)
-export interface LinkCardMetadata {
-  description: string
-  image: string
-  imageAlt: string
-  title: string
 }
 
 // Post layout props interface (generic, not tied to specific data source)

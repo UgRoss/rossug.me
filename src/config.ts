@@ -22,7 +22,6 @@ export const themeConfig: ThemeConfig = {
   post: {
     copyCode: true, // Enable copy button in code blocks
     imageViewer: true, // Enable image viewer
-    linkCard: false, // Enable link card (requires server adapter)
     readingTime: false // Show reading time in posts
   },
 
