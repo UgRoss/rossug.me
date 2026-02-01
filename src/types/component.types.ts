@@ -1,71 +1,10 @@
-import type { TOCItem, ReadingTime } from './content.types'
-
-// TOC component props interface
-export interface TOCProps {
-  toc?: TOCItem[]
-}
-
-// Post layout props interface (generic, not tied to specific data source)
-export interface PostLayoutProps {
-  title: string
-  pubDate: Date
-  image?: string
-  readingTime?: ReadingTime
-  toc?: TOCItem[]
-}
-
-// Transition props interface
-export interface TransitionProps {
-  type: 'post' | 'page'
-  class?: string
-}
-
-// Layout props interface
-export interface LayoutProps extends TransitionProps {
-  title?: string
-  description?: string
-}
+import type { ReadingTime, TOCItem } from './content.types'
 
 // BaseHead component props interface
 export interface BaseHeadProps {
-  title: string
   description: string
   ogImage?: string
-}
-
-// ImageOptimizer component props interface
-export interface ImageOptimizerProps {
-  src: string | ImageMetadata
-  alt: string
-  width?: number
-  height?: number
-  quality?: number
-  format?: 'avif' | 'webp' | 'jpeg' | 'png'
-  loading?: 'lazy' | 'eager'
-  decoding?: 'async' | 'sync' | 'auto'
-  class?: string
-  caption?: string
-  priority?: boolean
-}
-
-// FormattedDate component props interface
-export interface FormattedDateProps {
-  date: Date
-  format?: string
-  context?: 'list' | 'post' | 'default'
-}
-
-// GitHub repository data interface
-export interface GitHubRepoData {
-  owner?: {
-    avatar_url: string
-  }
-  description?: string
-  stargazers_count?: number
-  forks_count?: number
-  license?: {
-    spdx_id: string
-  }
+  title: string
 }
 
 // Cached repository data interface
@@ -78,15 +17,76 @@ export interface CachedRepoData {
 export interface CardElements {
   avatar: HTMLElement | null
   desc: HTMLElement | null
-  stars: HTMLElement | null
   forks: HTMLElement | null
   license: HTMLElement | null
+  stars: HTMLElement | null
+}
+
+// FormattedDate component props interface
+export interface FormattedDateProps {
+  context?: 'default' | 'list' | 'post'
+  date: Date
+  format?: string
+}
+
+// GitHub repository data interface
+export interface GitHubRepoData {
+  description?: string
+  forks_count?: number
+  license?: {
+    spdx_id: string
+  }
+  owner?: {
+    avatar_url: string
+  }
+  stargazers_count?: number
+}
+
+// ImageOptimizer component props interface
+export interface ImageOptimizerProps {
+  alt: string
+  caption?: string
+  class?: string
+  decoding?: 'async' | 'auto' | 'sync'
+  format?: 'avif' | 'jpeg' | 'png' | 'webp'
+  height?: number
+  loading?: 'eager' | 'lazy'
+  priority?: boolean
+  quality?: number
+  src: ImageMetadata | string
+  width?: number
+}
+
+// Layout props interface
+export interface LayoutProps extends TransitionProps {
+  description?: string
+  title?: string
 }
 
 // LinkCard metadata interface (fetched from URL)
 export interface LinkCardMetadata {
-  title: string
   description: string
   image: string
   imageAlt: string
+  title: string
+}
+
+// Post layout props interface (generic, not tied to specific data source)
+export interface PostLayoutProps {
+  image?: string
+  pubDate: Date
+  readingTime?: ReadingTime
+  title: string
+  toc?: TOCItem[]
+}
+
+// TOC component props interface
+export interface TOCProps {
+  toc?: TOCItem[]
+}
+
+// Transition props interface
+export interface TransitionProps {
+  class?: string
+  type: 'page' | 'post'
 }

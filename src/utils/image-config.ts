@@ -1,27 +1,27 @@
 export const imageConfig = {
+  avif: {
+    lossless: false,
+    quality: 85,
+    speed: 5
+  },
+  jpeg: {
+    mozjpeg: true,
+    optimizeScans: true,
+    progressive: true,
+    quality: 85
+  },
   // Enhanced image optimization settings
   limitInputPixels: 268402689, // ~16K x 16K pixels
-  jpeg: {
-    quality: 85,
-    progressive: true,
-    optimizeScans: true,
-    mozjpeg: true
-  },
   png: {
-    quality: 85,
-    progressive: true,
+    adaptiveFiltering: true,
     compressionLevel: 9,
-    adaptiveFiltering: true
+    progressive: true,
+    quality: 85
   },
   webp: {
-    quality: 85,
     lossless: false,
     nearLossless: true,
-    smartSubsample: true
-  },
-  avif: {
     quality: 85,
-    lossless: false,
-    speed: 5
+    smartSubsample: true
   }
 }

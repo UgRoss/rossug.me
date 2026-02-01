@@ -31,24 +31,24 @@ export default function rehypeCopyCode() {
 
       // Create copy button
       const copyButton = {
-        type: 'element',
-        tagName: 'button',
+        children: [],
         properties: {
+          'aria-label': 'Copy code to clipboard',
           className: ['copy-button'],
-          type: 'button',
-          'aria-label': 'Copy code to clipboard'
+          type: 'button'
         },
-        children: []
+        tagName: 'button',
+        type: 'element'
       }
 
       // Wrap pre and button in a container for better layout control
       const wrapper = {
-        type: 'element',
-        tagName: 'div',
+        children: [copyButton, node],
         properties: {
           className: ['copy-code-wrapper']
         },
-        children: [copyButton, node]
+        tagName: 'div',
+        type: 'element'
       }
 
       // Replace the pre element with the wrapper

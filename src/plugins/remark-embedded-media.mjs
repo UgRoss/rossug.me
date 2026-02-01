@@ -5,101 +5,6 @@ import { visit } from 'unist-util-visit'
  * Supports: link cards, Spotify, YouTube, Bilibili, X posts, and GitHub repository cards
  */
 const embedHandlers = {
-  // Link Card
-  link: (node) => {
-    const url = node.attributes?.url
-    if (!url) {
-      return false
-    }
-
-    // Create the LinkCard HTML structure - all metadata will be fetched by JavaScript
-    return `
-      <div class="link-card-wrapper">
-        <a href="${url}" class="link-card" target="_blank" rel="noopener noreferrer" data-url="${url}">
-          <div class="link-card-content">
-            <div class="link-card-url"></div>
-            <p class="link-card-title" style="display: none;"></p>
-            <p class="link-card-description" style="display: none;"></p>
-          </div>
-          <div class="link-card-image-outer">
-            <div class="link-card-image" style="display: none;">
-              <img src="" alt="" loading="lazy" />
-            </div>
-          </div>
-        </a>
-      </div>
-    `
-  },
-
-  // Spotify
-  spotify: (node) => {
-    const url = node.attributes?.url ?? ''
-    if (!url) {
-      return false
-    }
-    if (!/^https:\/\/open\.spotify\.com\//.test(url)) {
-      return false
-    }
-    let embedUrl = url.replace('open.spotify.com/', 'open.spotify.com/embed/')
-    if (!embedUrl.includes('utm_source=')) {
-      embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'utm_source=generator'
-    }
-
-    let height = '152'
-    if (
-      url.includes('/album/') ||
-      url.includes('/playlist/') ||
-      url.includes('/artist/') ||
-      url.includes('/show/')
-    ) {
-      height = '352'
-    }
-
-    return `
-    <figure>
-      <iframe
-        style="border-radius:12px"
-        src="${embedUrl}"
-        width="100%"
-        height="${height}"
-        frameBorder="0"
-        allowfullscreen=""
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"
-      ></iframe>
-    </figure>
-    `
-  },
-
-  // Youtube
-  youtube: (node) => {
-    let videoId = node.attributes?.id ?? ''
-    const url = node.attributes?.url ?? ''
-
-    if (!videoId && url) {
-      const match = url.match(/(?:v=|\/embed\/|youtu\.be\/)([\w-]{11})/)
-      if (match) videoId = match[1]
-    }
-
-    if (!videoId) {
-      return false
-    }
-
-    return `
-    <figure>
-      <iframe
-        style="border-radius:6px"
-        src="https://www.youtube.com/embed/${videoId}"
-        title="YouTube video player"
-        loading="lazy"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-      ></iframe>
-    </figure>
-    `
-  },
-
   // Bilibili
   bilibili: (node) => {
     let bvid = node.attributes?.id ?? ''
@@ -125,25 +30,6 @@ const embedHandlers = {
         framespacing="0"
         allowfullscreen="true"
       ></iframe>
-    </figure>
-    `
-  },
-
-  // X Post Card
-  x: (node) => {
-    const xUrl = node.attributes?.url ?? ''
-    if (!xUrl) {
-      return false
-    }
-
-    const twitterUrl = xUrl.replace(/(\w+:\/\/)?x\.com\//g, '$1twitter.com/')
-    const uniqueId = `x-card-${Math.random().toString(36).slice(2, 11)}`
-
-    return `
-    <figure class="x-card">
-      <blockquote class="twitter-tweet" data-dnt="true" id="${uniqueId}">
-        <a href="${twitterUrl}"></a>
-      </blockquote>
     </figure>
     `
   },
@@ -192,6 +78,32 @@ const embedHandlers = {
     `
   },
 
+  // Link Card
+  link: (node) => {
+    const url = node.attributes?.url
+    if (!url) {
+      return false
+    }
+
+    // Create the LinkCard HTML structure - all metadata will be fetched by JavaScript
+    return `
+      <div class="link-card-wrapper">
+        <a href="${url}" class="link-card" target="_blank" rel="noopener noreferrer" data-url="${url}">
+          <div class="link-card-content">
+            <div class="link-card-url"></div>
+            <p class="link-card-title" style="display: none;"></p>
+            <p class="link-card-description" style="display: none;"></p>
+          </div>
+          <div class="link-card-image-outer">
+            <div class="link-card-image" style="display: none;">
+              <img src="" alt="" loading="lazy" />
+            </div>
+          </div>
+        </a>
+      </div>
+    `
+  },
+
   // NeoDB Card
   neodb: (node) => {
     const url = node.attributes?.url ?? ''
@@ -211,6 +123,94 @@ const embedHandlers = {
   <div class="neodb-card neodb-loading ${skeletonClass}">
   </div>
 </div>`
+  },
+
+  // Spotify
+  spotify: (node) => {
+    const url = node.attributes?.url ?? ''
+    if (!url) {
+      return false
+    }
+    if (!/^https:\/\/open\.spotify\.com\//.test(url)) {
+      return false
+    }
+    let embedUrl = url.replace('open.spotify.com/', 'open.spotify.com/embed/')
+    if (!embedUrl.includes('utm_source=')) {
+      embedUrl += (embedUrl.includes('?') ? '&' : '?') + 'utm_source=generator'
+    }
+
+    let height = '152'
+    if (
+      url.includes('/album/') ||
+      url.includes('/playlist/') ||
+      url.includes('/artist/') ||
+      url.includes('/show/')
+    ) {
+      height = '352'
+    }
+
+    return `
+    <figure>
+      <iframe
+        style="border-radius:12px"
+        src="${embedUrl}"
+        width="100%"
+        height="${height}"
+        frameBorder="0"
+        allowfullscreen=""
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+      ></iframe>
+    </figure>
+    `
+  },
+
+  // X Post Card
+  x: (node) => {
+    const xUrl = node.attributes?.url ?? ''
+    if (!xUrl) {
+      return false
+    }
+
+    const twitterUrl = xUrl.replace(/(\w+:\/\/)?x\.com\//g, '$1twitter.com/')
+    const uniqueId = `x-card-${Math.random().toString(36).slice(2, 11)}`
+
+    return `
+    <figure class="x-card">
+      <blockquote class="twitter-tweet" data-dnt="true" id="${uniqueId}">
+        <a href="${twitterUrl}"></a>
+      </blockquote>
+    </figure>
+    `
+  },
+
+  // Youtube
+  youtube: (node) => {
+    let videoId = node.attributes?.id ?? ''
+    const url = node.attributes?.url ?? ''
+
+    if (!videoId && url) {
+      const match = url.match(/(?:v=|\/embed\/|youtu\.be\/)([\w-]{11})/)
+      if (match) videoId = match[1]
+    }
+
+    if (!videoId) {
+      return false
+    }
+
+    return `
+    <figure>
+      <iframe
+        style="border-radius:6px"
+        src="https://www.youtube.com/embed/${videoId}"
+        title="YouTube video player"
+        loading="lazy"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    </figure>
+    `
   }
 }
 

@@ -1,20 +1,20 @@
-import React, { useState, useMemo, useEffect } from 'react'
 import * as Select from '@radix-ui/react-select'
-import { ChevronDown, Check, Search } from 'lucide-react'
+import { Check, ChevronDown, Search } from 'lucide-react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 interface Note {
-  id: string
-  title: string
   category: string
   excerpt?: string
+  id: string
+  title: string
 }
 
 interface NotesListProps {
-  notes: Note[]
   categories: string[]
+  notes: Note[]
 }
 
-export default function NotesList({ notes, categories }: NotesListProps) {
+export default function NotesList({ categories, notes }: NotesListProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [mounted, setMounted] = useState(false)
@@ -142,24 +142,24 @@ export default function NotesList({ notes, categories }: NotesListProps) {
   }
 
   return (
-    <div id="notes-filters" className="mb-8 space-y-3">
+    <div className="mb-8 space-y-3" id="notes-filters">
       {/* Filter Controls */}
       <div className="flex flex-col sm:flex-row gap-3">
         {/* Search Input */}
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
           <input
-            type="text"
-            placeholder="Search notes..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
             aria-label="Search notes by title"
             className="w-full pl-10 pr-4 py-2 text-sm border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-300 dark:focus:ring-neutral-600"
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search notes..."
+            type="text"
+            value={searchQuery}
           />
         </div>
 
         {/* Category Select */}
-        <Select.Root value={selectedCategory} onValueChange={setSelectedCategory}>
+        <Select.Root onValueChange={setSelectedCategory} value={selectedCategory}>
           <Select.Trigger 
             aria-label="Filter notes by category"
             className="inline-flex items-center justify-between gap-2 px-3 py-2 text-sm border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-300 dark:focus:ring-neutral-600 sm:min-w-[140px]"
@@ -174,8 +174,8 @@ export default function NotesList({ notes, categories }: NotesListProps) {
             <Select.Content className="overflow-hidden bg-white dark:bg-neutral-900 rounded-lg shadow-lg border border-neutral-200 dark:border-neutral-700 z-50">
               <Select.Viewport className="p-1">
                 <Select.Item
-                  value="all"
                   className="relative flex items-center px-8 py-2 text-sm text-neutral-900 dark:text-neutral-100 rounded cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:bg-neutral-100 dark:focus:bg-neutral-800 outline-none"
+                  value="all"
                 >
                   <Select.ItemText>All Categories</Select.ItemText>
                   <Select.ItemIndicator className="absolute left-2">
@@ -185,9 +185,9 @@ export default function NotesList({ notes, categories }: NotesListProps) {
 
                 {categories.map((category) => (
                   <Select.Item
+                    className="relative flex items-center px-8 py-2 text-sm text-neutral-900 dark:text-neutral-100 rounded cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:bg-neutral-100 dark:focus:bg-neutral-800 outline-none"
                     key={category}
                     value={category}
-                    className="relative flex items-center px-8 py-2 text-sm text-neutral-900 dark:text-neutral-100 rounded cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:bg-neutral-100 dark:focus:bg-neutral-800 outline-none"
                   >
                     <Select.ItemText>{category}</Select.ItemText>
                     <Select.ItemIndicator className="absolute left-2">
@@ -205,9 +205,9 @@ export default function NotesList({ notes, categories }: NotesListProps) {
       {(selectedCategory !== 'all' || searchQuery !== '') && (
         <div className="flex justify-end">
           <button
-            type="button"
-            onClick={handleReset}
             className="text-xs text-neutral-500 dark:text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 underline transition-colors"
+            onClick={handleReset}
+            type="button"
           >
             Clear filters
           </button>

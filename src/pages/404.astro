@@ -1,7 +1,7 @@
 ---
-import { themeConfig } from '@/config'
 import BaseHead from '@/components/layout/BaseHead.astro'
 import ThemeManager from '@/components/ui/ThemeManager.astro'
+import { themeConfig } from '@/config'
 import '@/styles/global.css'
 
 const title = `404 - ${themeConfig.site.title}`
@@ -12,7 +12,7 @@ const description = 'Page Not Found'
 <html lang={themeConfig.site.language || 'en-US'}>
   <head>
     <ThemeManager />
-    <BaseHead title={title} description={description} />
+    <BaseHead description={description} title={title} />
   </head>
   <body class="bg-(--bg) text-(--text-primary) antialiased">
     <main class="flex min-h-screen flex-col items-center justify-center p-4 text-center">
@@ -20,7 +20,7 @@ const description = 'Page Not Found'
       <p class="text-(--text-secondary) max-w-xs mb-8">
         Oops! It looks like this page has drifted off into the digital void.
       </p>
-      <a href="/" class="font-bold hover:text-(--text-secondary) transition-colors duration-200">
+      <a class="font-bold hover:text-(--text-secondary) transition-colors duration-200" href="/">
         ← Back to Home
       </a>
     </main>

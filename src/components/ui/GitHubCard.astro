@@ -1,5 +1,5 @@
 <script>
-  import type { GitHubRepoData, CachedRepoData, CardElements } from '@/types'
+  import type { CachedRepoData, CardElements, GitHubRepoData } from '@/types'
 
   let githubCardsObserver: IntersectionObserver | null = null
 
@@ -30,118 +30,118 @@
     }
   }
 
-  // Store GitHub repository data in localStorage with timestamp for cache expiration
-  function setCachedData(repo: string, data: GitHubRepoData): void {
-    try {
-      const cacheKey = `github-repo-${repo}`
-      const cacheData: CachedRepoData = {
-        data,
-        timestamp: Date.now()
-      }
-      localStorage.setItem(cacheKey, JSON.stringify(cacheData))
-    } catch (error) {
-      console.warn('Failed to save to cache:', error)
-    }
+  // Set up intersection observer for lazy loading GitHub cards when they enter viewport
+function lazySetupGithubCards() {
+  githubCardsObserver?.disconnect()
+
+  const githubCards = document.getElementsByClassName('gc-container')
+  if (githubCards.length === 0) {
+    return
   }
 
-  // Update the GitHub card UI elements with fetched repository data
-  function updateCardUI(el: CardElements, data: GitHubRepoData) {
-    const numberFormat = new Intl.NumberFormat('en', {
-      notation: 'compact',
-      maximumFractionDigits: 1
-    })
-
-    if (el.avatar && data.owner?.avatar_url) {
-      el.avatar.style.backgroundImage = `url(${data.owner.avatar_url})`
-    }
-
-    if (el.desc) {
-      el.desc.textContent = data.description ?? 'No description'
-    }
-
-    if (el.stars) {
-      el.stars.textContent = numberFormat.format(data.stargazers_count ?? 0)
-    }
-
-    if (el.forks) {
-      el.forks.textContent = numberFormat.format(data.forks_count ?? 0)
-    }
-
-    if (el.license) {
-      el.license.textContent = data.license?.spdx_id ?? 'No License'
-    }
-  }
-
-  // Load GitHub repository data for a card, using cache if available or fetching from API
-  async function loadCardData(card: HTMLElement) {
-    const repo = card.dataset.repo
-    if (!repo) {
-      return
-    }
-
-    const el = {
-      avatar: card.querySelector('.gc-owner-avatar') as HTMLElement,
-      desc: card.querySelector('.gc-repo-description') as HTMLElement,
-      stars: card.querySelector('.gc-stars-count') as HTMLElement,
-      forks: card.querySelector('.gc-forks-count') as HTMLElement,
-      license: card.querySelector('.gc-license-info') as HTMLElement
-    } as const
-
-    // Try to get cached data first
-    const cachedData = getCachedData(repo)
-    if (cachedData) {
-      updateCardUI(el, cachedData)
-      return
-    }
-
-    // If no cache, fetch from API
-    try {
-      const response = await fetch(`https://api.github.com/repos/${repo}`)
-
-      if (!response.ok) {
-        if (el.desc) {
-          el.desc.textContent = '--'
+  // Create an intersection observer to lazy load GitHub repo data when cards enter viewport
+  githubCardsObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          loadCardData(entry.target as HTMLElement)
+          githubCardsObserver?.unobserve(entry.target)
         }
-        return
-      }
+      })
+    },
+    { rootMargin: '200px' }
+  )
 
-      const data = await response.json()
+  Array.from(githubCards).forEach((card) => githubCardsObserver?.observe(card))
+}
 
-      setCachedData(repo, data)
+// Load GitHub repository data for a card, using cache if available or fetching from API
+async function loadCardData(card: HTMLElement) {
+  const repo = card.dataset.repo
+  if (!repo) {
+    return
+  }
 
-      updateCardUI(el, data)
-    } catch (error) {
-      console.error(`Failed to fetch ${repo}:`, error)
+  const el = {
+    avatar: card.querySelector('.gc-owner-avatar') as HTMLElement,
+    desc: card.querySelector('.gc-repo-description') as HTMLElement,
+    forks: card.querySelector('.gc-forks-count') as HTMLElement,
+    license: card.querySelector('.gc-license-info') as HTMLElement,
+    stars: card.querySelector('.gc-stars-count') as HTMLElement
+  } as const
+
+  // Try to get cached data first
+  const cachedData = getCachedData(repo)
+  if (cachedData) {
+    updateCardUI(el, cachedData)
+    return
+  }
+
+  // If no cache, fetch from API
+  try {
+    const response = await fetch(`https://api.github.com/repos/${repo}`)
+
+    if (!response.ok) {
       if (el.desc) {
         el.desc.textContent = '--'
       }
-    }
-  }
-
-  // Set up intersection observer for lazy loading GitHub cards when they enter viewport
-  function lazySetupGithubCards() {
-    githubCardsObserver?.disconnect()
-
-    const githubCards = document.getElementsByClassName('gc-container')
-    if (githubCards.length === 0) {
       return
     }
 
-    // Create an intersection observer to lazy load GitHub repo data when cards enter viewport
-    githubCardsObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            loadCardData(entry.target as HTMLElement)
-            githubCardsObserver?.unobserve(entry.target)
-          }
-        })
-      },
-      { rootMargin: '200px' }
-    )
+    const data = await response.json()
 
-    Array.from(githubCards).forEach((card) => githubCardsObserver?.observe(card))
+    setCachedData(repo, data)
+
+    updateCardUI(el, data)
+  } catch (error) {
+    console.error(`Failed to fetch ${repo}:`, error)
+    if (el.desc) {
+      el.desc.textContent = '--'
+    }
   }
+}
+
+// Store GitHub repository data in localStorage with timestamp for cache expiration
+function setCachedData(repo: string, data: GitHubRepoData): void {
+  try {
+    const cacheKey = `github-repo-${repo}`
+    const cacheData: CachedRepoData = {
+      data,
+      timestamp: Date.now()
+    }
+    localStorage.setItem(cacheKey, JSON.stringify(cacheData))
+  } catch (error) {
+    console.warn('Failed to save to cache:', error)
+  }
+}
+
+// Update the GitHub card UI elements with fetched repository data
+function updateCardUI(el: CardElements, data: GitHubRepoData) {
+  const numberFormat = new Intl.NumberFormat('en', {
+    maximumFractionDigits: 1,
+    notation: 'compact'
+  })
+
+  if (el.avatar && data.owner?.avatar_url) {
+    el.avatar.style.backgroundImage = `url(${data.owner.avatar_url})`
+  }
+
+  if (el.desc) {
+    el.desc.textContent = data.description ?? 'No description'
+  }
+
+  if (el.stars) {
+    el.stars.textContent = numberFormat.format(data.stargazers_count ?? 0)
+  }
+
+  if (el.forks) {
+    el.forks.textContent = numberFormat.format(data.forks_count ?? 0)
+  }
+
+  if (el.license) {
+    el.license.textContent = data.license?.spdx_id ?? 'No License'
+  }
+}
 
   lazySetupGithubCards()
   document.addEventListener('astro:page-load', lazySetupGithubCards)

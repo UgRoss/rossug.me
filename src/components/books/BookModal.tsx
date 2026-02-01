@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { slugify } from 'astro-toolkit/utils'
-import { Sparkles, X, Star } from 'lucide-react'
-import type { Book } from '@/data/books'
+import { Sparkles, Star, X } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
 
-interface BookModalProps {
-  allBooks: Book[]
-}
+import type { Book } from '@/data/books'
 
 interface BookChangeEvent extends CustomEvent {
   detail: {
-    slug: string | null
+    slug: null | string
   }
+}
+
+interface BookModalProps {
+  allBooks: Book[]
 }
 
 export default function BookModal({ allBooks }: BookModalProps) {
@@ -19,9 +20,9 @@ export default function BookModal({ allBooks }: BookModalProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
-    const handleUrlChange = (e?: PopStateEvent | BookChangeEvent) => {
+    const handleUrlChange = (e?: BookChangeEvent | PopStateEvent) => {
       // If event provides slug, use it directly (faster than URL parsing)
-      let bookSlug: string | null | undefined
+      let bookSlug: null | string | undefined
 
       if (e && 'detail' in e) {
         bookSlug = e.detail.slug
@@ -74,45 +75,45 @@ export default function BookModal({ allBooks }: BookModalProps) {
   if (typeof window === 'undefined') return null
 
   return (
-    <Dialog.Root open={isOpen} onOpenChange={handleOpenChange}>
+    <Dialog.Root onOpenChange={handleOpenChange} open={isOpen}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-9999 bg-neutral-900/40 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-        <Dialog.Content className="fixed left-[50%] top-[50%] z-9999 w-full max-w-5xl sm:min-h-[450px] max-h-[85vh] translate-x-[-50%] translate-y-[-50%] rounded-3xl bg-white dark:bg-neutral-900 shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-100 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] overflow-hidden outline-none">
+        <Dialog.Overlay className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-9999 bg-neutral-900/40 backdrop-blur-sm" />
+        <Dialog.Content className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-100 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] fixed top-[50%] left-[50%] z-9999 max-h-[85vh] w-full max-w-5xl translate-x-[-50%] translate-y-[-50%] overflow-hidden rounded-3xl bg-white shadow-2xl duration-200 outline-none sm:min-h-[450px] dark:bg-neutral-900">
           {renderBook && (
             <>
               <button
-                onClick={() => handleOpenChange(false)}
-                className="absolute top-6 right-6 p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors z-110 bg-white/80 dark:bg-neutral-800/80 backdrop-blur-md shadow-sm"
                 aria-label="Close"
+                className="absolute top-6 right-6 z-110 rounded-full bg-white/80 p-2 shadow-sm backdrop-blur-md transition-colors hover:bg-neutral-100 dark:bg-neutral-800/80 dark:hover:bg-neutral-800"
+                onClick={() => handleOpenChange(false)}
               >
-                <X size={20} className="text-neutral-400 dark:text-neutral-300" />
+                <X className="text-neutral-400 dark:text-neutral-300" size={20} />
               </button>
 
-              <div className="flex flex-col sm:flex-row overflow-y-auto sm:overflow-y-hidden w-full h-full">
-                <div className="w-full sm:w-1/3 p-8 bg-neutral-50 dark:bg-neutral-800 flex flex-col items-center sm:items-start text-center sm:text-left gap-6 border-r border-neutral-100 dark:border-neutral-700 shrink-0">
-                  <div className="w-40 h-60 rounded-xl overflow-hidden shadow-2xl shrink-0">
+              <div className="flex h-full w-full flex-col overflow-y-auto sm:flex-row sm:overflow-y-hidden">
+                <div className="flex w-full shrink-0 flex-col items-center gap-6 border-r border-neutral-100 bg-neutral-50 p-8 text-center sm:w-1/3 sm:items-start sm:text-left dark:border-neutral-700 dark:bg-neutral-800">
+                  <div className="h-60 w-40 shrink-0 overflow-hidden rounded-xl shadow-2xl">
                     <img
-                      src={renderBook.coverUrl}
                       alt={renderBook.title}
-                      className="w-full h-full object-cover"
+                      className="h-full w-full object-cover"
+                      src={renderBook.coverUrl}
                     />
                   </div>
-                  <div className="space-y-2 w-full">
-                    <Dialog.Title className="text-xl font-bold leading-tight">
+                  <div className="w-full space-y-2">
+                    <Dialog.Title className="text-xl leading-tight font-bold">
                       {renderBook.title}
                     </Dialog.Title>
                     <p className="text-neutral-500">{renderBook.author}</p>
                     {renderBook.rating && renderBook.rating > 0 ? (
-                      <div className="flex justify-center sm:justify-start gap-1 pt-2">
+                      <div className="flex justify-center gap-1 pt-2 sm:justify-start">
                         {[...Array(5)].map((_, i) => (
                           <Star
-                            key={i}
-                            size={14}
                             className={
                               i < renderBook.rating
                                 ? 'fill-yellow-400 text-yellow-400'
                                 : 'text-neutral-200'
                             }
+                            key={i}
+                            size={14}
                           />
                         ))}
                       </div>
@@ -120,33 +121,33 @@ export default function BookModal({ allBooks }: BookModalProps) {
                   </div>
 
                   <button
-                    disabled
-                    className="w-full mt-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-neutral-900 text-white rounded-xl text-xs font-semibold hover:bg-neutral-800 transition-all disabled:opacity-50"
                     aria-label="Generate key takeaways with Gemini (Coming soon)"
+                    className="mt-auto flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-900 px-4 py-2.5 text-xs font-semibold text-white transition-all hover:bg-neutral-800 disabled:opacity-50"
+                    disabled
                   >
                     <Sparkles size={14} />
                     Gemini Key Takeaway
                   </button>
                 </div>
 
-                <div className="w-full sm:w-2/3 p-8 sm:p-10 space-y-8 sm:overflow-y-auto">
+                <div className="w-full space-y-8 p-8 sm:w-2/3 sm:overflow-y-auto sm:p-10">
                   <section className="space-y-4">
-                    <h3 className="text-xs font-semibold text-neutral-400 uppercase tracking-widest">
+                    <h3 className="text-xs font-semibold tracking-widest text-neutral-400 uppercase">
                       Summary
                     </h3>
-                    <p className="text-neutral-600 leading-relaxed italic border-l-2 border-neutral-100 pl-4">
+                    <p className="border-l-2 border-neutral-100 pl-4 leading-relaxed text-neutral-600 italic">
                       {renderBook.summary}
                     </p>
                   </section>
 
                   {renderBook.notes && renderBook.notes.length > 0 && (
                     <section className="space-y-4">
-                      <h3 className="text-xs font-semibold text-neutral-400 uppercase tracking-widest">
+                      <h3 className="text-xs font-semibold tracking-widest text-neutral-400 uppercase">
                         My Notes
                       </h3>
                       <ul className="space-y-3">
                         {renderBook.notes.map((note, i) => (
-                          <li key={i} className="text-sm text-neutral-600 flex gap-3">
+                          <li className="flex gap-3 text-sm text-neutral-600" key={i}>
                             <span className="text-neutral-300">•</span>
                             {note}
                           </li>
@@ -157,14 +158,14 @@ export default function BookModal({ allBooks }: BookModalProps) {
 
                   {renderBook.highlights && renderBook.highlights.length > 0 && (
                     <section className="space-y-4">
-                      <h3 className="text-xs font-semibold text-neutral-400 uppercase tracking-widest">
+                      <h3 className="text-xs font-semibold tracking-widest text-neutral-400 uppercase">
                         Highlights
                       </h3>
                       <div className="space-y-6">
                         {renderBook.highlights.map((h, i) => (
                           <blockquote
+                            className="rounded-xl border-l-4 border-neutral-200 bg-neutral-50 p-4 text-sm leading-relaxed font-medium text-neutral-600"
                             key={i}
-                            className="text-sm text-neutral-600 font-medium leading-relaxed bg-neutral-50 p-4 rounded-xl border-l-4 border-neutral-200"
                           >
                             &ldquo;{h}&rdquo;
                           </blockquote>

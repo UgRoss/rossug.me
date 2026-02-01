@@ -1,15 +1,15 @@
 ---
-import IndexLayout from '@/layouts/IndexLayout.astro'
 import BookCard from '@/components/books/BookCard.astro'
 import BookModal from '@/components/books/BookModal'
-import { BOOKS } from '@/data/books'
 import { themeConfig } from '@/config'
+import { BOOKS } from '@/data/books'
+import IndexLayout from '@/layouts/IndexLayout.astro'
 
 const currentlyReading = BOOKS.filter((b) => b.status === 'reading')
 const finishedBooks = BOOKS.filter((b) => b.status === 'finished')
 ---
 
-<IndexLayout title={`Reading - ${themeConfig.site.title}`} description="Reading list and book notes">
+<IndexLayout description="Reading list and book notes" title={`Reading - ${themeConfig.site.title}`}>
   <div class="space-y-12">
     <header class="space-y-2">
       <h1 class="text-3xl font-bold tracking-tight">Books</h1>
@@ -51,5 +51,5 @@ const finishedBooks = BOOKS.filter((b) => b.status === 'finished')
     </div>
   </div>
 
-  <BookModal client:load allBooks={BOOKS} />
+  <BookModal allBooks={BOOKS} client:load />
 </IndexLayout>

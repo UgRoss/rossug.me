@@ -1,41 +1,36 @@
-import { defineConfig } from 'astro/config'
-import react from '@astrojs/react'
+import cloudflare from '@astrojs/cloudflare';
 import mdx from '@astrojs/mdx'
+import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
-import tailwindcss from '@tailwindcss/vite'
 import playformInline from '@playform/inline'
-import remarkMath from 'remark-math'
-import remarkDirective from 'remark-directive'
+import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from 'astro/config'
+import path from 'path'
 import rehypeKatex from 'rehype-katex'
+import remarkDirective from 'remark-directive'
+import remarkMath from 'remark-math'
+
+import { themeConfig } from './src/config'
+import rehypeCleanup from './src/plugins/rehype-cleanup.mjs'
+import rehypeCopyCode from './src/plugins/rehype-copy-code.mjs'
+import rehypeImageProcessor from './src/plugins/rehype-image-processor.mjs'
 import remarkEmbeddedMedia from './src/plugins/remark-embedded-media.mjs'
 import remarkReadingTime from './src/plugins/remark-reading-time.mjs'
-import rehypeCleanup from './src/plugins/rehype-cleanup.mjs'
-import rehypeImageProcessor from './src/plugins/rehype-image-processor.mjs'
-import rehypeCopyCode from './src/plugins/rehype-copy-code.mjs'
 import remarkTOC from './src/plugins/remark-toc.mjs'
-import { themeConfig } from './src/config'
 import { imageConfig } from './src/utils/image-config'
-import path from 'path'
-
-import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
-  site: themeConfig.site.website,
+  adapter: cloudflare(),
+
+  devToolbar: {
+    enabled: false
+  },
 
   image: {
     service: {
-      entrypoint: 'astro/assets/services/sharp',
-      config: imageConfig
+      config: imageConfig,
+      entrypoint: 'astro/assets/services/sharp'
     }
-  },
-
-  markdown: {
-    shikiConfig: {
-      theme: 'css-variables',
-      wrap: false
-    },
-    remarkPlugins: [remarkMath, remarkDirective, remarkEmbeddedMedia, remarkReadingTime, remarkTOC],
-    rehypePlugins: [rehypeKatex, rehypeCleanup, rehypeImageProcessor, rehypeCopyCode]
   },
 
   integrations: [
@@ -47,6 +42,17 @@ export default defineConfig({
     react()
   ],
 
+  markdown: {
+    rehypePlugins: [rehypeKatex, rehypeCleanup, rehypeImageProcessor, rehypeCopyCode],
+    remarkPlugins: [remarkMath, remarkDirective, remarkEmbeddedMedia, remarkReadingTime, remarkTOC],
+    shikiConfig: {
+      theme: 'css-variables',
+      wrap: false
+    }
+  },
+
+  site: themeConfig.site.website,
+
   vite: {
     plugins: [tailwindcss()],
     resolve: {
@@ -54,11 +60,5 @@ export default defineConfig({
         '@': path.resolve('./src')
       }
     }
-  },
-
-  devToolbar: {
-    enabled: false
-  },
-
-  adapter: cloudflare()
+  }
 })
