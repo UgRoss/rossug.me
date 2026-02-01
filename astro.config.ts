@@ -1,4 +1,4 @@
-import cloudflare from '@astrojs/cloudflare';
+import cloudflare from '@astrojs/cloudflare'
 import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
@@ -16,7 +16,6 @@ import rehypeCopyCode from './src/plugins/rehype-copy-code.mjs'
 import rehypeImageProcessor from './src/plugins/rehype-image-processor.mjs'
 import remarkEmbeddedMedia from './src/plugins/remark-embedded-media.mjs'
 import remarkReadingTime from './src/plugins/remark-reading-time.mjs'
-import remarkTOC from './src/plugins/remark-toc.mjs'
 import { imageConfig } from './src/utils/image-config'
 
 export default defineConfig({
@@ -44,7 +43,7 @@ export default defineConfig({
 
   markdown: {
     rehypePlugins: [rehypeKatex, rehypeCleanup, rehypeImageProcessor, rehypeCopyCode],
-    remarkPlugins: [remarkMath, remarkDirective, remarkEmbeddedMedia, remarkReadingTime, remarkTOC],
+    remarkPlugins: [remarkMath, remarkDirective, remarkEmbeddedMedia, remarkReadingTime],
     shikiConfig: {
       theme: 'css-variables',
       wrap: false

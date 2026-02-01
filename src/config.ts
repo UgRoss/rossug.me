@@ -23,8 +23,7 @@ export const themeConfig: ThemeConfig = {
     copyCode: true, // Enable copy button in code blocks
     imageViewer: true, // Enable image viewer
     linkCard: false, // Enable link card (requires server adapter)
-    readingTime: false, // Show reading time in posts
-    toc: true // Show table of contents (when there is enough page width)
+    readingTime: false // Show reading time in posts
   },
 
   // SITE INFO ///////////////////////////////////////////////////////////////////////////////////////////

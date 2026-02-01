@@ -12,11 +12,3 @@ export interface ReadingTime {
   time: number
   words: number
 }
-
-// TOC item interface
-export interface TOCItem {
-  id: string
-  index: number
-  level: number
-  text: string
-}

@@ -29,7 +29,6 @@ export interface PostSettings {
   imageViewer: boolean
   linkCard: boolean
   readingTime: boolean
-  toc: boolean
 }
 
 // Site info configuration type

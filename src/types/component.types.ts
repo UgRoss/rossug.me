@@ -1,4 +1,4 @@
-import type { ReadingTime, TOCItem } from './content.types'
+import type { ReadingTime } from './content.types'
 
 // BaseHead component props interface
 export interface BaseHeadProps {
@@ -77,12 +77,6 @@ export interface PostLayoutProps {
   pubDate: Date
   readingTime?: ReadingTime
   title: string
-  toc?: TOCItem[]
-}
-
-// TOC component props interface
-export interface TOCProps {
-  toc?: TOCItem[]
 }
 
 // Transition props interface
