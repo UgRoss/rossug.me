@@ -7,46 +7,50 @@ set -euo pipefail
 ################################################################################
 
 # Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+readonly RED='\033[0;31m'
+readonly GREEN='\033[0;32m'
+readonly YELLOW='\033[1;33m'
+readonly NC='\033[0m' # No Color
 
 # Get the project root directory
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 cd "$PROJECT_ROOT"
 
-echo "🔗 Creating symlink for AI agent guidelines..."
-echo ""
+main() {
+    printf "🔗 Creating symlink for AI agent guidelines...\n\n"
 
-SOURCE="AGENTS.md"
-TARGET="CLAUDE.md"
+    local source="AGENTS.md"
+    local target="${PROJECT_ROOT}/CLAUDE.md"
 
-if [ ! -f "$SOURCE" ]; then
-    echo -e "${RED}❌ Source file $SOURCE not found!${NC}"
-    exit 1
-fi
-
-# Check if symlink already exists and points to correct location
-if [ -L "$TARGET" ]; then
-    current_target="$(readlink "$TARGET")"
-    if [ "$current_target" = "$SOURCE" ]; then
-        echo -e "${YELLOW}ℹ${NC} Symlink $TARGET already exists and is correct."
-    else
-        # Update incorrect symlink
-        rm "$TARGET"
-        ln -s "$SOURCE" "$TARGET"
-        echo -e "${YELLOW}↻${NC} Updated: $TARGET -> $SOURCE"
+    if [[ ! -f "$source" ]]; then
+        printf "${RED}❌ Source file %s not found!${NC}\n" "$source"
+        exit 1
     fi
-elif [ -e "$TARGET" ]; then
-    # Regular file exists, warn user
-    echo -e "${RED}⚠${NC} Cannot create symlink: A regular file named $TARGET already exists."
-    exit 1
-else
-    # Create new symlink
-    ln -s "$SOURCE" "$TARGET"
-    echo -e "${GREEN}✓${NC} Created: $TARGET -> $SOURCE"
-fi
 
-echo ""
-echo -e "${GREEN}✨ Symlink creation complete!${NC}"
+    # Check if target exists
+    if [[ -L "$target" ]]; then
+        local current_target
+        current_target="$(readlink "$target")"
+        if [[ "$current_target" == "$source" ]]; then
+            printf "${YELLOW}ℹ${NC} Symlink %s already exists and is correct.\n" "CLAUDE.md"
+        else
+            # Update incorrect symlink
+            rm "$target"
+            ln -s "$source" "$target"
+            printf "${YELLOW}↻${NC} Updated: %s -> %s\n" "CLAUDE.md" "$source"
+        fi
+    elif [[ -e "$target" ]]; then
+        # Regular file or directory exists
+        printf "${RED}⚠${NC} Cannot create symlink: A regular file or directory named %s already exists.\n" "CLAUDE.md"
+        exit 1
+    else
+        # Create new symlink
+        ln -s "$source" "$target"
+        printf "${GREEN}✓${NC} Created: %s -> %s\n" "CLAUDE.md" "$source"
+    fi
+
+    printf "\n${GREEN}✨ Symlink creation complete!${NC}\n"
+}
+
+main "$@"
