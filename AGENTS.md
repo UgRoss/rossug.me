@@ -22,4 +22,4 @@ This document provides context and guidelines for AI agents working on this proj
 - **Naming**: `PascalCase` for types/classes, `camelCase` for functions/variables.
 - **Files**: `kebab-case.extension`.
 - **Indentation**: 2 spaces.
-- **Imports**: Group imports logically.
+- **Imports**: Group imports alphabetically and group by type (types, then globals, then locals). Always import types separately from values.
