@@ -68,9 +68,6 @@ importers:
       node-html-parser:
         specifier: ^7.0.1
         version: 7.0.2
-      ramda:
-        specifier: ^0.32.0
-        version: 0.32.0
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -3568,9 +3565,6 @@ packages:
 
   radix3@1.1.2:
     resolution: {integrity: sha512-b484I/7b8rDEdSDKckSSBA8knMpcdsXudlE/LNL639wFoHKwLbEkQFZHWEYwDC0wa0FKUcCY+GAF73Z7wxNVFA==}
-
-  ramda@0.32.0:
-    resolution: {integrity: sha512-GQWAHhxhxWBWA8oIBr1XahFVjQ9Fic6MK9ikijfd4TZHfE2+urfk+irVlR5VOn48uwMgM+loRRBJd6Yjsbc0zQ==}
 
   react-dom@19.2.3:
     resolution: {integrity: sha512-yELu4WmLPw5Mr/lmeEpox5rw3RETacE++JgHqQzd2dg+YbJuat3jH4ingc+WPZhxaoFzdv9y33G+F7Nl5O0GBg==}
@@ -8221,8 +8215,6 @@ snapshots:
   queue-microtask@1.2.3: {}
 
   radix3@1.1.2: {}
-
-  ramda@0.32.0: {}
 
   react-dom@19.2.3(react@19.2.3):
     dependencies:

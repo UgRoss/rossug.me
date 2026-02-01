@@ -10,7 +10,7 @@ This document provides context and guidelines for AI agents working on this proj
 ## Tech Stack & Preferences
 
 - **Dependencies**: Use `pnpm` for package management.
-- **Logic**: Prefer Functional Programming (FP) patterns. Use [Ramda](https://ramdamjs.com/) or native array methods.
+- **Logic**: Prefer Functional Programming (FP) patterns.
 - **Astro Components**: Use `astro-toolkit` but **avoid** the `For` component.
 - **Dates**: Use `date-fns` for all date manipulations.
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/).
