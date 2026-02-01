@@ -12,7 +12,7 @@ import FormattedDate from '@/components/widgets/FormattedDate.astro'
 import { themeConfig } from '@/config'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 
-const { pubDate, readingTime, title } = Astro.props as PostLayoutProps
+const { pubDate, title } = Astro.props as PostLayoutProps
 
 const postSlug = Astro.url.pathname.split('/').filter(Boolean).pop() || ''
 const ogImage = `/open-graph/${postSlug}.png`
@@ -36,14 +36,6 @@ const ogImage = `/open-graph/${postSlug}.png`
           <h1>{title}</h1>
           <div class="date">
             <FormattedDate context="post" date={pubDate} />
-            {
-              themeConfig.post.readingTime && readingTime && (
-                <span class="reading-time">
-                  <span class="separator">·</span>
-                  {readingTime.text}
-                </span>
-              )
-            }
           </div>
         </div>
         <slot />

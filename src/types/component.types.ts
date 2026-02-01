@@ -1,5 +1,3 @@
-import type { ReadingTime } from './content.types'
-
 // BaseHead component props interface
 export interface BaseHeadProps {
   description: string
@@ -30,21 +28,14 @@ export interface ImageOptimizerProps {
 }
 
 // Layout props interface
-export interface LayoutProps extends TransitionProps {
+export interface LayoutProps {
   description?: string
   title?: string
+  type?: string
 }
 
 // Post layout props interface (generic, not tied to specific data source)
 export interface PostLayoutProps {
-  image?: string
   pubDate: Date
-  readingTime?: ReadingTime
   title: string
-}
-
-// Transition props interface
-export interface TransitionProps {
-  class?: string
-  type: 'page' | 'post'
 }

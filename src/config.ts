@@ -21,8 +21,7 @@ export const themeConfig: ThemeConfig = {
   // POST SETTINGS ///////////////////////////////////////////////////////////////////////////////////////
   post: {
     copyCode: true, // Enable copy button in code blocks
-    imageViewer: true, // Enable image viewer
-    readingTime: false // Show reading time in posts
+    imageViewer: true // Enable image viewer
   },
 
   // SITE INFO ///////////////////////////////////////////////////////////////////////////////////////////

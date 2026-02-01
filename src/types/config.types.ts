@@ -27,7 +27,6 @@ export interface GeneralSettings {
 export interface PostSettings {
   copyCode: boolean
   imageViewer: boolean
-  readingTime: boolean
 }
 
 // Site info configuration type

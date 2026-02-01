@@ -4,11 +4,3 @@ import type { CollectionEntry } from 'astro:content'
 export interface PostListProps {
   posts: CollectionEntry<'posts'>[]
 }
-
-// Reading time interface
-export interface ReadingTime {
-  minutes: number
-  text: string
-  time: number
-  words: number
-}

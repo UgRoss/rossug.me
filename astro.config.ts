@@ -15,7 +15,6 @@ import rehypeCleanup from './src/plugins/rehype-cleanup.mjs'
 import rehypeCopyCode from './src/plugins/rehype-copy-code.mjs'
 import rehypeImageProcessor from './src/plugins/rehype-image-processor.mjs'
 import remarkEmbeddedMedia from './src/plugins/remark-embedded-media.mjs'
-import remarkReadingTime from './src/plugins/remark-reading-time.mjs'
 import { imageConfig } from './src/utils/image-config'
 
 export default defineConfig({
@@ -43,7 +42,7 @@ export default defineConfig({
 
   markdown: {
     rehypePlugins: [rehypeKatex, rehypeCleanup, rehypeImageProcessor, rehypeCopyCode],
-    remarkPlugins: [remarkMath, remarkDirective, remarkEmbeddedMedia, remarkReadingTime],
+    remarkPlugins: [remarkMath, remarkDirective, remarkEmbeddedMedia],
     shikiConfig: {
       theme: 'css-variables',
       wrap: false
