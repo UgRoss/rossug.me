@@ -15,7 +15,6 @@ export interface DateSettings {
 
 // General settings configuration type
 export interface GeneralSettings {
-  centeredLayout: boolean
   contentWidth: string
   fadeAnimation: boolean
   footer: boolean

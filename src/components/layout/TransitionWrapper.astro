@@ -1,7 +1,7 @@
 ---
-import type { TransitionProps } from '@/types'
+import type { LayoutProps } from '@/types'
 
-type Props = TransitionProps
+type Props = LayoutProps
 
 const { class: className = '', type } = Astro.props
 const transitionName = type === 'post' ? 'post-content' : 'page-content'

@@ -10,8 +10,7 @@ export const themeConfig: ThemeConfig = {
 
   // GENERAL SETTINGS ////////////////////////////////////////////////////////////////////////////////////
   general: {
-    centeredLayout: true, // Use centered layout (false for left-aligned)
-    contentWidth: '35rem', // Content area width
+    contentWidth: '40rem', // Content area width
     fadeAnimation: true, // Enable fade animations
     footer: true, // Show footer
     postListDottedDivider: false, // Show dotted divider in post list

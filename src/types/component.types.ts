@@ -29,6 +29,7 @@ export interface ImageOptimizerProps {
 
 // Layout props interface
 export interface LayoutProps {
+  class?: string
   description?: string
   title?: string
   type?: string

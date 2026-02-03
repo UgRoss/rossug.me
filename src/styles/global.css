@@ -3,7 +3,7 @@
 @import './prose.css';
 @import './reading-time.css';
 
-@plugin "@tailwindcss/typography";
+@plugin '@tailwindcss/typography';
 
 @layer base {
   :root {
@@ -112,11 +112,8 @@
   }
 
   .app-wrapper {
-    @apply mx-auto px-4 py-6 md:px-8 md:py-10;
-  }
-
-  .app-wrapper[data-centered='true'] {
-    @apply flex items-center justify-center;
+    @apply mx-auto w-full px-6 py-6 md:px-8 md:py-10;
+    max-width: 40rem;
   }
 
   ::selection {
