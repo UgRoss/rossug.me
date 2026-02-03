@@ -57,3 +57,9 @@ const imageUrl = ogImage ? new URL(ogImage, Astro.url) : new URL('/og/chiri-og.p
 <meta content={title} property="twitter:title" />
 <meta content={description} property="twitter:description" />
 <meta content={imageUrl} property="twitter:image" />
+
+<style is:global define:vars={{ contentWidth: themeConfig.general.contentWidth }}>
+  :root {
+    --content-width: var(--contentWidth);
+  }
+</style>

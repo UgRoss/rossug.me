@@ -8,7 +8,7 @@
 @layer base {
   :root {
     /* Min Content Width */
-    --content-width: 25rem;
+    --content-width: 40rem;
 
     /* Typography */
     --font-size-s: 0.8125rem;
@@ -113,7 +113,7 @@
 
   .app-wrapper {
     @apply mx-auto w-full px-6 py-6 md:px-8 md:py-10;
-    max-width: 40rem;
+    max-width: var(--content-width);
   }
 
   ::selection {
