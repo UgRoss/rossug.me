@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { Tag } from '@/components/ui/Tag'
 import { timeAgo } from '@/utils/date'
 
 interface NoteCardProps {
@@ -21,15 +22,7 @@ export default function NoteCard({ category, excerpt, id, pubDate, title }: Note
     >
       <article>
         <div className="mb-3 flex items-start justify-between gap-3">
-          <span
-            aria-label={`Filter by ${category} category`}
-            className="category-tag relative z-10 inline-block cursor-pointer rounded-md bg-neutral-100 px-2.5 py-1 text-[10px] font-bold tracking-widest text-neutral-600 uppercase transition-colors hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700"
-            data-category-filter={category}
-            role="button"
-            tabIndex={0}
-          >
-            {category}
-          </span>
+          <Tag category={category} label={category} />
           <time
             className="shrink-0 text-xs text-neutral-500 dark:text-neutral-500"
             dateTime={date.toISOString()}

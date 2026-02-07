@@ -20,27 +20,11 @@ export const getStaticPaths = (async ({ paginate }) => {
 const { page } = Astro.props
 const sortedNotes = page.data as CollectionEntry<'notes'>[]
 
-// Extract unique categories (from current page only for now, or from all if we want full list)
-// Better to show all categories to keep filter consistent?
-// No, if we paginate server-side, it's better to only show categories present on the page
-// OR keep all if we want users to know what exists.
-// Standard for paginated sites is usually categories for the whole set.
+// Extract unique categories for the whole set (used for filter dropdown)
 const allNotes = await getCollection('notes')
 const categories = [
   ...new Set(allNotes.filter((n) => !n.id.startsWith('_')).map((note) => note.data.category))
 ].sort()
-
-// Prepare ALL notes as simple metadata for client-side search
-const allNotesMetadata = allNotes
-  .filter((note) => !note.id.startsWith('_'))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .map((note) => ({
-    category: note.data.category,
-    excerpt: note.data.excerpt,
-    id: note.id,
-    pubDate: note.data.pubDate.toISOString(),
-    title: note.data.title
-  }))
 ---
 
 <IndexLayout
@@ -56,7 +40,7 @@ const allNotesMetadata = allNotes
     </div>
 
     {/* React component for filtering controls */}
-    <NotesList categories={categories} client:load notes={allNotesMetadata} />
+    <NotesList categories={categories} client:load />
 
     {/* Render cards for current page */}
     <div class="grid gap-6" id="notes-container">

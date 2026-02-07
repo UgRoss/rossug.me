@@ -14,13 +14,31 @@ interface Note {
 
 interface NotesListProps {
   categories: string[]
-  notes: Note[]
+  notes?: Note[]
 }
 
-export default function NotesList({ categories, notes }: NotesListProps) {
+export default function NotesList({ categories, notes: initialNotes }: NotesListProps) {
+  const [notes, setNotes] = useState<Note[]>(initialNotes || [])
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [mounted, setMounted] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [hasFetched, setHasFetched] = useState(!!initialNotes)
+
+  const fetchNotes = async () => {
+    if (hasFetched || isLoading) return
+    setIsLoading(true)
+    try {
+      const response = await fetch('/notes/index.json')
+      const data = await response.json()
+      setNotes(data)
+      setHasFetched(true)
+    } catch (error) {
+      console.error('Failed to fetch notes:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   // Initialize from URL params
   useEffect(() => {
@@ -31,9 +49,11 @@ export default function NotesList({ categories, notes }: NotesListProps) {
 
     if (categoryParam && (categoryParam === 'all' || categories.includes(categoryParam))) {
       setSelectedCategory(categoryParam)
+      fetchNotes()
     }
     if (searchParam) {
       setSearchQuery(searchParam)
+      fetchNotes()
     }
   }, [categories])
 
@@ -74,7 +94,7 @@ export default function NotesList({ categories, notes }: NotesListProps) {
     if (!mounted) return
 
     const container = document.getElementById('notes-container')
-    const pagination = document.querySelector('.pagination-container') // We might need to add this class
+    const pagination = document.querySelector('.pagination-container')
 
     if (container) {
       if (isSearching) {
@@ -103,6 +123,7 @@ export default function NotesList({ categories, notes }: NotesListProps) {
         const category = target.getAttribute('data-category-filter')
         if (category) {
           setSelectedCategory(category)
+          fetchNotes()
           const filtersElement = document.getElementById('notes-filters')
           if (filtersElement) {
             filtersElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -135,6 +156,7 @@ export default function NotesList({ categories, notes }: NotesListProps) {
             aria-label="Search notes by title"
             className="w-full rounded-lg border border-neutral-200 bg-white py-2 pr-4 pl-10 text-sm text-neutral-900 placeholder-neutral-400 focus:ring-2 focus:ring-neutral-300 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:focus:ring-neutral-600"
             onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={fetchNotes}
             placeholder="Search notes..."
             type="text"
             value={searchQuery}
@@ -142,7 +164,14 @@ export default function NotesList({ categories, notes }: NotesListProps) {
         </div>
 
         {/* Category Select */}
-        <Select.Root onValueChange={setSelectedCategory} value={selectedCategory}>
+        <Select.Root
+          onOpenChange={(open) => open && fetchNotes()}
+          onValueChange={(val) => {
+            setSelectedCategory(val)
+            fetchNotes()
+          }}
+          value={selectedCategory}
+        >
           <Select.Trigger
             aria-label="Filter notes by category"
             className="inline-flex items-center justify-between gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-900 hover:bg-neutral-50 focus:ring-2 focus:ring-neutral-300 focus:outline-none sm:min-w-[140px] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:hover:bg-neutral-800 dark:focus:ring-neutral-600"
@@ -198,17 +227,22 @@ export default function NotesList({ categories, notes }: NotesListProps) {
       )}
 
       {/* Results count or Paginated Mode Hint */}
-      <p className="text-sm text-neutral-600 dark:text-neutral-400">
-        {isSearching ? (
-          <>
-            {filteredNotes.length} {filteredNotes.length === 1 ? 'note' : 'notes'} found
-            {selectedCategory !== 'all' && ` in ${selectedCategory}`}
-            {searchQuery && ` matching "${searchQuery}"`}
-          </>
-        ) : (
-          `Showing most recent notes`
+      <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
+        {isLoading && (
+          <div className="h-3 w-3 animate-spin rounded-full border-2 border-neutral-300 border-t-neutral-600 dark:border-neutral-600 dark:border-t-neutral-400" />
         )}
-      </p>
+        <p>
+          {isSearching ? (
+            <>
+              {filteredNotes.length} {filteredNotes.length === 1 ? 'note' : 'notes'} found
+              {selectedCategory !== 'all' && ` in ${selectedCategory}`}
+              {searchQuery && ` matching "${searchQuery}"`}
+            </>
+          ) : (
+            `Showing most recent notes`
+          )}
+        </p>
+      </div>
 
       {/* Search Results List */}
       {isSearching && (
@@ -217,7 +251,7 @@ export default function NotesList({ categories, notes }: NotesListProps) {
             filteredNotes.map((note) => <NoteCard key={note.id} {...note} />)
           ) : (
             <p className="py-12 text-center text-neutral-500">
-              No notes found matching your criteria.
+              {isLoading ? 'Searching notes...' : 'No notes found matching your criteria.'}
             </p>
           )}
         </div>
