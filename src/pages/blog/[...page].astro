@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from 'astro'
 import { getSortedFilteredPosts } from '@/utils/draft'
 import Pagination from '@/components/ui/Pagination.astro'
-import MinimalPostList from '@/components/widgets/MinimalPostList.astro'
+import PostList from '@/components/widgets/PostList.astro'
 import { themeConfig } from '@/config'
 import IndexLayout from '@/layouts/IndexLayout.astro'
 
@@ -23,7 +23,7 @@ const { page } = Astro.props
       are some of the most recent thoughts, learnings.
     </p>
 
-    <MinimalPostList posts={page.data} />
+    <PostList posts={page.data} />
 
     <Pagination page={page} />
   </div>

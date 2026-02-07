@@ -19,8 +19,8 @@ export const themeConfig: ThemeConfig = {
 
   // PAGINATION SETTINGS /////////////////////////////////////////////////////////////////////////////////
   pagination: {
-    blog: 2, // Number of posts per page
-    til: 2 // Number of TILs per page
+    blog: 10, // Number of posts per page
+    til: 10 // Number of TILs per page
   },
 
   // POST SETTINGS ///////////////////////////////////////////////////////////////////////////////////////
