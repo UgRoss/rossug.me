@@ -11,30 +11,40 @@ const { currentPage, lastPage, nextUrl, prevUrl } = Astro.props
 
 {
   lastPage > 1 && (
-    <div class="mt-12 flex items-center justify-between pt-8 text-sm">
+    <nav aria-label="Pagination" class="mt-12 flex items-center justify-between pt-8 text-sm">
       <a
-        href={prevUrl}
+        aria-disabled={!prevUrl}
+        aria-label="Go to previous page"
+        href={prevUrl || '#'}
         class:list={[
-          'text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100',
-          { 'pointer-events-none invisible': !prevUrl }
+          'transition-colors',
+          prevUrl
+            ? 'text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100'
+            : 'pointer-events-none text-neutral-300 dark:text-neutral-700'
         ]}
+        tabindex={prevUrl ? undefined : -1}
       >
         &larr; Prev
       </a>
 
-      <span class="text-neutral-400">
+      <span aria-current="page" class="text-neutral-400">
         {currentPage} / {lastPage}
       </span>
 
       <a
-        href={nextUrl}
+        aria-disabled={!nextUrl}
+        aria-label="Go to next page"
+        href={nextUrl || '#'}
         class:list={[
-          'text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100',
-          { 'pointer-events-none invisible': !nextUrl }
+          'transition-colors',
+          nextUrl
+            ? 'text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100'
+            : 'pointer-events-none text-neutral-300 dark:text-neutral-700'
         ]}
+        tabindex={nextUrl ? undefined : -1}
       >
         Next &rarr;
       </a>
-    </div>
+    </nav>
   )
 }

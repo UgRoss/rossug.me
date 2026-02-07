@@ -1,30 +1,36 @@
 ---
 import type { GetStaticPaths } from 'astro'
-import { type CollectionEntry, getCollection } from 'astro:content'
+import type { CollectionEntry } from 'astro:content'
 
 import NoteCard from '@/components/notes/NoteCard'
 import NotesList from '@/components/notes/NotesList'
 import Pagination from '@/components/ui/Pagination.astro'
 import { themeConfig } from '@/config'
 import IndexLayout from '@/layouts/IndexLayout.astro'
+import { getNotesCategories, getSortedFilteredNotes } from '@/utils/notes'
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const allNotes = await getCollection('notes')
-  const sortedNotes = allNotes
-    .filter((note) => !note.id.startsWith('_'))
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  const sortedNotes = await getSortedFilteredNotes()
+  const categories = await getNotesCategories()
 
-  return paginate(sortedNotes, { pageSize: themeConfig.pagination.til })
+  return paginate(sortedNotes, {
+    pageSize: themeConfig.pagination.til,
+    props: { categories }
+  })
 }) satisfies GetStaticPaths
 
-const { page } = Astro.props
-const sortedNotes = page.data as CollectionEntry<'notes'>[]
+interface Props {
+  categories: string[]
+  page: {
+    currentPage: number
+    data: CollectionEntry<'notes'>[]
+    lastPage: number
+    url: { next?: string; prev?: string }
+  }
+}
 
-// Extract unique categories for the whole set (used for filter dropdown)
-const allNotes = await getCollection('notes')
-const categories = [
-  ...new Set(allNotes.filter((n) => !n.id.startsWith('_')).map((note) => note.data.category))
-].sort()
+const { categories, page } = Astro.props
+const sortedNotes = page.data
 ---
 
 <IndexLayout

@@ -24,17 +24,24 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
   const [mounted, setMounted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [hasFetched, setHasFetched] = useState(!!initialNotes)
+  const [error, setError] = useState<null | string>(null)
 
   const fetchNotes = useCallback(async () => {
     if (hasFetched || isLoading) return
     setIsLoading(true)
+    setError(null)
     try {
       const response = await fetch('/notes/index.json')
+      if (!response.ok) {
+        throw new Error(`Failed to load notes (${response.status})`)
+      }
       const data = await response.json()
       setNotes(data)
       setHasFetched(true)
-    } catch (error) {
-      console.error('Failed to fetch notes:', error)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to load notes'
+      console.error('Failed to fetch notes:', err)
+      setError(message)
     } finally {
       setIsLoading(false)
     }
@@ -244,10 +251,23 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
         </p>
       </div>
 
-      {/* Search Results List */}
       {isSearching && (
         <div className="mt-8 grid gap-6 border-t border-neutral-100 pt-8 dark:border-neutral-800">
-          {filteredNotes.length > 0 ? (
+          {error ? (
+            <div className="py-12 text-center">
+              <p className="mb-3 text-neutral-500">{error}</p>
+              <button
+                className="text-sm text-blue-600 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                onClick={() => {
+                  setHasFetched(false)
+                  fetchNotes()
+                }}
+                type="button"
+              >
+                Try again
+              </button>
+            </div>
+          ) : filteredNotes.length > 0 ? (
             filteredNotes.map((note) => <NoteCard key={note.id} {...note} />)
           ) : (
             <p className="py-12 text-center text-neutral-500">

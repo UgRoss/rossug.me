@@ -1,19 +1,19 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content'
+import type { CollectionEntry } from 'astro:content'
 import { render } from 'astro:content'
 
+import Tag from '@/components/ui/Tag.astro'
 import PostLayout from '@/layouts/PostLayout.astro'
+import { getFilteredNotes } from '@/utils/notes'
 
 type Props = CollectionEntry<'notes'>
 
 export async function getStaticPaths() {
-  const notes = await getCollection('notes')
-  return notes
-    .filter((note) => !note.id.startsWith('_'))
-    .map((note) => ({
-      params: { slug: note.id },
-      props: note
-    }))
+  const notes = await getFilteredNotes()
+  return notes.map((note) => ({
+    params: { slug: note.id },
+    props: note
+  }))
 }
 
 const note = Astro.props
@@ -22,12 +22,10 @@ const { Content } = await render(note)
 
 <PostLayout pubDate={note.data.pubDate} title={note.data.title}>
   <div class="mb-4">
-    <a
-      class="inline-block rounded-full bg-neutral-100 px-3 py-1 text-xs font-semibold tracking-wider text-neutral-600 uppercase transition-colors hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-neutral-700"
+    <Tag
       href={`/notes?category=${encodeURIComponent(note.data.category)}`}
-    >
-      {note.data.category}
-    </a>
+      label={note.data.category}
+    />
   </div>
 
   <Content />

@@ -2,6 +2,7 @@
 @import './fonts.css';
 @import './prose.css';
 @import './reading-time.css';
+@import './tag.css';
 
 @plugin '@tailwindcss/typography';
 

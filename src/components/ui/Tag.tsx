@@ -1,4 +1,4 @@
-import type { HTMLAttributes } from 'react'
+import type { HTMLAttributes, KeyboardEvent } from 'react'
 
 interface TagProps extends HTMLAttributes<HTMLSpanElement> {
   category?: string
@@ -6,17 +6,27 @@ interface TagProps extends HTMLAttributes<HTMLSpanElement> {
   label: string
 }
 
-export const Tag = ({ category, className, interactive = true, label, ...props }: TagProps) => {
-  const baseStyles =
-    'relative z-10 inline-block rounded-md bg-neutral-100 px-2.5 py-1 text-[10px] font-bold tracking-widest text-neutral-600 uppercase transition-colors dark:bg-neutral-800 dark:text-neutral-400'
-  const interactiveStyles = interactive
-    ? 'cursor-pointer hover:bg-neutral-200 dark:hover:bg-neutral-700'
-    : ''
+export const Tag = ({
+  category,
+  className,
+  interactive = true,
+  label,
+  onClick,
+  ...props
+}: TagProps) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLSpanElement>) => {
+    if (interactive && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault()
+      e.currentTarget.click()
+    }
+  }
 
   return (
     <span
-      className={`${baseStyles} ${interactiveStyles} ${className || ''}`}
+      className={`tag ${interactive ? 'tag-interactive' : ''} ${className || ''}`}
       data-category-filter={category}
+      onClick={onClick}
+      onKeyDown={handleKeyDown}
       role={interactive ? 'button' : undefined}
       tabIndex={interactive ? 0 : undefined}
       {...props}
