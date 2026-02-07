@@ -2,10 +2,13 @@ import * as Select from '@radix-ui/react-select'
 import { Check, ChevronDown, Search } from 'lucide-react'
 import React, { useEffect, useMemo, useState } from 'react'
 
+import NoteCard from './NoteCard'
+
 interface Note {
   category: string
   excerpt?: string
   id: string
+  pubDate: string
   title: string
 }
 
@@ -25,7 +28,7 @@ export default function NotesList({ categories, notes }: NotesListProps) {
     const params = new URLSearchParams(window.location.search)
     const categoryParam = params.get('category')
     const searchParam = params.get('search')
-    
+
     if (categoryParam && (categoryParam === 'all' || categories.includes(categoryParam))) {
       setSelectedCategory(categoryParam)
     }
@@ -37,7 +40,7 @@ export default function NotesList({ categories, notes }: NotesListProps) {
   // Update URL when filters change
   useEffect(() => {
     if (!mounted) return
-    
+
     const params = new URLSearchParams()
     if (selectedCategory !== 'all') {
       params.set('category', selectedCategory)
@@ -45,71 +48,56 @@ export default function NotesList({ categories, notes }: NotesListProps) {
     if (searchQuery) {
       params.set('search', searchQuery)
     }
-    
-    const newUrl = params.toString() 
+
+    const newUrl = params.toString()
       ? `${window.location.pathname}?${params.toString()}`
       : window.location.pathname
-    
+
     window.history.replaceState({}, '', newUrl)
   }, [selectedCategory, searchQuery, mounted])
 
+  const isSearching = selectedCategory !== 'all' || searchQuery !== ''
+
   // Filter notes based on category and search
   const filteredNotes = useMemo(() => {
+    if (!isSearching) return []
     return notes.filter((note) => {
       const matchesCategory = selectedCategory === 'all' || note.category === selectedCategory
-      const matchesSearch = searchQuery === '' || 
-        note.title.toLowerCase().includes(searchQuery.toLowerCase())
+      const matchesSearch =
+        searchQuery === '' || note.title.toLowerCase().includes(searchQuery.toLowerCase())
       return matchesCategory && matchesSearch
     })
-  }, [notes, selectedCategory, searchQuery])
+  }, [notes, selectedCategory, searchQuery, isSearching])
 
-  // Show/hide note cards based on filters
+  // Show/hide server side container based on if we are searching
   useEffect(() => {
     if (!mounted) return
-    
+
     const container = document.getElementById('notes-container')
-    if (!container) return
+    const pagination = document.querySelector('.pagination-container') // We might need to add this class
 
-    const cards = container.querySelectorAll('[data-note-card]')
-    cards.forEach((card) => {
-      const noteId = card.getAttribute('data-note-id')
-      const isVisible = filteredNotes.some((note) => note.id === noteId)
-      
-      if (card instanceof HTMLElement) {
-        if (isVisible) {
-          card.classList.remove('hidden')
-        } else {
-          card.classList.add('hidden')
-        }
-      }
-    })
-  }, [filteredNotes, mounted])
-
-  // Handle category tag clicks from NoteCard
-  useEffect(() => {
-    const container = document.getElementById('notes-container')
-    if (!container) return
-
-    const handleCategoryClick = (e: Event) => {
-      const target = e.target as HTMLElement
-      if (target.matches('[data-category-filter]')) {
-        e.preventDefault() // Prevent link navigation
-        e.stopPropagation() // Stop event from bubbling to the link
-        const category = target.getAttribute('data-category-filter')
-        if (category) {
-          setSelectedCategory(category)
-          // Scroll to filters
-          const filtersElement = document.getElementById('notes-filters')
-          if (filtersElement) {
-            filtersElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          }
-        }
+    if (container) {
+      if (isSearching) {
+        container.classList.add('hidden')
+      } else {
+        container.classList.remove('hidden')
       }
     }
 
-    const handleKeyDown = (e: KeyboardEvent) => {
+    if (pagination) {
+      if (isSearching) {
+        pagination.classList.add('hidden')
+      } else {
+        pagination.classList.remove('hidden')
+      }
+    }
+  }, [isSearching, mounted])
+
+  // Handle category tag clicks from NoteCard (both Astro and React versions)
+  useEffect(() => {
+    const handleCategoryClick = (e: Event) => {
       const target = e.target as HTMLElement
-      if (target.matches('[data-category-filter]') && (e.key === 'Enter' || e.key === ' ')) {
+      if (target.matches('[data-category-filter]')) {
         e.preventDefault()
         e.stopPropagation()
         const category = target.getAttribute('data-category-filter')
@@ -123,13 +111,8 @@ export default function NotesList({ categories, notes }: NotesListProps) {
       }
     }
 
-    // Use capture phase and scope to notes container only
-    container.addEventListener('click', handleCategoryClick, true)
-    container.addEventListener('keydown', handleKeyDown, true)
-    return () => {
-      container.removeEventListener('click', handleCategoryClick, true)
-      container.removeEventListener('keydown', handleKeyDown, true)
-    }
+    document.addEventListener('click', handleCategoryClick, true)
+    return () => document.removeEventListener('click', handleCategoryClick, true)
   }, [])
 
   const handleReset = () => {
@@ -144,13 +127,13 @@ export default function NotesList({ categories, notes }: NotesListProps) {
   return (
     <div className="mb-8 space-y-3" id="notes-filters">
       {/* Filter Controls */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row">
         {/* Search Input */}
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
+          <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-neutral-400" />
           <input
             aria-label="Search notes by title"
-            className="w-full pl-10 pr-4 py-2 text-sm border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-300 dark:focus:ring-neutral-600"
+            className="w-full rounded-lg border border-neutral-200 bg-white py-2 pr-4 pl-10 text-sm text-neutral-900 placeholder-neutral-400 focus:ring-2 focus:ring-neutral-300 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:focus:ring-neutral-600"
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search notes..."
             type="text"
@@ -160,38 +143,38 @@ export default function NotesList({ categories, notes }: NotesListProps) {
 
         {/* Category Select */}
         <Select.Root onValueChange={setSelectedCategory} value={selectedCategory}>
-          <Select.Trigger 
+          <Select.Trigger
             aria-label="Filter notes by category"
-            className="inline-flex items-center justify-between gap-2 px-3 py-2 text-sm border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-neutral-300 dark:focus:ring-neutral-600 sm:min-w-[140px]"
+            className="inline-flex items-center justify-between gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-900 hover:bg-neutral-50 focus:ring-2 focus:ring-neutral-300 focus:outline-none sm:min-w-[140px] dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:hover:bg-neutral-800 dark:focus:ring-neutral-600"
           >
             <Select.Value />
             <Select.Icon>
-              <ChevronDown className="w-3.5 h-3.5" />
+              <ChevronDown className="h-3.5 w-3.5" />
             </Select.Icon>
           </Select.Trigger>
 
           <Select.Portal>
-            <Select.Content className="overflow-hidden bg-white dark:bg-neutral-900 rounded-lg shadow-lg border border-neutral-200 dark:border-neutral-700 z-50">
+            <Select.Content className="z-50 overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-lg dark:border-neutral-700 dark:bg-neutral-900">
               <Select.Viewport className="p-1">
                 <Select.Item
-                  className="relative flex items-center px-8 py-2 text-sm text-neutral-900 dark:text-neutral-100 rounded cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:bg-neutral-100 dark:focus:bg-neutral-800 outline-none"
+                  className="relative flex cursor-pointer items-center rounded px-8 py-2 text-sm text-neutral-900 outline-none hover:bg-neutral-100 focus:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
                   value="all"
                 >
                   <Select.ItemText>All Categories</Select.ItemText>
                   <Select.ItemIndicator className="absolute left-2">
-                    <Check className="w-4 h-4" />
+                    <Check className="h-4 w-4" />
                   </Select.ItemIndicator>
                 </Select.Item>
 
                 {categories.map((category) => (
                   <Select.Item
-                    className="relative flex items-center px-8 py-2 text-sm text-neutral-900 dark:text-neutral-100 rounded cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:bg-neutral-100 dark:focus:bg-neutral-800 outline-none"
+                    className="relative flex cursor-pointer items-center rounded px-8 py-2 text-sm text-neutral-900 outline-none hover:bg-neutral-100 focus:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
                     key={category}
                     value={category}
                   >
                     <Select.ItemText>{category}</Select.ItemText>
                     <Select.ItemIndicator className="absolute left-2">
-                      <Check className="w-4 h-4" />
+                      <Check className="h-4 w-4" />
                     </Select.ItemIndicator>
                   </Select.Item>
                 ))}
@@ -201,11 +184,11 @@ export default function NotesList({ categories, notes }: NotesListProps) {
         </Select.Root>
       </div>
 
-      {/* Clear Filters Button - Moved below to prevent container resizing */}
-      {(selectedCategory !== 'all' || searchQuery !== '') && (
+      {/* Clear Filters Button */}
+      {isSearching && (
         <div className="flex justify-end">
           <button
-            className="text-xs text-neutral-500 dark:text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100 underline transition-colors"
+            className="text-xs text-neutral-500 underline transition-colors hover:text-neutral-900 dark:text-neutral-500 dark:hover:text-neutral-100"
             onClick={handleReset}
             type="button"
           >
@@ -214,12 +197,31 @@ export default function NotesList({ categories, notes }: NotesListProps) {
         </div>
       )}
 
-      {/* Results count */}
+      {/* Results count or Paginated Mode Hint */}
       <p className="text-sm text-neutral-600 dark:text-neutral-400">
-        {filteredNotes.length} {filteredNotes.length === 1 ? 'note' : 'notes'}
-        {selectedCategory !== 'all' && ` in ${selectedCategory}`}
-        {searchQuery && ` matching "${searchQuery}"`}
+        {isSearching ? (
+          <>
+            {filteredNotes.length} {filteredNotes.length === 1 ? 'note' : 'notes'} found
+            {selectedCategory !== 'all' && ` in ${selectedCategory}`}
+            {searchQuery && ` matching "${searchQuery}"`}
+          </>
+        ) : (
+          `Showing most recent notes`
+        )}
       </p>
+
+      {/* Search Results List */}
+      {isSearching && (
+        <div className="mt-8 grid gap-6 border-t border-neutral-100 pt-8 dark:border-neutral-800">
+          {filteredNotes.length > 0 ? (
+            filteredNotes.map((note) => <NoteCard key={note.id} {...note} />)
+          ) : (
+            <p className="py-12 text-center text-neutral-500">
+              No notes found matching your criteria.
+            </p>
+          )}
+        </div>
+      )}
     </div>
   )
 }
