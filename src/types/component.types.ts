@@ -35,11 +35,6 @@ export interface LayoutProps {
   type?: string
 }
 
-// Pagination component props interface
-export interface PaginationProps {
-  page: any
-}
-
 // Post layout props interface (generic, not tied to specific data source)
 export interface PostLayoutProps {
   pubDate: Date

@@ -25,6 +25,11 @@ const { page } = Astro.props
 
     <PostList posts={page.data} />
 
-    <Pagination page={page} />
+    <Pagination
+      currentPage={page.currentPage}
+      lastPage={page.lastPage}
+      nextUrl={page.url.next}
+      prevUrl={page.url.prev}
+    />
   </div>
 </IndexLayout>

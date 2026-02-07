@@ -1,35 +1,36 @@
 ---
-import type { Page } from 'astro'
-
 interface Props {
-  page: Page<any>
+  currentPage: number
+  lastPage: number
+  nextUrl?: string
+  prevUrl?: string
 }
 
-const { page } = Astro.props
+const { currentPage, lastPage, nextUrl, prevUrl } = Astro.props
 ---
 
 {
-  page.lastPage > 1 && (
+  lastPage > 1 && (
     <div class="mt-12 flex items-center justify-between pt-8 text-sm">
       <a
-        href={page.url.prev}
+        href={prevUrl}
         class:list={[
           'text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100',
-          { 'pointer-events-none invisible': !page.url.prev }
+          { 'pointer-events-none invisible': !prevUrl }
         ]}
       >
         &larr; Prev
       </a>
 
       <span class="text-neutral-400">
-        {page.currentPage} / {page.lastPage}
+        {currentPage} / {lastPage}
       </span>
 
       <a
-        href={page.url.next}
+        href={nextUrl}
         class:list={[
           'text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100',
-          { 'pointer-events-none invisible': !page.url.next }
+          { 'pointer-events-none invisible': !nextUrl }
         ]}
       >
         Next &rarr;
