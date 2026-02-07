@@ -1,6 +1,6 @@
-import React from 'react'
+import type { HTMLAttributes } from 'react'
 
-interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
+interface TagProps extends HTMLAttributes<HTMLSpanElement> {
   category?: string
   interactive?: boolean
   label: string

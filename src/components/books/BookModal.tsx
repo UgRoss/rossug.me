@@ -1,7 +1,7 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { slugify } from 'astro-toolkit/utils'
 import { Sparkles, Star, X } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import type { Book } from '@/data/books'
 

@@ -1,6 +1,6 @@
 import * as Select from '@radix-ui/react-select'
 import { Check, ChevronDown, Search } from 'lucide-react'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import NoteCard from './NoteCard'
 
@@ -25,7 +25,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
   const [isLoading, setIsLoading] = useState(false)
   const [hasFetched, setHasFetched] = useState(!!initialNotes)
 
-  const fetchNotes = async () => {
+  const fetchNotes = useCallback(async () => {
     if (hasFetched || isLoading) return
     setIsLoading(true)
     try {
@@ -38,7 +38,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [hasFetched, isLoading])
 
   // Initialize from URL params
   useEffect(() => {
@@ -55,7 +55,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
       setSearchQuery(searchParam)
       fetchNotes()
     }
-  }, [categories])
+  }, [categories, fetchNotes])
 
   // Update URL when filters change
   useEffect(() => {
@@ -134,7 +134,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
 
     document.addEventListener('click', handleCategoryClick, true)
     return () => document.removeEventListener('click', handleCategoryClick, true)
-  }, [])
+  }, [fetchNotes])
 
   const handleReset = () => {
     setSelectedCategory('all')
