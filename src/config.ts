@@ -17,6 +17,12 @@ export const themeConfig: ThemeConfig = {
     themeToggle: false // Show theme toggle button (uses system theme by default)
   },
 
+  // PAGINATION SETTINGS /////////////////////////////////////////////////////////////////////////////////
+  pagination: {
+    blog: 10, // Number of posts per page
+    til: 10 // Number of TILs per page
+  },
+
   // POST SETTINGS ///////////////////////////////////////////////////////////////////////////////////////
   post: {
     copyCode: true, // Enable copy button in code blocks
