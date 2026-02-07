@@ -1,0 +1,30 @@
+---
+import type { GetStaticPaths } from 'astro'
+import { getSortedFilteredPosts } from '@/utils/draft'
+import Pagination from '@/components/ui/Pagination.astro'
+import MinimalPostList from '@/components/widgets/MinimalPostList.astro'
+import { themeConfig } from '@/config'
+import IndexLayout from '@/layouts/IndexLayout.astro'
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getSortedFilteredPosts()
+  return paginate(posts, { pageSize: themeConfig.pagination.blog })
+}) satisfies GetStaticPaths
+
+const { page } = Astro.props
+---
+
+<IndexLayout description="Blog posts and articles" title={`Blog - ${themeConfig.site.title}`}>
+  <div class="py-8">
+    <h1 class="mb-4 text-3xl font-bold">Blog</h1>
+
+    <p class="mb-8 text-neutral-600 dark:text-neutral-400">
+      Writing about frontend development, React, Chakra UI, UI design, SaaS, and indie hacking. Here
+      are some of the most recent thoughts, learnings.
+    </p>
+
+    <MinimalPostList posts={page.data} />
+
+    <Pagination page={page} />
+  </div>
+</IndexLayout>

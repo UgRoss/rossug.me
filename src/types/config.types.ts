@@ -22,6 +22,12 @@ export interface GeneralSettings {
   themeToggle: boolean
 }
 
+// Pagination settings configuration type
+export interface PaginationSettings {
+  blog: number
+  til: number
+}
+
 // Post settings configuration type
 export interface PostSettings {
   copyCode: boolean
@@ -41,6 +47,7 @@ export interface SiteInfo {
 export interface ThemeConfig {
   date: DateSettings
   general: GeneralSettings
+  pagination: PaginationSettings
   post: PostSettings
   site: SiteInfo
 }

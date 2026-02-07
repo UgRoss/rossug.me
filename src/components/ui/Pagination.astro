@@ -1,0 +1,39 @@
+---
+import type { Page } from 'astro'
+
+interface Props {
+  page: Page<any>
+}
+
+const { page } = Astro.props
+---
+
+{
+  page.lastPage > 1 && (
+    <div class="mt-12 flex items-center justify-between pt-8 text-sm">
+      <a
+        href={page.url.prev}
+        class:list={[
+          'text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100',
+          { 'pointer-events-none invisible': !page.url.prev }
+        ]}
+      >
+        &larr; Prev
+      </a>
+
+      <span class="text-neutral-400">
+        {page.currentPage} / {page.lastPage}
+      </span>
+
+      <a
+        href={page.url.next}
+        class:list={[
+          'text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100',
+          { 'pointer-events-none invisible': !page.url.next }
+        ]}
+      >
+        Next &rarr;
+      </a>
+    </div>
+  )
+}

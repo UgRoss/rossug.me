@@ -1,0 +1,76 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content'
+
+import NoteCard from '@/components/notes/NoteCard.astro'
+import NotesList from '@/components/notes/NotesList'
+import Pagination from '@/components/ui/Pagination.astro'
+import { themeConfig } from '@/config'
+import IndexLayout from '@/layouts/IndexLayout.astro'
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const allNotes = await getCollection('notes')
+  const sortedNotes = allNotes
+    .filter((note) => !note.id.startsWith('_'))
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+
+  return paginate(sortedNotes, { pageSize: themeConfig.pagination.til })
+}) satisfies GetStaticPaths
+
+const { page } = Astro.props
+const sortedNotes = page.data as CollectionEntry<'notes'>[]
+
+// Extract unique categories (from current page only for now, or from all if we want full list)
+// Better to show all categories to keep filter consistent?
+// No, if we paginate server-side, it's better to only show categories present on the page
+// OR keep all if we want users to know what exists.
+// Standard for paginated sites is usually categories for the whole set.
+const allNotes = await getCollection('notes')
+const categories = [
+  ...new Set(allNotes.filter((n) => !n.id.startsWith('_')).map((note) => note.data.category))
+].sort()
+---
+
+<IndexLayout
+  description="TILs (Today I Learned) and quick technical snippets"
+  title={`Notes - ${themeConfig.site.title}`}
+>
+  <div class="py-8">
+    <div class="mb-8">
+      <h1 class="mb-2 text-3xl font-bold">Notes</h1>
+      <p class="text-neutral-600 dark:text-neutral-400">
+        TILs (Today I Learned) and quick technical snippets.
+      </p>
+    </div>
+
+    {/* React component for filtering controls */}
+    <NotesList
+      categories={categories}
+      client:load
+      notes={sortedNotes.map((note) => ({
+        category: note.data.category,
+        excerpt: note.data.excerpt,
+        id: note.id,
+        title: note.data.title
+      }))}
+    />
+
+    {/* Render cards for current page */}
+    <div class="grid gap-6" id="notes-container">
+      {
+        sortedNotes.map((note) => (
+          <div data-category={note.data.category} data-note-card data-note-id={note.id}>
+            <NoteCard
+              category={note.data.category}
+              excerpt={note.data.excerpt}
+              id={note.id}
+              pubDate={note.data.pubDate}
+              title={note.data.title}
+            />
+          </div>
+        ))
+      }
+    </div>
+
+    <Pagination page={page} />
+  </div>
+</IndexLayout>
