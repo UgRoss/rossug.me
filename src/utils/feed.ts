@@ -167,7 +167,7 @@ async function generateFeedInstance(context: APIContext) {
 
   for (const post of sortedPosts) {
     const postSlug = post.id.replace(/\.[^/.]+$/, '')
-    const postUrl = new URL(`blog/${postSlug}/`, siteUrl).toString()
+    const postUrl = new URL(`/blog/${postSlug}/`).toString()
     const rawHtml = markdownParser.render(post.body || '')
     const processedHtml = await fixRelativeImagePaths(rawHtml, siteUrl, post.id)
     const cleanHtml = sanitizeHtml(processedHtml, {

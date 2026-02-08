@@ -1,10 +1,11 @@
 ---
 import type { GetStaticPaths } from 'astro'
-import { getSortedFilteredPosts } from '@/utils/draft'
+
 import Pagination from '@/components/ui/Pagination.astro'
 import PostList from '@/components/widgets/PostList.astro'
 import { themeConfig } from '@/config'
 import IndexLayout from '@/layouts/IndexLayout.astro'
+import { getSortedFilteredPosts } from '@/utils/draft'
 
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getSortedFilteredPosts()

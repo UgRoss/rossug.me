@@ -1,152 +1,47 @@
 import * as Select from '@radix-ui/react-select'
 import { Check, ChevronDown, Search } from 'lucide-react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { type Note, useAllNotes } from '../../hooks/useAllNotes'
+import { useDelegatedClick } from '../../hooks/useDelegatedClick'
+import { useDOMVisibility } from '../../hooks/useDOMVisibility'
+import { useNoteFilters } from '../../hooks/useNoteFilters'
 import NoteCard from './NoteCard'
-
-interface Note {
-  category: string
-  excerpt?: string
-  id: string
-  pubDate: string
-  title: string
-}
 
 interface NotesListProps {
   categories: string[]
   notes?: Note[]
 }
 
-export default function NotesList({ categories, notes: initialNotes }: NotesListProps) {
-  const [notes, setNotes] = useState<Note[]>(initialNotes || [])
-  const [selectedCategory, setSelectedCategory] = useState<string>('all')
-  const [searchQuery, setSearchQuery] = useState<string>('')
-  const [mounted, setMounted] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [hasFetched, setHasFetched] = useState(!!initialNotes)
-  const [error, setError] = useState<null | string>(null)
+export default function NotesList({ categories, notes: initialNotes = [] }: NotesListProps) {
+  // Data fetching
+  const { error, fetchNotes, isLoading, notes, refetch } = useAllNotes(initialNotes)
 
-  const fetchNotes = useCallback(async () => {
-    if (hasFetched || isLoading) return
-    setIsLoading(true)
-    setError(null)
-    try {
-      const response = await fetch('/notes/index.json')
-      if (!response.ok) {
-        throw new Error(`Failed to load notes (${response.status})`)
-      }
-      const data = await response.json()
-      setNotes(data)
-      setHasFetched(true)
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to load notes'
-      console.error('Failed to fetch notes:', err)
-      setError(message)
-    } finally {
-      setIsLoading(false)
+  // Filter & URL logic
+  const {
+    filteredNotes,
+    isSearching,
+    mounted,
+    resetFilters,
+    searchQuery,
+    selectedCategory,
+    setCategory,
+    setSearch
+  } = useNoteFilters({
+    categories,
+    notes,
+    onFilterChange: fetchNotes
+  })
+
+  // Side effects
+  useDOMVisibility(isSearching && mounted, ['#notes-container', '.pagination-container'])
+
+  useDelegatedClick('[data-category-filter]', 'data-category-filter', (category) => {
+    setCategory(category)
+    const filtersElement = document.getElementById('notes-filters')
+    if (filtersElement) {
+      filtersElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
-  }, [hasFetched, isLoading])
-
-  // Initialize from URL params
-  useEffect(() => {
-    setMounted(true)
-    const params = new URLSearchParams(window.location.search)
-    const categoryParam = params.get('category')
-    const searchParam = params.get('search')
-
-    if (categoryParam && (categoryParam === 'all' || categories.includes(categoryParam))) {
-      setSelectedCategory(categoryParam)
-      fetchNotes()
-    }
-    if (searchParam) {
-      setSearchQuery(searchParam)
-      fetchNotes()
-    }
-  }, [categories, fetchNotes])
-
-  // Update URL when filters change
-  useEffect(() => {
-    if (!mounted) return
-
-    const params = new URLSearchParams()
-    if (selectedCategory !== 'all') {
-      params.set('category', selectedCategory)
-    }
-    if (searchQuery) {
-      params.set('search', searchQuery)
-    }
-
-    const newUrl = params.toString()
-      ? `${window.location.pathname}?${params.toString()}`
-      : window.location.pathname
-
-    window.history.replaceState({}, '', newUrl)
-  }, [selectedCategory, searchQuery, mounted])
-
-  const isSearching = selectedCategory !== 'all' || searchQuery !== ''
-
-  // Filter notes based on category and search
-  const filteredNotes = useMemo(() => {
-    if (!isSearching) return []
-    return notes.filter((note) => {
-      const matchesCategory = selectedCategory === 'all' || note.category === selectedCategory
-      const matchesSearch =
-        searchQuery === '' || note.title.toLowerCase().includes(searchQuery.toLowerCase())
-      return matchesCategory && matchesSearch
-    })
-  }, [notes, selectedCategory, searchQuery, isSearching])
-
-  // Show/hide server side container based on if we are searching
-  useEffect(() => {
-    if (!mounted) return
-
-    const container = document.getElementById('notes-container')
-    const pagination = document.querySelector('.pagination-container')
-
-    if (container) {
-      if (isSearching) {
-        container.classList.add('hidden')
-      } else {
-        container.classList.remove('hidden')
-      }
-    }
-
-    if (pagination) {
-      if (isSearching) {
-        pagination.classList.add('hidden')
-      } else {
-        pagination.classList.remove('hidden')
-      }
-    }
-  }, [isSearching, mounted])
-
-  // Handle category tag clicks from NoteCard (both Astro and React versions)
-  useEffect(() => {
-    const handleCategoryClick = (e: Event) => {
-      const target = e.target as HTMLElement
-      if (target.matches('[data-category-filter]')) {
-        e.preventDefault()
-        e.stopPropagation()
-        const category = target.getAttribute('data-category-filter')
-        if (category) {
-          setSelectedCategory(category)
-          fetchNotes()
-          const filtersElement = document.getElementById('notes-filters')
-          if (filtersElement) {
-            filtersElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          }
-        }
-      }
-    }
-
-    document.addEventListener('click', handleCategoryClick, true)
-    return () => document.removeEventListener('click', handleCategoryClick, true)
-  }, [fetchNotes])
-
-  const handleReset = () => {
-    setSelectedCategory('all')
-    setSearchQuery('')
-  }
+  })
 
   if (!mounted) {
     return null
@@ -162,7 +57,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
           <input
             aria-label="Search notes by title"
             className="w-full rounded-lg border border-neutral-200 bg-white py-2 pr-4 pl-10 text-sm text-neutral-900 placeholder-neutral-400 focus:ring-2 focus:ring-neutral-300 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:focus:ring-neutral-600"
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
             onFocus={fetchNotes}
             placeholder="Search notes..."
             type="text"
@@ -173,10 +68,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
         {/* Category Select */}
         <Select.Root
           onOpenChange={(open) => open && fetchNotes()}
-          onValueChange={(val) => {
-            setSelectedCategory(val)
-            fetchNotes()
-          }}
+          onValueChange={setCategory}
           value={selectedCategory}
         >
           <Select.Trigger
@@ -225,7 +117,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
         <div className="flex justify-end">
           <button
             className="text-xs text-neutral-500 underline transition-colors hover:text-neutral-900 dark:text-neutral-500 dark:hover:text-neutral-100"
-            onClick={handleReset}
+            onClick={resetFilters}
             type="button"
           >
             Clear filters
@@ -258,10 +150,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
               <p className="mb-3 text-neutral-500">{error}</p>
               <button
                 className="text-sm text-blue-600 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-                onClick={() => {
-                  setHasFetched(false)
-                  fetchNotes()
-                }}
+                onClick={refetch}
                 type="button"
               >
                 Try again
