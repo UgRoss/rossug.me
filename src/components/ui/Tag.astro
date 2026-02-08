@@ -1,0 +1,29 @@
+---
+interface Props {
+  category?: string
+  href?: string
+  interactive?: boolean
+  label: string
+}
+
+const { category, href, interactive = true, label } = Astro.props
+
+const classes = `tag ${interactive ? 'tag-interactive' : ''}`
+---
+
+{
+  href ? (
+    <a class={classes} data-category-filter={category} href={href}>
+      {label}
+    </a>
+  ) : (
+    <span
+      class={classes}
+      data-category-filter={category}
+      role={interactive ? 'button' : undefined}
+      tabindex={interactive ? 0 : undefined}
+    >
+      {label}
+    </span>
+  )
+}

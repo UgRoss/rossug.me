@@ -5,12 +5,14 @@ import { themeConfig } from '@/config'
 import IndexLayout from '@/layouts/IndexLayout.astro'
 import { getSortedFilteredPosts } from '@/utils/draft'
 
-const posts = await getSortedFilteredPosts()
+const allPosts = await getSortedFilteredPosts()
+const posts = allPosts.slice(0, 8)
 ---
 
 <IndexLayout description={themeConfig.site.description} title={themeConfig.site.title}>
   <About />
-  <main>
+  <main class="mt-12">
+    <h2 class="mb-6 text-xl font-bold">Recent Posts</h2>
     <PostList posts={posts} />
   </main>
 </IndexLayout>

@@ -1,0 +1,30 @@
+---
+import { render } from 'astro:content'
+
+import PostLayout from '@/layouts/PostLayout.astro'
+import { getFilteredPosts } from '@/utils/draft'
+
+export async function getStaticPaths() {
+  const posts = await getFilteredPosts()
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: post
+  }))
+}
+
+const post = Astro.props
+const { Content } = await render(post)
+---
+
+<PostLayout {...post.data}>
+  <Content />
+
+  <div class="mt-8 border-t border-neutral-200 pt-6 dark:border-neutral-800">
+    <a
+      class="inline-flex items-center text-sm text-neutral-600 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
+      href="/blog"
+    >
+      ← Back to blog
+    </a>
+  </div>
+</PostLayout>

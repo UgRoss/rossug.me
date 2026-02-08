@@ -1,0 +1,50 @@
+---
+interface Props {
+  currentPage: number
+  lastPage: number
+  nextUrl?: string
+  prevUrl?: string
+}
+
+const { currentPage, lastPage, nextUrl, prevUrl } = Astro.props
+---
+
+{
+  lastPage > 1 && (
+    <nav aria-label="Pagination" class="mt-12 flex items-center justify-between pt-8 text-sm">
+      <a
+        aria-disabled={!prevUrl}
+        aria-label="Go to previous page"
+        class:list={[
+          'transition-colors',
+          prevUrl
+            ? 'text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100'
+            : 'pointer-events-none text-neutral-300 dark:text-neutral-700'
+        ]}
+        href={prevUrl || '#'}
+        tabindex={prevUrl ? undefined : -1}
+      >
+        &larr; Prev
+      </a>
+
+      <span aria-current="page" class="text-neutral-400">
+        {currentPage} / {lastPage}
+      </span>
+
+      <a
+        aria-disabled={!nextUrl}
+        aria-label="Go to next page"
+        class:list={[
+          'transition-colors',
+          nextUrl
+            ? 'text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100'
+            : 'pointer-events-none text-neutral-300 dark:text-neutral-700'
+        ]}
+        href={nextUrl || '#'}
+        tabindex={nextUrl ? undefined : -1}
+      >
+        Next &rarr;
+      </a>
+    </nav>
+  )
+}

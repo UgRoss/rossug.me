@@ -1,0 +1,77 @@
+---
+import type { GetStaticPaths } from 'astro'
+import type { CollectionEntry } from 'astro:content'
+
+import NoteCard from '@/components/notes/NoteCard'
+import NotesList from '@/components/notes/NotesList'
+import Pagination from '@/components/ui/Pagination.astro'
+import { themeConfig } from '@/config'
+import IndexLayout from '@/layouts/IndexLayout.astro'
+import { getSortedFilteredNotes, getUniqueNotesCategories } from '@/utils/notes'
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const sortedNotes = await getSortedFilteredNotes()
+  const categories = getUniqueNotesCategories(sortedNotes)
+
+  return paginate(sortedNotes, {
+    pageSize: themeConfig.pagination.til,
+    props: { categories }
+  })
+}) satisfies GetStaticPaths
+
+interface Props {
+  categories: string[]
+  page: {
+    currentPage: number
+    data: CollectionEntry<'notes'>[]
+    lastPage: number
+    url: { next?: string; prev?: string }
+  }
+}
+
+const { categories, page } = Astro.props
+const sortedNotes = page.data
+---
+
+<IndexLayout
+  description="TILs (Today I Learned) and quick technical snippets"
+  title={`Notes - ${themeConfig.site.title}`}
+>
+  <div class="py-8">
+    <div class="mb-8">
+      <h1 class="mb-2 text-3xl font-bold">Notes</h1>
+      <p class="text-neutral-600 dark:text-neutral-400">
+        TILs (Today I Learned) and quick technical snippets.
+      </p>
+    </div>
+
+    {/* React component for filtering controls */}
+    <NotesList categories={categories} client:load />
+
+    {/* Render cards for current page */}
+    <div class="grid gap-6" id="notes-container">
+      {
+        sortedNotes.map((note) => (
+          <div data-category={note.data.category} data-note-card data-note-id={note.id}>
+            <NoteCard
+              category={note.data.category}
+              excerpt={note.data.excerpt}
+              id={note.id}
+              pubDate={note.data.pubDate.toISOString()}
+              title={note.data.title}
+            />
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="pagination-container">
+      <Pagination
+        currentPage={page.currentPage}
+        lastPage={page.lastPage}
+        nextUrl={page.url.next}
+        prevUrl={page.url.prev}
+      />
+    </div>
+  </div>
+</IndexLayout>
