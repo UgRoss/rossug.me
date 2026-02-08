@@ -9,19 +9,18 @@ export async function getFilteredNotes(): Promise<CollectionEntry<'notes'>[]> {
 }
 
 /**
- * Extract unique categories from notes, sorted alphabetically
- */
-export async function getNotesCategories(): Promise<string[]> {
-  const notes = await getFilteredNotes()
-  return [...new Set(notes.map((note) => note.data.category))].sort()
-}
-
-/**
  * Get all notes sorted by publication date (newest first), filtering out drafts
  */
 export async function getSortedFilteredNotes(): Promise<CollectionEntry<'notes'>[]> {
   const notes = await getFilteredNotes()
   return notes.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+}
+
+/**
+ * Extract unique categories from a list of notes, sorted alphabetically
+ */
+export function getUniqueNotesCategories(notes: CollectionEntry<'notes'>[]): string[] {
+  return [...new Set(notes.map((note) => note.data.category))].sort()
 }
 
 /**
