@@ -9,11 +9,12 @@ import { useEffect } from 'react'
  * @param hiddenClass - The class to toggle (default: 'hidden')
  */
 export function useDOMVisibility(shouldHide: boolean, selectors: string[], hiddenClass = 'hidden') {
+  const selectorsKey = selectors.join(',')
+
   useEffect(() => {
-    const elements = selectors.map((s) => document.querySelector(s)).filter(Boolean)
+    const elements = document.querySelectorAll(selectorsKey)
 
     elements.forEach((el) => {
-      if (!el) return
       if (shouldHide) {
         el.classList.add(hiddenClass)
       } else {
@@ -24,8 +25,8 @@ export function useDOMVisibility(shouldHide: boolean, selectors: string[], hidde
     // Cleanup: ensure elements are visible when component unmounts
     return () => {
       elements.forEach((el) => {
-        if (el) el.classList.remove(hiddenClass)
+        el.classList.remove(hiddenClass)
       })
     }
-  }, [shouldHide, selectors, hiddenClass])
+  }, [shouldHide, selectorsKey, hiddenClass])
 }

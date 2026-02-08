@@ -21,7 +21,12 @@ export function useDelegatedClick(
 
   useEffect(() => {
     const handleClick = (e: Event) => {
-      const target = e.target as HTMLElement
+      const target = e.target
+
+      if (!(target instanceof Element)) {
+        return
+      }
+
       // Check if the clicked element or any parent matches the selector
       const matchedElement = target.closest(selector)
 
