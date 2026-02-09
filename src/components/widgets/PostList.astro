@@ -13,6 +13,13 @@ const { posts } = Astro.props as PostListProps
           href={`/blog/${post.id}/`}
         >
           {post.data.title}
+          <time class="sr-only" datetime={post.data.pubDate.toISOString()}>
+            {post.data.pubDate.toLocaleDateString(undefined, {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })}
+          </time>
         </a>
       </li>
     ))

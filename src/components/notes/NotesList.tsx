@@ -5,7 +5,7 @@ import { type Note, useAllNotes } from '../../hooks/useAllNotes'
 import { useDelegatedClick } from '../../hooks/useDelegatedClick'
 import { useDOMVisibility } from '../../hooks/useDOMVisibility'
 import { useNoteFilters } from '../../hooks/useNoteFilters'
-import NoteCard from './NoteCard'
+import NoteListItem from './NoteListItem'
 
 interface NotesListProps {
   categories: string[]
@@ -144,7 +144,7 @@ export default function NotesList({ categories, notes: initialNotes = [] }: Note
       </div>
 
       {isSearching && (
-        <div className="mt-8 grid gap-6 border-t border-neutral-100 pt-8 dark:border-neutral-800">
+        <div className="mt-6 flex flex-col divide-y divide-neutral-100 border-t border-neutral-100 dark:divide-neutral-800 dark:border-neutral-800">
           {error ? (
             <div className="py-12 text-center">
               <p className="mb-3 text-neutral-500">{error}</p>
@@ -157,7 +157,7 @@ export default function NotesList({ categories, notes: initialNotes = [] }: Note
               </button>
             </div>
           ) : filteredNotes.length > 0 ? (
-            filteredNotes.map((note) => <NoteCard key={note.id} {...note} />)
+            filteredNotes.map((note) => <NoteListItem key={note.id} {...note} />)
           ) : (
             <p className="py-12 text-center text-neutral-500">
               {isLoading ? 'Searching notes...' : 'No notes found matching your criteria.'}

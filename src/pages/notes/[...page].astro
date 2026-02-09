@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 
-import NoteCard from '@/components/notes/NoteCard'
+import NoteListItem from '@/components/notes/NoteListItem'
 import NotesList from '@/components/notes/NotesList'
 import Pagination from '@/components/ui/Pagination.astro'
 import { themeConfig } from '@/config'
@@ -49,11 +49,14 @@ const sortedNotes = page.data
     <NotesList categories={categories} client:load />
 
     {/* Render cards for current page */}
-    <div class="grid gap-6" id="notes-container">
+    <div
+      class="flex flex-col divide-y divide-neutral-100 border-t border-neutral-100 dark:divide-neutral-800 dark:border-neutral-800"
+      id="notes-container"
+    >
       {
         sortedNotes.map((note) => (
           <div data-category={note.data.category} data-note-card data-note-id={note.id}>
-            <NoteCard
+            <NoteListItem
               category={note.data.category}
               excerpt={note.data.excerpt}
               id={note.id}
