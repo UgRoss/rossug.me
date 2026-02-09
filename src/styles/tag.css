@@ -1,11 +1,11 @@
 /* Tag component styles - shared between Astro and React */
 
 .tag {
-  @apply relative z-10 inline-block p-1;
-  @apply text-xs font-medium text-neutral-500;
+  @apply relative z-10 inline-block px-1.5 py-0.5;
+  @apply text-[10px] font-medium tracking-widest text-neutral-400 uppercase;
   @apply transition-colors;
-  @apply before:mr-0.5 before:text-neutral-400 before:content-['#'];
-  @apply dark:text-neutral-400 dark:before:text-neutral-600;
+  @apply before:mr-0.5 before:content-['#'];
+  @apply dark:text-neutral-500;
 }
 
 .tag-interactive {

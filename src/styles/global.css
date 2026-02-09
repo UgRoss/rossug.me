@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './fonts.css';
+@import './index-list.css';
 @import './prose.css';
 @import './reading-time.css';
 @import './tag.css';

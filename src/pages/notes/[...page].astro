@@ -48,25 +48,22 @@ const sortedNotes = page.data
     {/* React component for filtering controls */}
     <NotesList categories={categories} client:load />
 
-    {/* Render cards for current page */}
-    <div
-      class="flex flex-col divide-y divide-neutral-100 border-t border-neutral-100 dark:divide-neutral-800 dark:border-neutral-800"
-      id="notes-container"
-    >
+    {/* Render lists for current page */}
+    {/* Render lists for current page */}
+    <ul class="index-list index-list-focus" id="notes-container">
       {
         sortedNotes.map((note) => (
-          <div data-category={note.data.category} data-note-card data-note-id={note.id}>
-            <NoteListItem
-              category={note.data.category}
-              excerpt={note.data.excerpt}
-              id={note.id}
-              pubDate={note.data.pubDate.toISOString()}
-              title={note.data.title}
-            />
-          </div>
+          <NoteListItem
+            category={note.data.category}
+            excerpt={note.data.excerpt}
+            id={note.id}
+            pubDate={note.data.pubDate.toISOString()}
+            title={note.data.title}
+            client:load
+          />
         ))
       }
-    </div>
+    </ul>
 
     <div class="pagination-container">
       <Pagination
