@@ -33,7 +33,7 @@ export default function NotesList({ categories, notes: initialNotes = [] }: Note
   })
 
   // Side effects
-  useDOMVisibility(isSearching && mounted, ['#notes-container', '.pagination-container'])
+  useDOMVisibility(isSearching && mounted, ['#notes-container-server', '#pagination-container'])
 
   useDelegatedClick('[data-category-filter]', 'data-category-filter', (category) => {
     setCategory(category)

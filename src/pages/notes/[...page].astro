@@ -50,7 +50,7 @@ const sortedNotes = page.data
 
     {/* Render lists for current page */}
     {/* Render lists for current page */}
-    <ul class="index-list index-list-focus" id="notes-container">
+    <ul class="index-list index-list-focus" id="notes-container-server">
       {
         sortedNotes.map((note) => (
           <NoteListItem
@@ -65,7 +65,7 @@ const sortedNotes = page.data
       }
     </ul>
 
-    <div class="pagination-container">
+    <div class="pagination-container" id="pagination-container">
       <Pagination
         currentPage={page.currentPage}
         lastPage={page.lastPage}
