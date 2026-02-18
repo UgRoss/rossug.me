@@ -12,4 +12,5 @@
   @apply cursor-pointer;
   @apply hover:text-neutral-900;
   @apply dark:hover:text-neutral-200;
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-500;
 }
