@@ -3,9 +3,7 @@ import { timeAgo } from '@/utils/date'
 
 interface NoteListItemProps {
   category: string
-  excerpt?: string
   id: string
-  isLast?: boolean
   pubDate: string // Date string for serialization
   title: string
 }
