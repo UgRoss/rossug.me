@@ -24,7 +24,7 @@
 }
 
 .index-list-focus:hover .index-item:hover {
-  @apply opacity-100!;
+  @apply !opacity-100;
 }
 
 .index-title {
