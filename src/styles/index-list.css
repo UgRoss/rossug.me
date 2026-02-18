@@ -20,7 +20,7 @@
 }
 
 .index-link:hover {
-  @apply text-(--text-primary);
+  @apply text-[var(--text-primary)];
 }
 
 .index-list-focus:hover .index-item:hover {
