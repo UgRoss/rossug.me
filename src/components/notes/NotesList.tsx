@@ -5,7 +5,7 @@ import { type Note, useAllNotes } from '../../hooks/useAllNotes'
 import { useDelegatedClick } from '../../hooks/useDelegatedClick'
 import { useDOMVisibility } from '../../hooks/useDOMVisibility'
 import { useNoteFilters } from '../../hooks/useNoteFilters'
-import NoteCard from './NoteCard'
+import NoteListItem from './NoteListItem'
 
 interface NotesListProps {
   categories: string[]
@@ -33,7 +33,7 @@ export default function NotesList({ categories, notes: initialNotes = [] }: Note
   })
 
   // Side effects
-  useDOMVisibility(isSearching && mounted, ['#notes-container', '.pagination-container'])
+  useDOMVisibility(isSearching && mounted, ['#notes-container-server', '#pagination-container'])
 
   useDelegatedClick('[data-category-filter]', 'data-category-filter', (category) => {
     setCategory(category)
@@ -144,9 +144,9 @@ export default function NotesList({ categories, notes: initialNotes = [] }: Note
       </div>
 
       {isSearching && (
-        <div className="mt-8 grid gap-6 border-t border-neutral-100 pt-8 dark:border-neutral-800">
+        <ul className="index-list index-list-focus">
           {error ? (
-            <div className="py-12 text-center">
+            <div className="list-none py-12 text-center">
               <p className="mb-3 text-neutral-500">{error}</p>
               <button
                 className="text-sm text-blue-600 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
@@ -157,13 +157,13 @@ export default function NotesList({ categories, notes: initialNotes = [] }: Note
               </button>
             </div>
           ) : filteredNotes.length > 0 ? (
-            filteredNotes.map((note) => <NoteCard key={note.id} {...note} />)
+            filteredNotes.map((note) => <NoteListItem key={note.id} {...note} />)
           ) : (
-            <p className="py-12 text-center text-neutral-500">
+            <p className="list-none py-12 text-center text-neutral-500">
               {isLoading ? 'Searching notes...' : 'No notes found matching your criteria.'}
             </p>
           )}
-        </div>
+        </ul>
       )}
     </div>
   )

@@ -4,15 +4,21 @@ import type { PostListProps } from '@/types'
 const { posts } = Astro.props as PostListProps
 ---
 
-<ul class="ml-4 list-disc space-y-4 marker:text-neutral-400">
+<ul class="index-list index-list-focus">
   {
     posts.map((post) => (
-      <li>
-        <a
-          class="font-medium text-neutral-900 underline decoration-neutral-300 underline-offset-4 transition-colors hover:decoration-neutral-500 lg:text-lg dark:text-neutral-100 dark:decoration-neutral-700 dark:hover:decoration-neutral-400"
-          href={`/blog/${post.id}/`}
-        >
-          {post.data.title}
+      <li class="index-item">
+        <a class="index-link" href={`/blog/${post.id}/`}>
+          <span class="index-title">{post.data.title}</span>
+
+          <span class="index-leader" />
+
+          <span class="index-meta">
+            {post.data.pubDate.toLocaleDateString(undefined, {
+              month: 'short',
+              day: 'numeric'
+            })}
+          </span>
         </a>
       </li>
     ))

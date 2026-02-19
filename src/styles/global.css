@@ -1,8 +1,12 @@
 @import 'tailwindcss';
-@import './fonts.css';
-@import './prose.css';
-@import './reading-time.css';
-@import './tag.css';
+
+@layer components {
+  @import './fonts.css';
+  @import './index-list.css';
+  @import './prose.css';
+  @import './reading-time.css';
+  @import './tag.css';
+}
 
 @plugin '@tailwindcss/typography';
 

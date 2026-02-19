@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 
-import NoteCard from '@/components/notes/NoteCard'
+import NoteListItem from '@/components/notes/NoteListItem'
 import NotesList from '@/components/notes/NotesList'
 import Pagination from '@/components/ui/Pagination.astro'
 import { themeConfig } from '@/config'
@@ -48,24 +48,23 @@ const sortedNotes = page.data
     {/* React component for filtering controls */}
     <NotesList categories={categories} client:load />
 
-    {/* Render cards for current page */}
-    <div class="grid gap-6" id="notes-container">
+    {/* Render lists for current page */}
+    <ul class="index-list index-list-focus" id="notes-container-server">
       {
         sortedNotes.map((note) => (
-          <div data-category={note.data.category} data-note-card data-note-id={note.id}>
-            <NoteCard
-              category={note.data.category}
-              excerpt={note.data.excerpt}
-              id={note.id}
-              pubDate={note.data.pubDate.toISOString()}
-              title={note.data.title}
-            />
-          </div>
+          <NoteListItem
+            category={note.data.category}
+            excerpt={note.data.excerpt}
+            id={note.id}
+            pubDate={note.data.pubDate.toISOString()}
+            title={note.data.title}
+            client:load
+          />
         ))
       }
-    </div>
+    </ul>
 
-    <div class="pagination-container">
+    <div class="pagination-container" id="pagination-container">
       <Pagination
         currentPage={page.currentPage}
         lastPage={page.lastPage}

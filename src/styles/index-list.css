@@ -1,0 +1,54 @@
+/* Index-style (Dotted Leader) List Styles - shared between Astro and React */
+
+.index-list {
+  @apply mt-6 flex flex-col gap-1;
+}
+
+.index-item {
+  @apply list-none transition-opacity duration-300;
+}
+
+/* List-wide Focus Effect */
+.index-list-focus:hover .index-item {
+  @apply opacity-50;
+}
+
+/* Item Components */
+.index-link {
+  @apply flex items-baseline justify-between gap-2 py-2;
+  @apply no-underline transition-colors;
+}
+
+.index-link:hover {
+  @apply text-[var(--text-primary)];
+}
+
+.index-list-focus:hover .index-item:hover {
+  @apply !opacity-100;
+}
+
+.index-title {
+  @apply shrink-0 text-base font-medium transition-transform duration-300;
+}
+
+.index-item:hover .index-title {
+  @apply translate-x-1;
+}
+
+.index-leader {
+  @apply min-w-[20px] flex-1 border-b border-dotted border-neutral-200 transition-colors;
+  @apply dark:border-neutral-800;
+}
+
+.index-item:hover .index-leader {
+  @apply border-neutral-300 dark:border-neutral-700;
+}
+
+.index-meta {
+  @apply shrink-0 text-xs text-neutral-400 transition-colors dark:text-neutral-500;
+}
+
+.index-item:hover .index-meta,
+.index-item:hover .tag {
+  @apply text-neutral-600 dark:text-neutral-300;
+}
