@@ -1,4 +1,8 @@
 /* Custom Typography & Layout */
+.prose {
+  @apply font-sans;
+}
+
 .prose .title {
   margin-bottom: 2.5em;
 }
@@ -8,20 +12,20 @@
 }
 
 .prose em {
-  font-family: var(--serif);
+  font-family: var(--font-serif);
   font-style: italic;
   letter-spacing: 0;
 }
 
 .prose a {
-  color: var(--primary);
+  color: var(--text-primary);
   text-decoration: underline;
   text-decoration-color: var(--text-tertiary);
   transition: text-decoration-color 0.2s ease-out;
 }
 
 .prose a:hover {
-  color: var(--primary);
+  color: var(--text-primary);
   text-decoration-color: var(--text-primary);
 }
 
@@ -97,7 +101,7 @@
 
 .prose hr::before {
   content: '***';
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   color: var(--text-tertiary);
   font-size: 0.875em;
   letter-spacing: 0.25em;
@@ -177,7 +181,7 @@
   border-radius: 5px;
   background-color: var(--code-bg);
   border: 0.5px solid var(--border);
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: 0.9em;
   font-feature-settings:
     'liga' 0,
@@ -221,7 +225,7 @@
 .prose ul.contains-task-list li.task-list-item input[type='checkbox']:checked {
   position: relative;
   background: var(--code-bg);
-  font-family: var(--sans);
+  font-family: var(--font-sans);
   border: 1.35px solid var(--text-tertiary);
   opacity: 0.75;
 }
@@ -232,7 +236,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-45%, -55%);
-  font-family: var(--sans);
+  font-family: var(--font-sans);
   font-size: 10px;
   font-weight: 650;
   color: var(--text-primary);
@@ -273,7 +277,7 @@
 
 .prose [data-footnote-backref] {
   position: relative;
-  font-family: var(--mono);
+  font-family: var(--font-mono);
   font-size: var(--font-size-l);
   top: -0.05em;
 }
