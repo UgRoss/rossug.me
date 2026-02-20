@@ -159,7 +159,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
       </div>
 
       {/* Notes list */}
-      <ul className="my-5 pl-5">
+      <ul className="my-5 flex list-none flex-col gap-0.5 p-0">
         {displayNotes.length === 0 ? (
           <li className="list-none py-4 text-sm text-muted">No notes found.</li>
         ) : (
@@ -172,15 +172,20 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
 
 function NoteItem({ note }: { note: Note }) {
   return (
-    <li className="relative flex list-none flex-wrap items-center gap-x-2">
-      <span className="absolute top-2 right-full text-muted">﹂</span>
-      <a className="p-1" href={`/notes/${note.id}`} title={note.title}>
-        {note.title}
+    <li className="group list-none">
+      <a
+        className="-mx-2 flex items-center justify-between gap-6 rounded-sm px-2 py-1 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
+        href={`/notes/${note.id}`}
+        title={note.title}
+      >
+        <div className="flex min-w-0 items-center gap-2">
+          <span>{note.title}</span>
+          <span className="tag cursor-default!">{note.category}</span>
+        </div>
+        <span className="shrink-0 text-sm whitespace-nowrap text-muted">
+          <time dateTime={note.pubDate}>{formatDate(note.pubDate)}</time>
+        </span>
       </a>
-      <span className="tag !cursor-default">{note.category}</span>
-      <span className="ml-auto shrink-0 text-sm whitespace-nowrap text-muted">
-        <time dateTime={note.pubDate}>{formatDate(note.pubDate)}</time>
-      </span>
     </li>
   )
 }

@@ -58,20 +58,25 @@ const serializedNotes = sortedNotes.map((note) => ({
 
     {/* No-JS fallback — hidden once React hydrates */}
     <noscript>
-      <ul class="my-5 pl-5">
+      <ul class="my-5 flex list-none flex-col gap-0.5 p-0">
         {
           sortedNotes.map((note) => (
-            <li class="relative flex list-none flex-wrap items-center gap-x-2">
-              <span class="absolute top-2 right-full text-muted">﹂</span>
-              <a href={`/notes/${note.id}`} title={note.data.title} class="py-1">
-                {note.data.title}
+            <li class="group list-none">
+              <a
+                href={`/notes/${note.id}`}
+                title={note.data.title}
+                class="-mx-2 flex items-center justify-between gap-6 rounded-sm px-2 py-1 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
+              >
+                <div class="flex min-w-0 items-center gap-2">
+                  <span>{note.data.title}</span>
+                  <span class="tag cursor-default!">{note.data.category}</span>
+                </div>
+                <span class="shrink-0 text-sm whitespace-nowrap text-muted">
+                  <time datetime={note.data.pubDate.toISOString()}>
+                    {format(note.data.pubDate, 'MMM d, yyyy')}
+                  </time>
+                </span>
               </a>
-              <span class="tag">{note.data.category}</span>
-              <span class="ml-auto shrink-0 text-sm whitespace-nowrap text-muted">
-                <time datetime={note.data.pubDate.toISOString()}>
-                  {format(note.data.pubDate, 'MMM d, yyyy')}
-                </time>
-              </span>
             </li>
           ))
         }

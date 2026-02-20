@@ -147,10 +147,6 @@
     @apply text-(--text-primary) no-underline transition-colors duration-200;
   }
 
-  a:hover {
-    @apply text-(--text-secondary);
-  }
-
   h1,
   h2,
   h3,
