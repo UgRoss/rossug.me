@@ -4,24 +4,14 @@ import SimpleContentList from '@/components/ui/SimpleContentList.astro'
 import { themeConfig } from '@/config'
 import IndexLayout from '@/layouts/IndexLayout.astro'
 import { getSortedFilteredPosts } from '@/utils/draft'
-import { getSortedFilteredNotes } from '@/utils/notes'
 
 const allPosts = await getSortedFilteredPosts()
 const posts = allPosts.slice(0, 4)
-const allNotes = await getSortedFilteredNotes()
-const notes = allNotes.slice(0, 4)
 
 const recentPostItems = posts.map((post) => ({
   date: post.data.pubDate,
   href: `/blog/${post.id}/`,
   title: post.data.title
-}))
-
-const recentTilItems = notes.map((note) => ({
-  date: note.data.pubDate,
-  href: `/notes/${note.id}`,
-  label: note.data.category,
-  title: note.data.title
 }))
 ---
 

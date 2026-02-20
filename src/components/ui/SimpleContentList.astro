@@ -37,8 +37,10 @@ const formatItemDate = (value: Date | string): string => {
             title={item.title}
           >
             <div class="flex min-w-0 items-center gap-2">
-              <span>{item.title}</span>
-              {item.label && <span class="tag cursor-default!">{item.label}</span>}
+              <span class="block min-w-0 truncate">{item.title}</span>
+              {item.label && (
+                <span class="tag hidden cursor-default! sm:inline-flex">{item.label}</span>
+              )}
             </div>
             <span class="shrink-0 text-sm whitespace-nowrap text-muted">
               <time datetime={typeof item.date === 'string' ? item.date : item.date.toISOString()}>

@@ -179,8 +179,8 @@ function NoteItem({ note }: { note: Note }) {
         title={note.title}
       >
         <div className="flex min-w-0 items-center gap-2">
-          <span>{note.title}</span>
-          <span className="tag cursor-default!">{note.category}</span>
+          <span className="block min-w-0 truncate">{note.title}</span>
+          <span className="tag hidden cursor-default! sm:inline-flex">{note.category}</span>
         </div>
         <span className="shrink-0 text-sm whitespace-nowrap text-muted">
           <time dateTime={note.pubDate}>{formatDate(note.pubDate)}</time>
