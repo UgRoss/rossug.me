@@ -1,8 +1,11 @@
 ---
+// ABOUTME: Notes (TIL) listing page with pagination.
+
 import type { GetStaticPaths } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 
-import NoteListItem from '@/components/notes/NoteListItem'
+import { format } from 'date-fns'
+
 import NotesList from '@/components/notes/NotesList'
 import Pagination from '@/components/ui/Pagination.astro'
 import { themeConfig } from '@/config'
@@ -31,6 +34,14 @@ interface Props {
 
 const { categories, page } = Astro.props
 const sortedNotes = page.data
+
+const serializedNotes = sortedNotes.map((note) => ({
+  category: note.data.category,
+  excerpt: note.data.excerpt,
+  id: note.id,
+  pubDate: note.data.pubDate.toISOString(),
+  title: note.data.title
+}))
 ---
 
 <IndexLayout
@@ -40,31 +51,34 @@ const sortedNotes = page.data
   <div class="py-8">
     <div class="mb-8">
       <h1 class="mb-2 text-3xl font-bold">Notes</h1>
-      <p class="text-neutral-600 dark:text-neutral-400">
-        TILs (Today I Learned) and quick technical snippets.
-      </p>
+      <p class="text-muted">TILs (Today I Learned) and quick technical snippets.</p>
     </div>
 
-    {/* React component for filtering controls */}
-    <NotesList categories={categories} client:load />
+    <NotesList categories={categories} client:load notes={serializedNotes} />
 
-    {/* Render lists for current page */}
-    <ul class="index-list index-list-focus" id="notes-container-server">
-      {
-        sortedNotes.map((note) => (
-          <NoteListItem
-            category={note.data.category}
-            excerpt={note.data.excerpt}
-            id={note.id}
-            pubDate={note.data.pubDate.toISOString()}
-            title={note.data.title}
-            client:load
-          />
-        ))
-      }
-    </ul>
+    {/* No-JS fallback — hidden once React hydrates */}
+    <noscript>
+      <ul class="my-5 pl-5">
+        {
+          sortedNotes.map((note) => (
+            <li class="relative flex list-none flex-wrap items-center gap-x-2">
+              <span class="absolute top-2 right-full text-muted">﹂</span>
+              <a href={`/notes/${note.id}`} title={note.data.title} class="py-1">
+                {note.data.title}
+              </a>
+              <span class="tag">{note.data.category}</span>
+              <span class="ml-auto shrink-0 text-sm whitespace-nowrap text-muted">
+                <time datetime={note.data.pubDate.toISOString()}>
+                  {format(note.data.pubDate, 'MMM d, yyyy')}
+                </time>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </noscript>
 
-    <div class="pagination-container" id="pagination-container">
+    <div id="notes-pagination">
       <Pagination
         currentPage={page.currentPage}
         lastPage={page.lastPage}

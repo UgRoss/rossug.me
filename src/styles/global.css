@@ -11,6 +11,14 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@utility text-muted {
+  color: var(--text-secondary);
+}
+
+@utility text-faint {
+  color: var(--text-tertiary);
+}
+
 @theme {
   --font-sans:
     'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
