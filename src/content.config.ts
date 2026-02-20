@@ -7,6 +7,7 @@ const posts = defineCollection({
   // Type-check frontmatter using a schema
   schema: () =>
     z.object({
+      excerpt: z.string().optional(),
       image: z.string().optional(),
       // Transform string to Date object
       pubDate: z.coerce.date(),
