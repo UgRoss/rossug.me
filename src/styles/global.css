@@ -31,7 +31,7 @@
 @layer base {
   :root {
     /* Min Content Width */
-    --content-width: 40rem;
+    --content-width: 38rem;
 
     /* Typography */
     --font-size-s: 0.8125rem;

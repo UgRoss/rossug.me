@@ -1,0 +1,53 @@
+---
+// ABOUTME: Reusable minimal list for linked content rows with optional badge and date.
+// ABOUTME: Matches the visual style used by the notes list for consistent scanning.
+
+import { format, parseISO } from 'date-fns'
+
+interface SimpleContentListItem {
+  date: Date | string
+  href: string
+  label?: string
+  title: string
+}
+
+interface Props {
+  emptyMessage?: string
+  items: SimpleContentListItem[]
+}
+
+const { emptyMessage = 'No items found.', items } = Astro.props as Props
+
+const formatItemDate = (value: Date | string): string => {
+  const date = typeof value === 'string' ? parseISO(value) : value
+  return format(date, 'MMM d, yyyy')
+}
+---
+
+<ul class="my-5 flex list-none flex-col gap-0.5 p-0">
+  {
+    items.length === 0 ? (
+      <li class="list-none py-4 text-sm text-muted">{emptyMessage}</li>
+    ) : (
+      items.map((item) => (
+        <li class="group list-none">
+          <a
+            class="-mx-2 flex items-center justify-between gap-6 rounded-sm px-2 py-1 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
+            href={item.href}
+            title={item.title}
+          >
+            <div class="flex min-w-0 items-center gap-2">
+              <span>{item.title}</span>
+              {item.label && <span class="tag cursor-default!">{item.label}</span>}
+            </div>
+            <span class="shrink-0 text-sm whitespace-nowrap text-muted">
+              <time datetime={typeof item.date === 'string' ? item.date : item.date.toISOString()}>
+                {formatItemDate(item.date)}
+              </time>
+            </span>
+          </a>
+        </li>
+      ))
+    )
+  }
+</ul>
