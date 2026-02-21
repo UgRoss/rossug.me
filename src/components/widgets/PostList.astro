@@ -1,8 +1,8 @@
 ---
 import type { PostListProps } from '@/types'
 
+import FormattedDate from '@/components/widgets/FormattedDate.astro'
 import { createExcerpt } from '@/utils/createExcerpt'
-import { formatContentDate } from '@/utils/date'
 
 const { posts } = Astro.props as PostListProps
 
@@ -45,7 +45,7 @@ const getPostExcerpt = (post: PostListProps['posts'][number]): string => {
               </h2>
 
               <p class="shrink-0 pt-1 text-sm text-neutral-400 dark:text-neutral-500">
-                {formatContentDate(post.data.pubDate)}
+                <FormattedDate date={post.data.pubDate} />
               </p>
             </div>
 

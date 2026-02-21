@@ -6,9 +6,9 @@ import type { CollectionEntry } from 'astro:content'
 
 import NotesList from '@/components/notes/NotesList'
 import Pagination from '@/components/ui/Pagination.astro'
+import FormattedDate from '@/components/widgets/FormattedDate.astro'
 import { themeConfig } from '@/config'
 import IndexLayout from '@/layouts/IndexLayout.astro'
-import { formatContentDate } from '@/utils/date'
 import { getSortedFilteredNotes, getUniqueNotesCategories } from '@/utils/notes'
 
 export const getStaticPaths = (async ({ paginate }) => {
@@ -71,9 +71,7 @@ const serializedNotes = sortedNotes.map((note) => ({
                   <span class="tag cursor-default!">{note.data.category}</span>
                 </div>
                 <span class="shrink-0 text-sm whitespace-nowrap text-muted">
-                  <time datetime={note.data.pubDate.toISOString()}>
-                    {formatContentDate(note.data.pubDate)}
-                  </time>
+                  <FormattedDate date={note.data.pubDate} />
                 </span>
               </a>
             </li>

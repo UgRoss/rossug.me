@@ -1,9 +1,9 @@
 ---
 import type { FormattedDateProps } from '@/types'
 
-import { formatContentDate } from '@/utils/date'
+import { formatContentDate, toDateTimeAttr } from '@/utils/date'
 
 const { date } = Astro.props as FormattedDateProps
 ---
 
-<time datetime={date.toISOString()}>{formatContentDate(date)}</time>
+<time datetime={toDateTimeAttr(date)}>{formatContentDate(date)}</time>
