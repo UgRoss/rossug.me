@@ -67,15 +67,6 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
     }
   }, [hasFetched])
 
-  // Hide server-rendered fallback list once React has hydrated
-  useEffect(() => {
-    document.getElementById('notes-server-list')?.classList.add('hidden')
-
-    return () => {
-      document.getElementById('notes-server-list')?.classList.remove('hidden')
-    }
-  }, [])
-
   // Hide/show pagination when filtering
   useEffect(() => {
     const pagination = document.getElementById('notes-pagination')
