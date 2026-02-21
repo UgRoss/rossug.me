@@ -16,7 +16,7 @@ export const createExcerpt = (body: string): string => {
     ],
     wordwrap: null
   }
+
   const text = convert(html, options)
-  const distilled = convert(text, options)
-  return distilled.trim()
+  return text.trim()
 }
