@@ -3,7 +3,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { formatPreviewDate } from '@/utils/preview-date'
+import { formatContentDate } from '@/utils/date'
 
 interface Note {
   category: string
@@ -176,7 +176,7 @@ function NoteItem({ note }: { note: Note }) {
           <span className="tag hidden cursor-default! sm:inline-flex">{note.category}</span>
         </div>
         <span className="shrink-0 text-sm whitespace-nowrap text-muted">
-          <time dateTime={note.pubDate}>{formatPreviewDate(note.pubDate)}</time>
+          <time dateTime={note.pubDate}>{formatContentDate(note.pubDate)}</time>
         </span>
       </a>
     </li>

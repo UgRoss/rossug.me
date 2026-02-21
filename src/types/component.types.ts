@@ -7,9 +7,7 @@ export interface BaseHeadProps {
 
 // FormattedDate component props interface
 export interface FormattedDateProps {
-  context?: 'default' | 'list' | 'post'
   date: Date
-  format?: string
 }
 
 // ImageOptimizer component props interface

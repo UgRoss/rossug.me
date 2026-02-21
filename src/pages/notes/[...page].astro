@@ -8,8 +8,8 @@ import NotesList from '@/components/notes/NotesList'
 import Pagination from '@/components/ui/Pagination.astro'
 import { themeConfig } from '@/config'
 import IndexLayout from '@/layouts/IndexLayout.astro'
+import { formatContentDate } from '@/utils/date'
 import { getSortedFilteredNotes, getUniqueNotesCategories } from '@/utils/notes'
-import { formatPreviewDate } from '@/utils/preview-date'
 
 export const getStaticPaths = (async ({ paginate }) => {
   const sortedNotes = await getSortedFilteredNotes()
@@ -72,7 +72,7 @@ const serializedNotes = sortedNotes.map((note) => ({
                 </div>
                 <span class="shrink-0 text-sm whitespace-nowrap text-muted">
                   <time datetime={note.data.pubDate.toISOString()}>
-                    {formatPreviewDate(note.data.pubDate)}
+                    {formatContentDate(note.data.pubDate)}
                   </time>
                 </span>
               </a>

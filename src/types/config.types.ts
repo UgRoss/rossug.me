@@ -1,18 +1,3 @@
-// Date format types
-export type DateFormat =
-  | 'DAY MONTH YYYY'
-  | 'DD-MM-YYYY'
-  | 'MM-DD-YYYY'
-  | 'MONTH DAY YYYY'
-  | 'YYYY-MM-DD'
-
-// Date settings configuration type
-export interface DateSettings {
-  dateFormat: DateFormat
-  dateOnRight: boolean
-  dateSeparator: string
-}
-
 // General settings configuration type
 export interface GeneralSettings {
   contentWidth: string
@@ -45,7 +30,6 @@ export interface SiteInfo {
 
 // Theme configuration type
 export interface ThemeConfig {
-  date: DateSettings
   general: GeneralSettings
   pagination: PaginationSettings
   post: PostSettings

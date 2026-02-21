@@ -2,7 +2,7 @@
 import type { PostListProps } from '@/types'
 
 import { createExcerpt } from '@/utils/createExcerpt'
-import { formatPreviewDate } from '@/utils/preview-date'
+import { formatContentDate } from '@/utils/date'
 
 const { posts } = Astro.props as PostListProps
 
@@ -17,7 +17,6 @@ const getPostExcerpt = (post: PostListProps['posts'][number]): string => {
 
   return `${excerpt.substring(0, EXCERPT_LENGTH).trimEnd()}...`
 }
-
 ---
 
 <ul class="mt-8 space-y-8">
@@ -46,7 +45,7 @@ const getPostExcerpt = (post: PostListProps['posts'][number]): string => {
               </h2>
 
               <p class="shrink-0 pt-1 text-sm text-neutral-400 dark:text-neutral-500">
-                {formatPreviewDate(post.data.pubDate)}
+                {formatContentDate(post.data.pubDate)}
               </p>
             </div>
 

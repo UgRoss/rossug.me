@@ -1,13 +1,6 @@
 import type { ThemeConfig } from './types'
 
 export const themeConfig: ThemeConfig = {
-  // DATE SETTINGS ///////////////////////////////////////////////////////////////////////////////////////
-  date: {
-    dateFormat: 'YYYY-MM-DD', // Date format: YYYY-MM-DD, MM-DD-YYYY, DD-MM-YYYY, MONTH DAY YYYY, DAY MONTH YYYY
-    dateOnRight: true, // Date position in post list (true for right, false for left)
-    dateSeparator: '.' // Date separator: . - / (except for MONTH DAY YYYY and DAY MONTH YYYY)
-  },
-
   // GENERAL SETTINGS ////////////////////////////////////////////////////////////////////////////////////
   general: {
     contentWidth: '38rem', // Content area width
