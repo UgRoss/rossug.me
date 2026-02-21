@@ -1,7 +1,10 @@
 ---
 title: 'Embedded Content'
+image: '/images/blog/preview-random.jpg'
 pubDate: '2025-06-06'
 ---
+
+![_embedded-content-preview](/images/blog/preview-random.jpg)
 
 Use these directives to embed media:
 

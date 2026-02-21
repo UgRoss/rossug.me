@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content'
 
 import { render } from 'astro:content'
 
+import BackLink from '@/components/ui/BackLink.astro'
 import Tag from '@/components/ui/Tag.astro'
 import PostLayout from '@/layouts/PostLayout.astro'
 import { getFilteredNotes } from '@/utils/notes'
@@ -22,6 +23,8 @@ const { Content } = await render(note)
 ---
 
 <PostLayout pubDate={note.data.pubDate} title={note.data.title}>
+  <BackLink href="/notes" label="Notes" slot="back-link" />
+
   <div class="mb-4">
     <Tag
       href={`/notes?category=${encodeURIComponent(note.data.category)}`}
@@ -30,13 +33,4 @@ const { Content } = await render(note)
   </div>
 
   <Content />
-
-  <div class="mt-8 border-t border-neutral-200 pt-6 dark:border-neutral-800">
-    <a
-      class="inline-flex items-center text-sm text-neutral-600 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
-      href="/notes"
-    >
-      ← Back to all notes
-    </a>
-  </div>
 </PostLayout>

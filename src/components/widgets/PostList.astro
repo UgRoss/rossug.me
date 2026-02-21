@@ -1,25 +1,59 @@
 ---
 import type { PostListProps } from '@/types'
 
+import FormattedDate from '@/components/widgets/FormattedDate.astro'
+import { createExcerpt } from '@/utils/createExcerpt'
+
 const { posts } = Astro.props as PostListProps
+
+const EXCERPT_LENGTH = 120
+
+const getPostExcerpt = (post: PostListProps['posts'][number]): string => {
+  const excerpt = post.data.excerpt ?? createExcerpt(post.body ?? '')
+
+  if (excerpt.length <= EXCERPT_LENGTH) {
+    return excerpt
+  }
+
+  return `${excerpt.substring(0, EXCERPT_LENGTH).trimEnd()}...`
+}
 ---
 
-<ul class="index-list index-list-focus">
+<ul class="mt-8 space-y-8">
   {
     posts.map((post) => (
-      <li class="index-item">
-        <a class="index-link" href={`/blog/${post.id}/`}>
-          <span class="index-title">{post.data.title}</span>
+      <li class="list-none">
+        <article>
+          <a
+            class="group -mx-4 block rounded-xl px-4 py-4 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
+            href={`/blog/${post.id}/`}
+          >
+            {post.data.image && (
+              <div class="mb-5 overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 dark:border-neutral-800 dark:bg-neutral-900">
+                <img
+                  alt={post.data.title}
+                  class="h-auto w-full object-cover transition-transform duration-300 group-hover:scale-[1.01]"
+                  loading="lazy"
+                  src={post.data.image}
+                />
+              </div>
+            )}
 
-          <span class="index-leader" />
+            <div class="flex items-start justify-between gap-4">
+              <h2 class="inline-block pb-0.5 text-lg leading-tight font-semibold text-neutral-900 transition-colors group-hover:text-neutral-700 dark:border-neutral-700 dark:text-neutral-100 dark:group-hover:text-neutral-300">
+                {post.data.title}
+              </h2>
 
-          <span class="index-meta">
-            {post.data.pubDate.toLocaleDateString(undefined, {
-              month: 'short',
-              day: 'numeric'
-            })}
-          </span>
-        </a>
+              <p class="shrink-0 pt-1 text-sm text-neutral-400 dark:text-neutral-500">
+                <FormattedDate date={post.data.pubDate} />
+              </p>
+            </div>
+
+            <p class="mt-2 max-w-3xl text-neutral-700 dark:text-neutral-300">
+              {getPostExcerpt(post)}
+            </p>
+          </a>
+        </article>
       </li>
     ))
   }

@@ -1,6 +1,7 @@
 ---
 import { render } from 'astro:content'
 
+import BackLink from '@/components/ui/BackLink.astro'
 import PostLayout from '@/layouts/PostLayout.astro'
 import { getFilteredPosts } from '@/utils/draft'
 
@@ -17,14 +18,7 @@ const { Content } = await render(post)
 ---
 
 <PostLayout {...post.data}>
-  <Content />
+  <BackLink href="/blog" label="Posts" slot="back-link" />
 
-  <div class="mt-8 border-t border-neutral-200 pt-6 dark:border-neutral-800">
-    <a
-      class="inline-flex items-center text-sm text-neutral-600 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
-      href="/blog"
-    >
-      ← Back to blog
-    </a>
-  </div>
+  <Content />
 </PostLayout>
