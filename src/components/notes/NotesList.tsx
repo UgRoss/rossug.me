@@ -3,6 +3,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { formatPreviewDate } from '@/utils/preview-date'
+
 interface Note {
   category: string
   excerpt?: string
@@ -14,15 +16,6 @@ interface Note {
 interface NotesListProps {
   categories: string[]
   notes: Note[]
-}
-
-const formatDate = (dateStr: string): string => {
-  const date = new Date(dateStr)
-  return date.toLocaleDateString('en-US', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric'
-  })
 }
 
 export default function NotesList({ categories, notes: initialNotes }: NotesListProps) {
@@ -183,7 +176,7 @@ function NoteItem({ note }: { note: Note }) {
           <span className="tag hidden cursor-default! sm:inline-flex">{note.category}</span>
         </div>
         <span className="shrink-0 text-sm whitespace-nowrap text-muted">
-          <time dateTime={note.pubDate}>{formatDate(note.pubDate)}</time>
+          <time dateTime={note.pubDate}>{formatPreviewDate(note.pubDate)}</time>
         </span>
       </a>
     </li>

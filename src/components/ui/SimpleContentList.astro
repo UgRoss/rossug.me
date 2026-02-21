@@ -2,7 +2,7 @@
 // ABOUTME: Reusable minimal list for linked content rows with optional badge and date.
 // ABOUTME: Matches the visual style used by the notes list for consistent scanning.
 
-import { format, parseISO } from 'date-fns'
+import { formatPreviewDate, toDateTimeAttr } from '@/utils/preview-date'
 
 interface SimpleContentListItem {
   date: Date | string
@@ -17,11 +17,6 @@ interface Props {
 }
 
 const { emptyMessage = 'No items found.', items } = Astro.props as Props
-
-const formatItemDate = (value: Date | string): string => {
-  const date = typeof value === 'string' ? parseISO(value) : value
-  return format(date, 'MMM d, yyyy')
-}
 ---
 
 <ul class="my-5 flex list-none flex-col gap-0.5 p-0">
@@ -43,8 +38,8 @@ const formatItemDate = (value: Date | string): string => {
               )}
             </div>
             <span class="shrink-0 text-sm whitespace-nowrap text-muted">
-              <time datetime={typeof item.date === 'string' ? item.date : item.date.toISOString()}>
-                {formatItemDate(item.date)}
+              <time datetime={toDateTimeAttr(item.date)}>
+                {formatPreviewDate(item.date)}
               </time>
             </span>
           </a>
