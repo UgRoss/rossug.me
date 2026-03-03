@@ -11,6 +11,14 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@utility text-muted {
+  color: var(--text-secondary);
+}
+
+@utility text-faint {
+  color: var(--text-tertiary);
+}
+
 @theme {
   --font-sans:
     'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
@@ -23,7 +31,7 @@
 @layer base {
   :root {
     /* Min Content Width */
-    --content-width: 40rem;
+    --content-width: 38rem;
 
     /* Typography */
     --font-size-s: 0.8125rem;
@@ -137,10 +145,6 @@
 
   a {
     @apply text-(--text-primary) no-underline transition-colors duration-200;
-  }
-
-  a:hover {
-    @apply text-(--text-secondary);
   }
 
   h1,

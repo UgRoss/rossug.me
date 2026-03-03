@@ -1,63 +1,17 @@
-import { format, formatDistanceToNow } from 'date-fns'
+// ABOUTME: Shared helpers for compact content date formatting across Astro and React.
+// ABOUTME: Uses a year-aware format so older content shows month and year for clarity.
 
-import type { DateFormat } from '@/types'
+import { format, isSameYear, parseISO } from 'date-fns'
 
-import { themeConfig } from '@/config'
+export type DateValue = Date | string
 
-const VALID_SEPARATORS = ['.', '-', '/']
+const toDate = (value: DateValue): Date => (typeof value === 'string' ? parseISO(value) : value)
 
-/**
- * Format date according to the specified format string
- * @param date - The date to format
- * @param formatOverride - Optional format override
- * @returns Formatted date string
- */
-export function formatDate(date: Date, formatOverride?: string): string {
-  const formatStr = (formatOverride || themeConfig.date.dateFormat).trim()
-  const configSeparator = themeConfig.date.dateSeparator || '-'
+export const formatContentDate = (value: DateValue): string => {
+  const date = toDate(value)
 
-  const separator = VALID_SEPARATORS.includes(configSeparator.trim()) ? configSeparator.trim() : '.'
-
-  switch (formatStr) {
-    case 'DAY MONTH YYYY': {
-      const day = format(date, 'd')
-      const monthName = format(date, 'MMM')
-      const year = format(date, 'yyyy')
-      return `${day} <span class="month">${monthName}</span> ${year}`
-    }
-
-    case 'DD-MM-YYYY':
-      return format(date, `dd${separator}MM${separator}yyyy`)
-
-    case 'MM-DD-YYYY':
-      return format(date, `MM${separator}dd${separator}yyyy`)
-
-    case 'MONTH DAY YYYY': {
-      const monthName = format(date, 'MMM')
-      const day = format(date, 'd')
-      const year = format(date, 'yyyy')
-      return `<span class="month">${monthName}</span> ${day} ${year}`
-    }
-
-    case 'YYYY-MM-DD':
-      return format(date, `yyyy${separator}MM${separator}dd`)
-
-    default:
-      return format(date, `yyyy${separator}MM${separator}dd`)
-  }
+  return isSameYear(date, new Date()) ? format(date, 'MMM d') : format(date, 'MMM yyyy')
 }
 
-/**
- * Format date as "time ago" (e.g., "1 month ago", "2 years ago")
- */
-export function timeAgo(date: Date): string {
-  return formatDistanceToNow(date, { addSuffix: true })
-}
-
-export const SUPPORTED_DATE_FORMATS: readonly DateFormat[] = [
-  'YYYY-MM-DD',
-  'MM-DD-YYYY',
-  'DD-MM-YYYY',
-  'MONTH DAY YYYY',
-  'DAY MONTH YYYY'
-] as const
+export const toDateTimeAttr = (value: DateValue): string =>
+  typeof value === 'string' ? value : value.toISOString()

@@ -1,10 +1,12 @@
 ---
+// ABOUTME: Notes (TIL) listing page with pagination.
+
 import type { GetStaticPaths } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 
-import NoteListItem from '@/components/notes/NoteListItem'
 import NotesList from '@/components/notes/NotesList'
 import Pagination from '@/components/ui/Pagination.astro'
+import FormattedDate from '@/components/widgets/FormattedDate.astro'
 import { themeConfig } from '@/config'
 import IndexLayout from '@/layouts/IndexLayout.astro'
 import { getSortedFilteredNotes, getUniqueNotesCategories } from '@/utils/notes'
@@ -31,6 +33,14 @@ interface Props {
 
 const { categories, page } = Astro.props
 const sortedNotes = page.data
+
+const serializedNotes = sortedNotes.map((note) => ({
+  category: note.data.category,
+  excerpt: note.data.excerpt,
+  id: note.id,
+  pubDate: note.data.pubDate.toISOString(),
+  title: note.data.title
+}))
 ---
 
 <IndexLayout
@@ -40,31 +50,37 @@ const sortedNotes = page.data
   <div class="py-8">
     <div class="mb-8">
       <h1 class="mb-2 text-3xl font-bold">Notes</h1>
-      <p class="text-neutral-600 dark:text-neutral-400">
-        TILs (Today I Learned) and quick technical snippets.
-      </p>
+      <p class="text-muted">TILs (Today I Learned) and quick technical snippets.</p>
     </div>
 
-    {/* React component for filtering controls */}
-    <NotesList categories={categories} client:load />
+    <NotesList categories={categories} client:load notes={serializedNotes} />
 
-    {/* Render lists for current page */}
-    <ul class="index-list index-list-focus" id="notes-container-server">
-      {
-        sortedNotes.map((note) => (
-          <NoteListItem
-            category={note.data.category}
-            excerpt={note.data.excerpt}
-            id={note.id}
-            pubDate={note.data.pubDate.toISOString()}
-            title={note.data.title}
-            client:load
-          />
-        ))
-      }
-    </ul>
+    {/* No-JS fallback — hidden once React hydrates */}
+    <noscript>
+      <ul class="my-5 flex list-none flex-col gap-0.5 p-0">
+        {
+          sortedNotes.map((note) => (
+            <li class="group list-none">
+              <a
+                href={`/notes/${note.id}`}
+                title={note.data.title}
+                class="-mx-2 flex items-center justify-between gap-6 rounded-sm px-2 py-1 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
+              >
+                <div class="flex min-w-0 items-center gap-2">
+                  <span>{note.data.title}</span>
+                  <span class="tag cursor-default!">{note.data.category}</span>
+                </div>
+                <span class="shrink-0 text-sm whitespace-nowrap text-muted">
+                  <FormattedDate date={note.data.pubDate} />
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </noscript>
 
-    <div class="pagination-container" id="pagination-container">
+    <div id="notes-pagination">
       <Pagination
         currentPage={page.currentPage}
         lastPage={page.lastPage}

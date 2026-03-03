@@ -1,0 +1,21 @@
+---
+// ABOUTME: Reusable back-navigation link with a subtle animated arrow on hover.
+// ABOUTME: Used on detail pages to return to section index pages like posts or notes.
+
+interface Props {
+  href: string
+  label: string
+}
+
+const { href, label } = Astro.props as Props
+---
+
+<a
+  class="group mb-6 inline-flex items-center gap-1.5 font-semibold text-muted no-underline! transition-colors hover:text-(--text-primary)"
+  href={href}
+>
+  <span aria-hidden="true" class="transition-transform duration-200 group-hover:-translate-x-1"
+    >←</span
+  >
+  <span>{label}</span>
+</a>

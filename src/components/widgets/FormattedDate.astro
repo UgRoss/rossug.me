@@ -1,32 +1,9 @@
 ---
 import type { FormattedDateProps } from '@/types'
 
-import { themeConfig } from '@/config'
-import { formatDate } from '@/utils/date'
+import { formatContentDate, toDateTimeAttr } from '@/utils/date'
 
-const {
-  context = 'default',
-  date,
-  format
-} = Astro.props as { context?: 'default' | 'list' | 'post' } & FormattedDateProps
+const { date } = Astro.props as FormattedDateProps
 ---
 
-<time
-  class={!themeConfig.date.dateOnRight &&
-  (themeConfig.date.dateFormat === 'MONTH DAY YYYY' ||
-    themeConfig.date.dateFormat === 'DAY MONTH YYYY') &&
-  context === 'list'
-    ? 'date-left'
-    : ''}
-  datetime={date.toISOString()}
->
-  <Fragment set:html={formatDate(date, format)} />
-</time>
-
-<style>
-  .date-left {
-    display: inline-block;
-    min-width: 86px;
-    text-align: right;
-  }
-</style>
+<time datetime={toDateTimeAttr(date)}>{formatContentDate(date)}</time>
