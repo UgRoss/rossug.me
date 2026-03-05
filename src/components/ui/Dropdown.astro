@@ -1,0 +1,84 @@
+---
+// ABOUTME: Reusable dropdown primitive built on the native <details>/<summary> elements.
+// ABOUTME: Supports click-outside-to-close and Escape key, with slots for trigger and content.
+
+interface Props {
+  align?: 'left' | 'right'
+  class?: string
+  id?: string
+}
+
+const { align = 'left', class: className, id } = Astro.props
+---
+
+<details class:list={['dropdown group relative', className]} id={id}>
+  <summary class="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+    <slot name="trigger" />
+  </summary>
+  <div
+    class:list={[
+      'absolute top-[calc(100%+0.375rem)] z-50 min-w-34 rounded-lg border border-(--border) bg-(--bg) p-1 shadow-md select-none',
+      align === 'right' ? 'right-0' : 'left-0'
+    ]}
+  >
+    <slot />
+  </div>
+</details>
+
+<script is:inline>
+  ;(() => {
+    const BOUND_KEY = '__dropdownHandlersBound'
+    const DROPDOWN_SELECTOR = 'details.dropdown'
+
+    const closeAllDropdowns = (exceptElement = null) => {
+      const openDropdowns = document.querySelectorAll(`${DROPDOWN_SELECTOR}[open]`)
+      for (const dropdown of openDropdowns) {
+        if (!exceptElement || dropdown !== exceptElement) {
+          dropdown.removeAttribute('open')
+        }
+      }
+    }
+
+    const handleDropdownToggle = (event) => {
+      const target = event.target
+      if (!(target instanceof HTMLDetailsElement)) return
+      if (!target.matches(DROPDOWN_SELECTOR)) return
+
+      if (target.open) {
+        // Ensure only one dropdown can be open at a time.
+        closeAllDropdowns(target)
+      }
+    }
+
+    const handleDocumentClick = (event) => {
+      const target = event.target
+      if (!(target instanceof Element)) {
+        closeAllDropdowns()
+        return
+      }
+
+      if (!target.closest(DROPDOWN_SELECTOR)) {
+        closeAllDropdowns()
+      }
+    }
+
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        closeAllDropdowns()
+      }
+    }
+
+    const initDropdowns = () => {
+      if (window[BOUND_KEY]) return
+
+      document.addEventListener('toggle', handleDropdownToggle, true)
+      document.addEventListener('click', handleDocumentClick)
+      document.addEventListener('keydown', handleEscape)
+
+      window[BOUND_KEY] = true
+    }
+
+    window.addEventListener('DOMContentLoaded', initDropdowns)
+    document.addEventListener('astro:page-load', initDropdowns)
+  })()
+</script>

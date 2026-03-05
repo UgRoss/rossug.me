@@ -1,55 +1,134 @@
 ---
-import Icon from '@/components/ui/Icon.astro'
+// ABOUTME: Full-width site header with avatar, primary nav links, "More" dropdown, and theme toggle.
+// ABOUTME: Responsive design hides the avatar on small screens to conserve space.
 
-// Get the current path to determine active state
+import Dropdown from '@/components/ui/Dropdown.astro'
+import ThemeToggle from '@/components/ui/ThemeToggle.astro'
+
 const currentPath = Astro.url.pathname
 
 interface NavItem {
-  icon?: string
-  id: string
+  href: string
   label: string
-  path: string
 }
 
-// Navigation items configuration
-const navItems: NavItem[] = [
-  { id: 'home', label: 'Home', path: '/' },
-  { id: 'blog', label: 'Blog', path: '/blog' },
-  { id: 'notes', label: 'Notes', path: '/notes' },
-  { id: 'reading', label: 'Reading', path: '/reading' }
+const primaryLinks: NavItem[] = [
+  { href: '/', label: 'About' },
+  { href: '/blog', label: 'Blog' }
 ]
 
-// Function to check if a nav item is active
-const isActive = (path: string) => {
-  if (path === '/') {
-    return currentPath === '/'
-  }
-  return currentPath.startsWith(path)
+const moreLinks: NavItem[] = [
+  { href: '/notes', label: 'Notes' },
+  { href: '/reading', label: 'Reading' },
+  { href: '/colophon', label: 'Colophon' },
+  { href: '/uses', label: 'Uses' }
+]
+
+const navLinkClass =
+  'flex items-center gap-1 rounded-md px-3 py-1.5 text-[length:var(--font-size-m)] font-medium text-(--text-secondary) no-underline transition-colors duration-150 hover:bg-(--selection) hover:text-(--text-primary)'
+
+const dropdownItemClass =
+  'block rounded-md px-3 py-1.5 text-[length:var(--font-size-m)] font-medium text-(--text-secondary) no-underline transition-colors duration-150 hover:bg-(--selection) hover:text-(--text-primary)'
+
+const isActive = (href: string): boolean => {
+  if (href === '/') return currentPath === '/'
+  return currentPath.startsWith(href)
 }
+
+const isMoreActive = moreLinks.some((link) => isActive(link.href))
 ---
 
-<nav class="fixed top-8 left-1/2 -translate-x-1/2 z-50">
-  <div
-    class="flex items-center gap-1 p-1 bg-white/70 backdrop-blur-md border border-neutral-200 rounded-full shadow-lg transition-all hover:shadow-xl dark:bg-neutral-800/70 dark:border-neutral-700"
-  >
-    {
-      navItems.map((item) => {
-        const active = isActive(item.path)
-        return (
+<header
+  class="navbar-header sticky top-0 z-50 border-b border-transparent py-2 [background-color:color-mix(in_srgb,var(--bg)_80%,transparent)] backdrop-blur-[12px] transition-colors duration-200"
+>
+  <nav class="container mx-auto flex h-12 max-w-150 items-center justify-between" aria-label="Main navigation">
+    <div class="flex items-center gap-1 sm:gap-2">
+      <a href="/" class="mr-1 hidden shrink-0 items-center justify-center sm:flex" aria-label="Home">
+        <img src="/favicon.svg" alt="" class="size-7 rounded-full" width="32" height="32" />
+      </a>
+
+      {
+        primaryLinks.map((link) => (
           <a
-            class:list={[
-              'flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all',
-              active
-                ? 'bg-neutral-900 text-white shadow-sm dark:bg-white dark:text-neutral-900'
-                : 'text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:text-white dark:hover:bg-neutral-700'
-            ]}
-            href={item.path}
+            href={link.href}
+            aria-current={isActive(link.href) ? 'page' : undefined}
+            class:list={[navLinkClass, { 'is-active': isActive(link.href) }]}
           >
-            {item.icon && <Icon icon={item.icon} size={16} />}
-            <span class="hidden sm:inline">{item.label}</span>
+            {link.label}
           </a>
-        )
-      })
+        ))
+      }
+
+      <Dropdown class="navbar-more-dropdown">
+        <span
+          aria-current={isMoreActive ? 'page' : undefined}
+          class:list={[navLinkClass, 'font-inherit tracking-inherit', { 'is-active': isMoreActive }]}
+          slot="trigger"
+        >
+          More
+          <svg
+            class="navbar-chevron transition-transform duration-200"
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M3 4.5L6 7.5L9 4.5"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </span>
+        {
+          moreLinks.map((link) => (
+            <a
+              href={link.href}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+              class:list={[dropdownItemClass, { 'is-active': isActive(link.href) }]}
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </Dropdown>
+    </div>
+
+    <ThemeToggle />
+  </nav>
+</header>
+
+<script is:inline>
+  const initNavbarScroll = () => {
+    const header = document.querySelector('.navbar-header')
+    if (!header) return
+
+    const updateBorder = () => {
+      if (window.scrollY > 0) {
+        header.classList.add('border-(--border)')
+        header.classList.remove('border-transparent')
+      } else {
+        header.classList.remove('border-(--border)')
+        header.classList.add('border-transparent')
+      }
     }
-  </div>
-</nav>
+
+    updateBorder()
+    window.addEventListener('scroll', updateBorder, { passive: true })
+  }
+
+  window.addEventListener('DOMContentLoaded', initNavbarScroll)
+  document.addEventListener('astro:page-load', initNavbarScroll)
+</script>
+
+<style>
+  .is-active {
+    color: var(--text-primary);
+  }
+
+  .navbar-more-dropdown[open] .navbar-chevron {
+    transform: rotate(180deg);
+  }
+</style>

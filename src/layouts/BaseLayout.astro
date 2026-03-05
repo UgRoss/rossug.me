@@ -23,10 +23,9 @@ const fadeAnimation = themeConfig.general.fadeAnimation
     <slot name="head" />
   </head>
   <body>
+    <FaviconThemeSwitcher />
+    <Navbar />
     <div class="app-wrapper">
-      <FaviconThemeSwitcher />
-      <Navbar />
-
       {
         fadeAnimation ? (
           <TransitionWrapper class="layout-wrapper" type={type}>
@@ -44,15 +43,15 @@ const fadeAnimation = themeConfig.general.fadeAnimation
 
 <style is:global>
   .layout-wrapper {
-    padding-top: 5rem;
+    padding-top: 1.5rem;
     display: flex;
     flex-direction: column;
-    min-height: calc(100vh - 7.5rem);
+    min-height: calc(100vh - 5rem);
   }
 
   @media (max-width: 768px) {
     .layout-wrapper {
-      min-height: calc(100vh - 5.5rem);
+      min-height: calc(100vh - 4.5rem);
     }
   }
 </style>

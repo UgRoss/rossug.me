@@ -7,7 +7,7 @@ export const themeConfig: ThemeConfig = {
     fadeAnimation: true, // Enable fade animations
     footer: true, // Show footer
     postListDottedDivider: false, // Show dotted divider in post list
-    themeToggle: false // Show theme toggle button (uses system theme by default)
+    themeToggle: true // Show theme toggle button
   },
 
   // PAGINATION SETTINGS /////////////////////////////////////////////////////////////////////////////////
