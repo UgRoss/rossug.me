@@ -19,7 +19,7 @@ interface Props {
 const { emptyMessage = 'No items found.', items } = Astro.props as Props
 ---
 
-<ul class="my-5 flex list-none flex-col gap-0.5 p-0">
+<ul class="my-5 flex list-none flex-col p-0">
   {
     items.length === 0 ? (
       <li class="list-none py-4 text-sm text-muted">{emptyMessage}</li>
@@ -27,7 +27,7 @@ const { emptyMessage = 'No items found.', items } = Astro.props as Props
       items.map((item) => (
         <li class="group list-none">
           <a
-            class="-mx-2 flex items-center justify-between gap-6 rounded-sm px-2 py-1 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
+            class="-mx-2 flex items-center justify-between gap-6 rounded-sm px-2 py-1.5 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
             href={item.href}
             title={item.title}
           >

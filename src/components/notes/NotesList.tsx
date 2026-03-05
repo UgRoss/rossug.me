@@ -143,7 +143,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
       </div>
 
       {/* Notes list */}
-      <ul className="my-5 flex list-none flex-col gap-0.5 p-0">
+      <ul className="my-5 flex list-none flex-col p-0">
         {displayNotes.length === 0 ? (
           <li className="list-none py-4 text-sm text-muted">No notes found.</li>
         ) : (
@@ -158,7 +158,7 @@ function NoteItem({ note }: { note: Note }) {
   return (
     <li className="group list-none">
       <a
-        className="-mx-2 flex items-center justify-between gap-6 rounded-sm px-2 py-1 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
+        className="-mx-2 flex items-center justify-between gap-6 rounded-sm px-2 py-1.5 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
         href={`/notes/${note.id}`}
         title={note.title}
       >
