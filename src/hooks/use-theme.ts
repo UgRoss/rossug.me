@@ -28,7 +28,6 @@ export const useTheme = () => {
 
   return {
     appliedTheme,
-    isDark: appliedTheme === 'dark',
     mode,
     setMode
   }

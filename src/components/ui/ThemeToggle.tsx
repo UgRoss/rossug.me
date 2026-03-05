@@ -18,7 +18,7 @@ const isThemeMode = (value: string): value is ThemeMode =>
   value === 'system' || value === 'light' || value === 'dark'
 
 const ThemeToggle = () => {
-  const { isDark, mode, setMode } = useTheme()
+  const { mode, setMode } = useTheme()
 
   const handleModeChange = (value: string) => {
     if (!isThemeMode(value)) return
@@ -33,11 +33,8 @@ const ThemeToggle = () => {
           className="flex size-8 cursor-pointer items-center justify-center rounded-md text-muted transition-colors duration-150 hover:bg-(--selection) hover:text-(--text-primary)"
           type="button"
         >
-          {isDark ? (
-            <Moon aria-hidden="true" className="size-4.5" />
-          ) : (
-            <Sun aria-hidden="true" className="size-4.5" />
-          )}
+          <Sun aria-hidden="true" className="size-4.5 dark:hidden" />
+          <Moon aria-hidden="true" className="hidden size-4.5 dark:block" />
         </button>
       </DropdownMenu.Trigger>
 
