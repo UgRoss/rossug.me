@@ -111,9 +111,16 @@ const isMoreActive = moreLinks.some((link) => isActive(link.href))
 </header>
 
 <script is:inline>
+  const NAVBAR_SCROLL_HANDLER_KEY = '__navbarScrollHandler'
+
   const initNavbarScroll = () => {
     const header = document.querySelector('.navbar-header')
-    if (!header) return
+    if (!(header instanceof HTMLElement)) return
+
+    const previousHandler = window[NAVBAR_SCROLL_HANDLER_KEY]
+    if (typeof previousHandler === 'function') {
+      window.removeEventListener('scroll', previousHandler)
+    }
 
     const updateBorder = () => {
       if (window.scrollY > 0) {
@@ -127,9 +134,10 @@ const isMoreActive = moreLinks.some((link) => isActive(link.href))
 
     updateBorder()
     window.addEventListener('scroll', updateBorder, { passive: true })
+    window[NAVBAR_SCROLL_HANDLER_KEY] = updateBorder
   }
 
-  window.addEventListener('DOMContentLoaded', initNavbarScroll)
+  initNavbarScroll()
   document.addEventListener('astro:page-load', initNavbarScroll)
 </script>
 
