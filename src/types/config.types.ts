@@ -3,7 +3,6 @@ export interface GeneralSettings {
   contentWidth: string
   fadeAnimation: boolean
   footer: boolean
-  postListDottedDivider: boolean
   themeToggle: boolean
 }
 

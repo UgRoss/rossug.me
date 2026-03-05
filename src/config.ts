@@ -6,7 +6,6 @@ export const themeConfig: ThemeConfig = {
     contentWidth: '42rem', // Content area width
     fadeAnimation: true, // Enable fade animations
     footer: true, // Show footer
-    postListDottedDivider: false, // Show dotted divider in post list
     themeToggle: true // Show theme toggle button
   },
 

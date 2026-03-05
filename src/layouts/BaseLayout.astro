@@ -5,7 +5,6 @@ import type { LayoutProps } from '@/types'
 
 import Navbar from '@/components/layout/Navbar.astro'
 import TransitionWrapper from '@/components/layout/TransitionWrapper.astro'
-import FaviconThemeSwitcher from '@/components/ui/FaviconThemeSwitcher.astro'
 import ThemeManager from '@/components/ui/ThemeManager.astro'
 import { themeConfig } from '@/config'
 
@@ -23,7 +22,6 @@ const fadeAnimation = themeConfig.general.fadeAnimation
     <slot name="head" />
   </head>
   <body>
-    <FaviconThemeSwitcher />
     <Navbar />
     <div class="app-wrapper">
       {

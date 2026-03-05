@@ -2,8 +2,9 @@
 // ABOUTME: Full-width site header with avatar, primary nav links, "More" dropdown, and theme toggle.
 // ABOUTME: Responsive design hides the avatar on small screens to conserve space.
 
+import { themeConfig } from '@/config'
 import Dropdown from '@/components/ui/Dropdown.astro'
-import ThemeToggle from '@/components/ui/ThemeToggle.astro'
+import ThemeToggle from '@/components/ui/ThemeToggle'
 
 const currentPath = Astro.url.pathname
 
@@ -106,7 +107,7 @@ const isMoreActive = moreLinks.some((link) => isActive(link.href))
       </Dropdown>
     </div>
 
-    <ThemeToggle />
+    {themeConfig.general.themeToggle && <ThemeToggle client:idle />}
   </nav>
 </header>
 
