@@ -51,9 +51,14 @@ const ThemeToggle = () => {
                 key={value}
                 value={value}
               >
-                <DropdownMenu.ItemIndicator asChild>
-                  <Check aria-hidden="true" className="size-3.5 shrink-0" />
-                </DropdownMenu.ItemIndicator>
+                <span
+                  aria-hidden="true"
+                  className="inline-flex size-3.5 shrink-0 items-center justify-center"
+                >
+                  <DropdownMenu.ItemIndicator asChild>
+                    <Check className="size-3.5" />
+                  </DropdownMenu.ItemIndicator>
+                </span>
                 <span>{label}</span>
               </DropdownMenu.RadioItem>
             ))}
