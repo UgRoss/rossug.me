@@ -19,11 +19,10 @@ const themeOptions = [
 
 {
   themeConfig.general.themeToggle && (
-    <Dropdown align="right" id="theme-selector">
+    <Dropdown align="right" id="theme-selector" triggerAriaLabel="Theme settings">
       <span
         slot="trigger"
         class="flex size-8 cursor-pointer items-center justify-center rounded-md text-(--text-secondary) transition-colors duration-150 hover:bg-(--selection) hover:text-(--text-primary)"
-        aria-label="Theme settings"
       >
         <span
           class="theme-icon-sun leading-none [&>svg]:size-[1.125rem]"
@@ -75,7 +74,7 @@ const themeOptions = [
       var options = selector.querySelectorAll('.theme-option')
       for (var i = 0; i < options.length; i++) {
         var isSelected = options[i].getAttribute('data-theme') === mode
-        options[i].setAttribute('aria-checked', String(isSelected))
+        options[i].setAttribute('aria-pressed', String(isSelected))
         options[i].classList.toggle('selected', isSelected)
       }
     }
