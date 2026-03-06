@@ -46,7 +46,7 @@
 <script>
   import { getMode, syncTheme } from '@/utils/theme-controller'
 
-  const themeWindow = window as Window & { __themeManagerListenersBound?: boolean }
+  const themeWindow = window as { __themeManagerListenersBound?: boolean } & Window
 
   syncTheme()
 

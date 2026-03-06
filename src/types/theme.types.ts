@@ -3,9 +3,9 @@
 
 export type AppliedTheme = 'dark' | 'light'
 
-export type ThemeMode = 'system' | AppliedTheme
-
 export interface ThemeChangeDetail {
   appliedTheme: AppliedTheme
   mode: ThemeMode
 }
+
+export type ThemeMode = 'system' | AppliedTheme

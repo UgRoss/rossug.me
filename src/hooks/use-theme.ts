@@ -8,7 +8,7 @@ import type { AppliedTheme, ThemeMode } from '@/types/theme.types'
 import { getEffectiveTheme, getMode, onThemeChange, setTheme } from '@/utils/theme-controller'
 
 export const useTheme = () => {
-  const [mode, setModeState] = useState<ThemeMode>()
+  const [mode, setModeState] = useState<ThemeMode>('system')
   const [appliedTheme, setAppliedTheme] = useState<AppliedTheme>()
 
   useEffect(() => {

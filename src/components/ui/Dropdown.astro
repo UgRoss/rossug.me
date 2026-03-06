@@ -14,8 +14,8 @@ const { align = 'left', class: className, id, triggerAriaLabel } = Astro.props
 
 <details class:list={['dropdown group relative', className]} id={id}>
   <summary
-    class="cursor-pointer list-none [&::-webkit-details-marker]:hidden"
     aria-label={triggerAriaLabel}
+    class="cursor-pointer list-none [&::-webkit-details-marker]:hidden"
   >
     <slot name="trigger" />
   </summary>
