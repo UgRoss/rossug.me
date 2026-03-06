@@ -5,33 +5,29 @@ const today = new Date()
 
 const navLinks = [
   { href: '/colophon', label: 'Colophon' },
-  { href: '/uses', label: 'Uses' },
   { href: '/rss.xml', label: 'RSS' }
 ]
 ---
 
-<footer class="mt-8 py-8 border-t border-(--border)">
+<footer class="mt-8 border-t border-(--border) py-8">
   <div
-    class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 font-medium"
+    class="flex flex-col items-start justify-between gap-4 font-medium sm:flex-row sm:items-center"
   >
-    <div class="text-(--text-secondary) text-[length:var(--font-size-m)]">
+    <div class="text-(length:--font-size-m) text-muted">
       &copy; {today.getFullYear()}
       {themeConfig.site.author}
     </div>
 
-    <div class="flex items-center gap-2 text-[length:var(--font-size-m)]">
+    <div class="flex items-center gap-2 text-(length:--font-size-m)">
       {
         navLinks.map((link, index) => (
           <>
             {index > 0 && (
-              <span aria-hidden="true" class="text-(--text-tertiary)">
+              <span aria-hidden="true" class="text-faint">
                 ·
               </span>
             )}
-            <a
-              class="text-(--text-secondary) hover:text-(--text-primary) transition-colors"
-              href={link.href}
-            >
+            <a class="text-muted transition-colors hover:text-(--text-primary)" href={link.href}>
               {link.label}
             </a>
           </>

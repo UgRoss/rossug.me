@@ -4,16 +4,16 @@
 
 import FormattedDate from '@/components/widgets/FormattedDate.astro'
 
+interface Props {
+  emptyMessage?: string
+  items: SimpleContentListItem[]
+}
+
 interface SimpleContentListItem {
   date: Date | string
   href: string
   label?: string
   title: string
-}
-
-interface Props {
-  emptyMessage?: string
-  items: SimpleContentListItem[]
 }
 
 const { emptyMessage = 'No items found.', items } = Astro.props as Props

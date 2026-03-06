@@ -23,3 +23,4 @@ This document provides context and guidelines for AI agents working on this proj
 - **Files**: `kebab-case.extension`.
 - **Indentation**: 2 spaces.
 - **Imports**: Group imports alphabetically and group by type (types, then globals, then locals). Always import types separately from values.
+- Never use `var`. Use `const` or `let` as appropriate. Use modern JavaScript features.

@@ -62,9 +62,9 @@ const serializedNotes = sortedNotes.map((note) => ({
           sortedNotes.map((note) => (
             <li class="group list-none">
               <a
+                class="-mx-2 flex items-center justify-between gap-6 rounded-sm px-2 py-1 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
                 href={`/notes/${note.id}`}
                 title={note.data.title}
-                class="-mx-2 flex items-center justify-between gap-6 rounded-sm px-2 py-1 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
               >
                 <div class="flex min-w-0 items-center gap-2">
                   <span>{note.data.title}</span>

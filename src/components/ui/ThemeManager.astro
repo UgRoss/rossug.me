@@ -9,147 +9,60 @@
 
   html.dark {
     --bg: #1c1c1c;
+    color-scheme: dark;
   }
 
   html {
     background-color: var(--bg);
     color-scheme: light;
   }
-
-  html.dark {
-    color-scheme: dark;
-  }
 </style>
 
 <script is:inline>
-  // Global Theme Manager
   ;(function () {
-    // Prevent duplicate initialization
-    if (window.ThemeManager && window.ThemeManager.initialized) {
-      return
+    const SYSTEM_THEME_QUERY = '(prefers-color-scheme: dark)'
+    const STORAGE_KEY = 'rossug-theme'
+
+    // Apply as early as possible to avoid initial flash.
+    let storedTheme = null
+    try {
+      storedTheme = localStorage.getItem(STORAGE_KEY)
+    } catch {
+      storedTheme = null
     }
 
-    window.ThemeManager = {
-      applyTheme(theme) {
-      document.documentElement.classList.remove('light', 'dark')
-      document.documentElement.classList.add(theme)
+    const appliedTheme =
+      storedTheme === 'light' || storedTheme === 'dark'
+        ? storedTheme
+        : window.matchMedia(SYSTEM_THEME_QUERY).matches
+          ? 'dark'
+          : 'light'
 
-      // Dispatch event for other components
-      document.dispatchEvent(
-        new CustomEvent('themechange', {
-          detail: {
-            isSystemTheme: this.isUsingSystemTheme(),
-          isUserChoice: !this.isUsingSystemTheme(),
-          theme
-          }
-        })
-      )
-    },
-    getEffectiveTheme() {
-      const stored = this.getStoredTheme()
-      return stored || this.getSystemTheme()
-    },
+    document.documentElement.classList.toggle('dark', appliedTheme === 'dark')
+    document.documentElement.classList.toggle('light', appliedTheme === 'light')
+  })()
+</script>
 
-    getStoredTheme() {
-      try {
-        return localStorage.getItem(this.STORAGE_KEY)
-      } catch {
-        return null
-      }
-    },
+<script>
+  import { getMode, syncTheme } from '@/utils/theme-controller'
 
-    getSystemTheme() {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-    },
+  const themeWindow = window as { __themeManagerListenersBound?: boolean } & Window
 
-    init() {
-      if (this.initialized) return
+  syncTheme()
 
-      // Set initial theme (maintain current theme when refreshing page)
-      this.applyTheme(this.getEffectiveTheme())
+  if (!themeWindow.__themeManagerListenersBound) {
+    const media = window.matchMedia('(prefers-color-scheme: dark)')
 
-      // Listen for system theme changes
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        const newSystemTheme = e.matches ? 'dark' : 'light'
-
-        // Always follow system theme changes and update stored theme preference
-        this.setStoredTheme(newSystemTheme)
-        this.applyTheme(newSystemTheme)
-      })
-
-      this.initialized = true
-    },
-
-    initialized: false,
-
-    isUsingSystemTheme() {
-      return this.getStoredTheme() === null
-    },
-
-    setStoredTheme(theme) {
-      try {
-        if (theme === 'system') {
-          localStorage.removeItem(this.STORAGE_KEY)
-        } else {
-          localStorage.setItem(this.STORAGE_KEY, theme)
-        }
-      } catch (e) {
-        console.warn('Failed to store theme preference:', e)
-      }
-    },
-
-    STORAGE_KEY: 'chiri-theme',
-
-    toggle() {
-      const currentTheme = this.getEffectiveTheme()
-      // Simply toggle between light and dark
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
-
-      this.setStoredTheme(newTheme)
-      this.applyTheme(newTheme)
-    }
-    }
-
-    // Initialize theme manager
-    window.ThemeManager.init()
-
-    // Apply theme when needed
-    const applyTheme = () => {
-      if (window.ThemeManager) {
-        const theme = window.ThemeManager.getEffectiveTheme()
-        window.ThemeManager.applyTheme(theme)
-      }
-    }
-
-    // Apply immediately on script load
-    applyTheme()
-
-    // Listen for navigation events
-    document.addEventListener('astro:before-preparation', applyTheme)
-
-    // Apply theme after DOM changes (both swap and page load)
-    const applyThemeAfterNavigation = () => {
-      if (window.ThemeManager) {
-        const currentTheme = window.ThemeManager.getEffectiveTheme()
-        const appliedTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
-
-        if (currentTheme !== appliedTheme) {
-          // Use requestAnimationFrame to ensure theme is applied in the next frame, avoiding conflicts with view transition
-          requestAnimationFrame(() => {
-            window.ThemeManager.applyTheme(currentTheme)
-          })
-        }
-      }
-    }
-
-    document.addEventListener('astro:after-swap', applyThemeAfterNavigation)
-    document.addEventListener('astro:page-load', applyThemeAfterNavigation)
-
-    // Handle system theme changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-      if (window.ThemeManager && window.ThemeManager.isUsingSystemTheme()) {
-        setTimeout(applyTheme, 0)
+    media.addEventListener('change', () => {
+      if (getMode() === 'system') {
+        syncTheme()
       }
     })
-  })()
+
+    document.addEventListener('astro:after-swap', () => {
+      syncTheme()
+    })
+
+    themeWindow.__themeManagerListenersBound = true
+  }
 </script>

@@ -6,3 +6,6 @@ export * from './config.types'
 
 // Content types
 export * from './content.types'
+
+// Theme types
+export * from './theme.types'
