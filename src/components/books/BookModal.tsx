@@ -1,6 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { slugify } from 'astro-toolkit/utils'
-import { Sparkles, Star, X } from 'lucide-react'
+import { Star, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 import type { Book } from '@/data/books'
@@ -78,19 +78,21 @@ export default function BookModal({ allBooks }: BookModalProps) {
     <Dialog.Root onOpenChange={handleOpenChange} open={isOpen}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-9999 bg-neutral-900/40 backdrop-blur-sm data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0" />
-        <Dialog.Content className="fixed top-[50%] left-[50%] z-9999 max-h-[85vh] w-full max-w-5xl translate-x-[-50%] translate-y-[-50%] overflow-hidden rounded-3xl bg-white shadow-2xl duration-200 outline-none data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] data-[state=open]:zoom-in-100 sm:min-h-112.5 dark:bg-neutral-900">
+        <Dialog.Content className="fixed right-0 bottom-0 left-0 z-9999 max-h-[90vh] w-full max-w-none overflow-y-auto rounded-t-3xl bg-white shadow-2xl duration-200 outline-none data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0 max-sm:data-[state=closed]:slide-out-to-bottom max-sm:data-[state=open]:slide-in-from-bottom sm:top-[50%] sm:right-auto sm:bottom-auto sm:left-[50%] sm:max-h-[85vh] sm:max-w-5xl sm:translate-x-[-50%] sm:translate-y-[-50%] sm:overflow-hidden sm:rounded-3xl sm:duration-300 sm:ease-out sm:data-[state=closed]:zoom-out-95 sm:data-[state=open]:zoom-in-95 dark:bg-neutral-900">
           {renderBook && (
             <>
-              <button
-                aria-label="Close"
-                className="absolute top-6 right-6 z-110 rounded-full bg-white/80 p-2 shadow-sm backdrop-blur-md transition-colors hover:bg-neutral-100 dark:bg-neutral-800/80 dark:hover:bg-neutral-800"
-                onClick={() => handleOpenChange(false)}
-              >
-                <X className="text-neutral-400 dark:text-neutral-300" size={20} />
-              </button>
+              <header className="sticky top-0 z-20 flex items-center justify-end border-b border-neutral-100 bg-white/95 px-4 py-3 backdrop-blur-sm dark:border-neutral-700 dark:bg-neutral-900/95">
+                <button
+                  aria-label="Close"
+                  className="rounded-full bg-white/80 p-2 shadow-sm backdrop-blur-md transition-colors hover:bg-neutral-100 dark:bg-neutral-800/80 dark:hover:bg-neutral-800"
+                  onClick={() => handleOpenChange(false)}
+                >
+                  <X className="text-neutral-400 dark:text-neutral-300" size={20} />
+                </button>
+              </header>
 
-              <div className="flex h-full w-full flex-col overflow-y-auto sm:flex-row sm:overflow-y-hidden">
-                <div className="flex w-full shrink-0 flex-col items-center gap-6 border-r border-neutral-100 bg-neutral-50 p-8 text-center sm:w-1/3 sm:items-start sm:text-left dark:border-neutral-700 dark:bg-neutral-800">
+              <div className="flex w-full flex-col sm:h-[calc(85vh-57px)] sm:flex-row">
+                <div className="flex w-full shrink-0 flex-col items-center gap-6 border-b border-neutral-100 bg-neutral-50 p-8 text-center sm:w-1/3 sm:items-start sm:border-r sm:border-b-0 sm:text-left dark:border-neutral-700 dark:bg-neutral-800">
                   <div className="h-60 w-40 shrink-0 overflow-hidden rounded-xl shadow-2xl">
                     <img
                       alt={renderBook.title}
@@ -119,18 +121,9 @@ export default function BookModal({ allBooks }: BookModalProps) {
                       </div>
                     ) : null}
                   </div>
-
-                  <button
-                    aria-label="Generate key takeaways with Gemini (Coming soon)"
-                    className="mt-auto flex w-full items-center justify-center gap-2 rounded-xl bg-neutral-900 px-4 py-2.5 text-xs font-semibold text-white transition-all hover:bg-neutral-800 disabled:opacity-50"
-                    disabled
-                  >
-                    <Sparkles size={14} />
-                    Gemini Key Takeaway
-                  </button>
                 </div>
 
-                <div className="w-full space-y-8 p-8 sm:w-2/3 sm:overflow-y-auto sm:p-10">
+                <div className="w-full space-y-8 p-8 sm:h-full sm:w-2/3 sm:overflow-y-auto sm:p-10">
                   <section className="space-y-4">
                     <h3 className="text-xs font-semibold tracking-widest text-neutral-400 uppercase">
                       Summary

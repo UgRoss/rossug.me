@@ -16,21 +16,19 @@ const { page } = Astro.props
 ---
 
 <IndexLayout description="Blog posts and articles" title={`Blog - ${themeConfig.site.title}`}>
-  <div class="py-8">
-    <h1 class="mb-4 text-3xl font-bold">Blog</h1>
+  <h1 class="mb-4 text-3xl font-bold">Blog</h1>
 
-    <p class="mb-8 text-neutral-600 dark:text-neutral-400">
-      Writing about frontend development, React, Chakra UI, UI design, SaaS, and indie hacking. Here
-      are some of the most recent thoughts, learnings.
-    </p>
+  <p class="mb-8 text-neutral-600 dark:text-neutral-400">
+    Writing about frontend development, React, Chakra UI, UI design, SaaS, and indie hacking. Here
+    are some of the most recent thoughts, learnings.
+  </p>
 
-    <PostList posts={page.data} />
+  <PostList posts={page.data} />
 
-    <Pagination
-      currentPage={page.currentPage}
-      lastPage={page.lastPage}
-      nextUrl={page.url.next}
-      prevUrl={page.url.prev}
-    />
-  </div>
+  <Pagination
+    currentPage={page.currentPage}
+    lastPage={page.lastPage}
+    nextUrl={page.url.next}
+    prevUrl={page.url.prev}
+  />
 </IndexLayout>

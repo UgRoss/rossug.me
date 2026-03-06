@@ -32,7 +32,7 @@ const { emptyMessage = 'No items found.', items } = Astro.props as Props
             title={item.title}
           >
             <div class="flex min-w-0 items-center gap-2">
-              <span class="block min-w-0 truncate">{item.title}</span>
+              <span class="block min-w-0 truncate font-medium">{item.title}</span>
               {item.label && (
                 <span class="tag hidden cursor-default! sm:inline-flex">{item.label}</span>
               )}

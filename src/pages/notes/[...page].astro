@@ -47,46 +47,44 @@ const serializedNotes = sortedNotes.map((note) => ({
   description="TILs (Today I Learned) and quick technical snippets"
   title={`Notes - ${themeConfig.site.title}`}
 >
-  <div class="py-8">
-    <div class="mb-8">
-      <h1 class="mb-2 text-3xl font-bold">Notes</h1>
-      <p class="text-muted">TILs (Today I Learned) and quick technical snippets.</p>
-    </div>
+  <div class="mb-8">
+    <h1 class="mb-2 text-4xl font-bold">Notes</h1>
+    <p class="text-muted">TILs (Today I Learned) and quick technical snippets.</p>
+  </div>
 
-    <NotesList categories={categories} client:load notes={serializedNotes} />
+  <NotesList categories={categories} client:load notes={serializedNotes} />
 
-    {/* No-JS fallback — hidden once React hydrates */}
-    <noscript>
-      <ul class="my-5 flex list-none flex-col gap-0.5 p-0">
-        {
-          sortedNotes.map((note) => (
-            <li class="group list-none">
-              <a
-                class="-mx-2 flex items-center justify-between gap-6 rounded-sm px-2 py-1 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
-                href={`/notes/${note.id}`}
-                title={note.data.title}
-              >
-                <div class="flex min-w-0 items-center gap-2">
-                  <span>{note.data.title}</span>
-                  <span class="tag cursor-default!">{note.data.category}</span>
-                </div>
-                <span class="shrink-0 text-sm whitespace-nowrap text-muted">
-                  <FormattedDate date={note.data.pubDate} />
-                </span>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </noscript>
+  {/* No-JS fallback — hidden once React hydrates */}
+  <noscript>
+    <ul class="my-5 flex list-none flex-col gap-0.5 p-0">
+      {
+        sortedNotes.map((note) => (
+          <li class="group list-none">
+            <a
+              class="-mx-2 flex items-center justify-between gap-6 rounded-sm px-2 py-1 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
+              href={`/notes/${note.id}`}
+              title={note.data.title}
+            >
+              <div class="flex min-w-0 items-center gap-2">
+                <span>{note.data.title}</span>
+                <span class="tag cursor-default!">{note.data.category}</span>
+              </div>
+              <span class="shrink-0 text-sm whitespace-nowrap text-muted">
+                <FormattedDate date={note.data.pubDate} />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </noscript>
 
-    <div id="notes-pagination">
-      <Pagination
-        currentPage={page.currentPage}
-        lastPage={page.lastPage}
-        nextUrl={page.url.next}
-        prevUrl={page.url.prev}
-      />
-    </div>
+  <div id="notes-pagination">
+    <Pagination
+      currentPage={page.currentPage}
+      lastPage={page.lastPage}
+      nextUrl={page.url.next}
+      prevUrl={page.url.prev}
+    />
   </div>
 </IndexLayout>

@@ -9,10 +9,13 @@ const currentlyReading = BOOKS.filter((b) => b.status === 'reading')
 const finishedBooks = BOOKS.filter((b) => b.status === 'finished')
 ---
 
-<IndexLayout description="Reading list and book notes" title={`Reading - ${themeConfig.site.title}`}>
+<IndexLayout
+  description="Reading list and book notes"
+  title={`Reading - ${themeConfig.site.title}`}
+>
   <div class="space-y-12">
     <header class="space-y-2">
-      <h1 class="text-3xl font-bold tracking-tight">Books</h1>
+      <h1 class="text-4xl font-bold tracking-tight">Books</h1>
       <p class="text-neutral-500">A collection of books I've read or am currently exploring.</p>
     </header>
 
@@ -21,12 +24,12 @@ const finishedBooks = BOOKS.filter((b) => b.status === 'finished')
       {
         currentlyReading.length > 0 && (
           <section class="space-y-6">
-            <h2 class="text-xs font-semibold text-neutral-400 uppercase tracking-widest">
+            <h2 class="text-xs font-semibold tracking-widest text-neutral-400 uppercase">
               Currently Reading
             </h2>
-            <div class="grid gap-8">
+            <div class="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 md:grid-cols-4">
               {currentlyReading.map((book) => (
-                <BookCard book={book} layout="list" />
+                <BookCard book={book} grayscale={false} />
               ))}
             </div>
           </section>
@@ -37,12 +40,12 @@ const finishedBooks = BOOKS.filter((b) => b.status === 'finished')
       {
         finishedBooks.length > 0 && (
           <section class="space-y-6">
-            <h2 class="text-xs font-semibold text-neutral-400 uppercase tracking-widest">
+            <h2 class="text-xs font-semibold tracking-widest text-neutral-400 uppercase">
               Finished
             </h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-6 gap-y-10">
+            <div class="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 md:grid-cols-4">
               {finishedBooks.map((book) => (
-                <BookCard book={book} layout="grid" />
+                <BookCard book={book} />
               ))}
             </div>
           </section>

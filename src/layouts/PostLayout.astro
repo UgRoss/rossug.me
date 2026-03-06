@@ -39,9 +39,9 @@ const ogImage = `/open-graph/${postSlug}.png`
         )
       }
 
-      <div class="prose">
+      <div class="prose dark:prose-invert">
         <div class="title">
-          <h1>{title}</h1>
+          <h1 class="text-4xl font-bold">{title}</h1>
           <div class="date">
             <FormattedDate date={pubDate} />
           </div>
