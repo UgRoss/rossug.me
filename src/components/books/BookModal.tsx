@@ -77,8 +77,8 @@ export default function BookModal({ allBooks }: BookModalProps) {
   return (
     <Dialog.Root onOpenChange={handleOpenChange} open={isOpen}>
       <Dialog.Portal>
-        <Dialog.Overlay className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-9999 bg-neutral-900/40 backdrop-blur-sm" />
-        <Dialog.Content className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-100 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] fixed top-[50%] left-[50%] z-9999 max-h-[85vh] w-full max-w-5xl translate-x-[-50%] translate-y-[-50%] overflow-hidden rounded-3xl bg-white shadow-2xl duration-200 outline-none sm:min-h-112.5 dark:bg-neutral-900">
+        <Dialog.Overlay className="fixed inset-0 z-9999 bg-neutral-900/40 backdrop-blur-sm data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0" />
+        <Dialog.Content className="fixed top-[50%] left-[50%] z-9999 max-h-[85vh] w-full max-w-5xl translate-x-[-50%] translate-y-[-50%] overflow-hidden rounded-3xl bg-white shadow-2xl duration-200 outline-none data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] data-[state=open]:zoom-in-100 sm:min-h-112.5 dark:bg-neutral-900">
           {renderBook && (
             <>
               <button
