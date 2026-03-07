@@ -16,15 +16,51 @@ export interface BookData {
 }
 
 export type BookEntry = CollectionEntry<'books'>
+export type BookStatus = BookEntry['data']['status']
+
+interface BooksByStatus {
+  finished: BookEntry[]
+  reading: BookEntry[]
+  wishlist: BookEntry[]
+}
 
 export async function getBooksByStatus(status: string): Promise<BookEntry[]> {
   const books = await getFilteredBooks()
   return books.filter((book) => book.data.status === status)
 }
 
+export async function getBooksForReadingPage(): Promise<{
+  allBooks: BookEntry[]
+  currentlyReading: BookEntry[]
+  finishedBooks: BookEntry[]
+}> {
+  const allBooks = await getFilteredBooks()
+  const { finished, reading } = groupBooksByStatus(allBooks)
+
+  return {
+    allBooks,
+    currentlyReading: reading,
+    finishedBooks: finished
+  }
+}
+
 export async function getFilteredBooks(): Promise<BookEntry[]> {
   const books = await getCollection('books')
   return books.filter((book) => !book.id.startsWith('_'))
+}
+
+export function groupBooksByStatus(books: BookEntry[]): BooksByStatus {
+  return books.reduce<BooksByStatus>(
+    (acc, book) => {
+      acc[book.data.status].push(book)
+      return acc
+    },
+    {
+      finished: [],
+      reading: [],
+      wishlist: []
+    }
+  )
 }
 
 export function mapBookToData(book: BookEntry): BookData {
