@@ -33,10 +33,10 @@ const notes = defineCollection({
 
 const books = defineCollection({
   loader: glob({ base: './src/content/books', pattern: '**/*.md' }),
-  schema: () =>
+  schema: ({ image }) =>
     z.object({
       author: z.string(),
-      coverUrl: z.string(),
+      cover: image(),
       // 0 represents "not rated", 1-5 represents the rating
       rating: z.number().int().min(0).max(5).default(0),
       status: z.enum(['finished', 'reading', 'wishlist']),

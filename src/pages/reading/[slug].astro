@@ -34,7 +34,7 @@ const { Content } = await render(book)
     <div class="flex flex-col gap-8 sm:flex-row">
       <div class="flex shrink-0 flex-col items-center sm:items-start">
         <div class="h-60 w-40 overflow-hidden rounded-xl shadow-2xl">
-          <img alt={book.data.title} class="h-full w-full object-cover" src={book.data.coverUrl} />
+          <img alt={book.data.title} class="h-full w-full object-cover" src={book.data.cover.src} />
         </div>
       </div>
 

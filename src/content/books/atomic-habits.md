@@ -1,7 +1,7 @@
 ---
 title: 'Atomic Habits'
 author: 'James Clear'
-coverUrl: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=800'
+cover: './_assets/atomic-habits.jpg'
 rating: 5
 status: 'finished'
 summary: 'An easy & proven way to build good habits & break bad ones.'

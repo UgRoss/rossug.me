@@ -1,7 +1,7 @@
 ---
 title: 'Deep Work'
 author: 'Cal Newport'
-coverUrl: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=800'
+cover: './_assets/deep-work.jpg'
 rating: 4
 status: 'finished'
 summary: 'Rules for focused success in a distracted world.'
