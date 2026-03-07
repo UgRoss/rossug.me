@@ -1,23 +1,18 @@
 ---
-import { slugify } from 'astro-toolkit/utils'
+// ABOUTME: Book cover card component that links to the standalone book detail page.
+// ABOUTME: Displays cover image, title, and author with hover effects.
 
-import type { Book } from '@/data/books'
+import type { BookData } from '@/utils/books'
 
 interface Props {
-  book: Book
+  book: BookData
   grayscale?: boolean
 }
 
 const { book, grayscale = true } = Astro.props
-
-const slug = slugify(book.title)
 ---
 
-<a
-  class="group book-card-trigger block w-full cursor-pointer space-y-3 text-left"
-  data-book-slug={slug}
-  href={`?book=${slug}`}
->
+<a class="group block w-full space-y-3" href={`/reading/${book.id}`}>
   <div
     class="relative aspect-2/3 w-full shrink-0 overflow-hidden rounded-lg bg-neutral-100 shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-xl"
   >
@@ -28,7 +23,7 @@ const slug = slugify(book.title)
         grayscale && 'grayscale group-hover:grayscale-0'
       ]}
       loading="lazy"
-      src={book.coverUrl}
+      src={book.coverSrc}
     />
   </div>
 
@@ -41,40 +36,3 @@ const slug = slugify(book.title)
     </p>
   </div>
 </a>
-
-<script>
-  function handleBookClick(e: MouseEvent) {
-    const target = e.currentTarget as HTMLElement
-    // Allow default browser behavior for modifier clicks (new tab, new window, etc.)
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
-
-    e.preventDefault()
-    const slug = target.getAttribute('data-book-slug')
-    if (slug) {
-      const newUrl = `?book=${slug}`
-      window.history.pushState({ bookSlug: slug }, '', newUrl)
-      // Dispatch custom event for React component to pick up instantly
-      window.dispatchEvent(new CustomEvent('book-change', { detail: { slug } }))
-    }
-  }
-
-  // Attach listeners using event delegation or direct attachment
-  // Since this is inside an Astro component, it runs once per component? No, scripts are bundled.
-  // Better to use astro:page-load to attach triggers safely
-  document.addEventListener('astro:page-load', () => {
-    const triggers = document.querySelectorAll('.book-card-trigger')
-    triggers.forEach((trigger) => {
-      // Cast to event type compatible with our handler
-      trigger.removeEventListener('click', handleBookClick as EventListener)
-      trigger.addEventListener('click', handleBookClick as EventListener)
-    })
-  })
-
-  // Clean up listeners before Astro prepares the next page (for view transitions)
-  document.addEventListener('astro:before-preparation', () => {
-    const triggers = document.querySelectorAll('.book-card-trigger')
-    triggers.forEach((trigger) => {
-      trigger.removeEventListener('click', handleBookClick as EventListener)
-    })
-  })
-</script>

@@ -5,6 +5,7 @@ This document provides context and guidelines for AI agents working on this proj
 ## Project Context
 
 - **Core**: Personal website/digital garden built with [Astro](https://astro.build/).
+- **Styling**: Tailwind CSS.
 - **Configuration**: Always use `src/config.ts` for site metadata (title, author, description, etc.). **Do not hardcode these values.**
 
 ## Tech Stack & Preferences
@@ -24,3 +25,10 @@ This document provides context and guidelines for AI agents working on this proj
 - **Indentation**: 2 spaces.
 - **Imports**: Group imports alphabetically and group by type (types, then globals, then locals). Always import types separately from values.
 - Never use `var`. Use `const` or `let` as appropriate. Use modern JavaScript features.
+- Make sure you format your code with Prettier and run ESLint checks before finalizing any changes.
+
+## Additional Guidelines
+
+- Your changes should pass linting and formatting checks. Use `lint`, `format`, and `check` commands to verify.
+- While suggesting code changes, ensure that we follow best practices of Astro and Tailwind CSS. Using latest available features is encouraged.
+- For React features use radix-ui components where appropriate.

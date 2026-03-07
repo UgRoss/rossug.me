@@ -16,13 +16,12 @@ const classes = `tag ${interactive ? 'tag-interactive' : ''}`
     <a class={classes} data-category-filter={category} href={href}>
       {label}
     </a>
+  ) : interactive ? (
+    <button class={classes} data-category-filter={category} type="button">
+      {label}
+    </button>
   ) : (
-    <span
-      class={classes}
-      data-category-filter={category}
-      role={interactive ? 'button' : undefined}
-      tabindex={interactive ? 0 : undefined}
-    >
+    <span class={classes} data-category-filter={category}>
       {label}
     </span>
   )
