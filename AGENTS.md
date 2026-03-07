@@ -24,3 +24,7 @@ This document provides context and guidelines for AI agents working on this proj
 - **Indentation**: 2 spaces.
 - **Imports**: Group imports alphabetically and group by type (types, then globals, then locals). Always import types separately from values.
 - Never use `var`. Use `const` or `let` as appropriate. Use modern JavaScript features.
+
+## Additional Guidelines
+
+- Your changes should pass linting and formatting checks. Use `lint`, `format`, and `check` commands to verify.
