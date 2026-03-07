@@ -10,18 +10,21 @@ interface Props {
 
 const { className, iconClassName = 'h-4 w-4', rating } = Astro.props as Props
 const hasRating = rating > 0
+const ratingLabel = `${rating} out of 5 stars`
 const stars = Array.from({ length: 5 }, (_, index) => index < rating)
 ---
 
 {
   hasRating && (
-    <div class={className}>
+    <div aria-label={ratingLabel} class={className} role="img">
       {stars.map((isFilled) => (
         <svg
+          aria-hidden="true"
           class:list={[
             iconClassName,
             isFilled ? 'fill-yellow-400 text-yellow-400' : 'fill-none text-neutral-200'
           ]}
+          focusable="false"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
         >
