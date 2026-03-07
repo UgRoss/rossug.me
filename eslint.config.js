@@ -11,6 +11,7 @@ export default [
   ...tseslint.configs.strict,
   ...tseslint.configs.stylistic,
   ...eslintPluginAstro.configs.recommended,
+  ...eslintPluginAstro.configs['jsx-a11y-strict'],
   {
     plugins: {
       perfectionist,
