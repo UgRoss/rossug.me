@@ -53,7 +53,8 @@ const { book, grayscale = true } = Astro.props
     const slug = target.getAttribute('data-book-slug')
     if (slug) {
       const url = `/reading/${slug}`
-      window.history.pushState({ bookSlug: slug }, '', url)
+      // Keep modal URL shareable without adding extra browser history entries.
+      window.history.replaceState({ bookSlug: slug }, '', url)
       window.dispatchEvent(new CustomEvent('book-dialog-open', { detail: { slug } }))
     }
   }

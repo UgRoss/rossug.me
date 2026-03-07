@@ -199,7 +199,7 @@ const { books } = Astro.props
       dialog.close()
       document.body.style.overflow = ''
       if (restoreUrl && activeSlug) {
-        window.history.pushState({}, '', '/reading')
+        window.history.replaceState({}, '', '/reading')
       }
       activeSlug = null
     }
@@ -212,7 +212,14 @@ const { books } = Astro.props
 
     function handleViewportChange() {
       if (!shouldUseDialog() && dialog.open) {
+        const slug = activeSlug
         closeDialog(false)
+
+        if (slug) {
+          window.location.assign(`/reading/${slug}`)
+        } else {
+          window.history.replaceState({}, '', '/reading')
+        }
       }
     }
 
@@ -235,6 +242,8 @@ const { books } = Astro.props
       const match = window.location.pathname.match(/^\/reading\/(.+)$/)
       if (match && shouldUseDialog()) {
         showBook(match[1])
+      } else if (match) {
+        window.location.assign(window.location.pathname)
       } else if (dialog.open) {
         closeDialog(false)
       }
