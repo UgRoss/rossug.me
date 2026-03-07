@@ -39,10 +39,15 @@ const { book, grayscale = true } = Astro.props
 </a>
 
 <script>
+  const desktopDialogQuery = window.matchMedia('(min-width: 640px)')
+
   function handleBookClick(e: MouseEvent) {
     const target = e.currentTarget as HTMLElement
     // Allow default browser behavior for modifier clicks (new tab, new window, etc.)
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+
+    // On mobile, navigate to the standalone page instead of opening a modal dialog.
+    if (!desktopDialogQuery.matches) return
 
     e.preventDefault()
     const slug = target.getAttribute('data-book-slug')

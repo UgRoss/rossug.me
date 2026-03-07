@@ -2,8 +2,6 @@
 // ABOUTME: Route-driven native dialog overlay for book details on the /reading list page.
 // ABOUTME: Opens over the list with pushState URL sync; falls back to /reading/[slug] without JS.
 
-import { render } from 'astro:content'
-
 import type { BookEntry } from '@/utils/books'
 
 import BookRating from '@/components/books/BookRating.astro'
@@ -13,24 +11,14 @@ interface Props {
 }
 
 const { books } = Astro.props
-const booksWithContent = await Promise.all(
-  books.map(async (book) => {
-    const { Content } = await render(book)
-    return {
-      Content,
-      data: book.data,
-      id: book.id
-    }
-  })
-)
 ---
 
 <dialog
-  class="book-dialog fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none bg-transparent p-0 backdrop:bg-neutral-900/40 backdrop:backdrop-blur-sm open:flex open:flex-col open:justify-end sm:open:items-center sm:open:justify-center dark:backdrop:bg-white/8"
+  class="book-dialog fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none bg-transparent p-0 backdrop:bg-neutral-900/40 backdrop:backdrop-blur-sm open:flex open:items-center open:justify-center dark:backdrop:bg-white/8"
   id="book-dialog"
 >
   <div
-    class="book-dialog-panel relative flex max-h-[92dvh] min-h-[50dvh] w-full max-w-5xl flex-col overflow-hidden rounded-t-3xl bg-white shadow-2xl ring-1 ring-black/5 sm:max-h-[90vh] sm:min-h-0 sm:w-[95vw] sm:rounded-3xl dark:bg-neutral-900 dark:ring-white/10"
+    class="book-dialog-panel relative flex max-h-[90vh] w-[95vw] max-w-5xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl ring-1 ring-black/5 dark:bg-neutral-900 dark:ring-white/10"
   >
     <header
       class="flex items-center justify-end border-b border-neutral-100 bg-white px-4 py-3 dark:border-neutral-700 dark:bg-neutral-900"
@@ -55,22 +43,26 @@ const booksWithContent = await Promise.all(
       </button>
     </header>
 
-    <div class="book-dialog-body min-h-0 overflow-y-auto pb-[env(safe-area-inset-bottom)]">
+    <div class="book-dialog-body min-h-0 overflow-y-auto">
       {
-        booksWithContent.map(({ Content, data, id }) => (
-          <article class="book-dialog-content hidden" data-book-id={id}>
+        books.map((book) => (
+          <article class="book-dialog-content hidden" data-book-id={book.id}>
             <div class="flex w-full flex-col sm:flex-row">
               <div class="flex w-full shrink-0 flex-col items-center gap-6 border-b border-neutral-100 bg-neutral-50 p-8 text-center sm:w-1/3 sm:items-start sm:border-r sm:border-b-0 sm:text-left dark:border-neutral-700 dark:bg-neutral-800">
                 <div class="h-60 w-40 shrink-0 overflow-hidden rounded-xl shadow-2xl">
-                  <img alt={data.title} class="h-full w-full object-cover" src={data.coverUrl} />
+                  <img
+                    alt={book.data.title}
+                    class="h-full w-full object-cover"
+                    src={book.data.coverUrl}
+                  />
                 </div>
                 <div class="w-full space-y-2">
-                  <h2 class="text-xl leading-tight font-bold">{data.title}</h2>
-                  <p class="text-neutral-500">{data.author}</p>
+                  <h2 class="text-xl leading-tight font-bold">{book.data.title}</h2>
+                  <p class="text-neutral-500">{book.data.author}</p>
                   <BookRating
                     className="flex justify-center gap-1 pt-2 sm:justify-start"
                     iconClassName="h-3.5 w-3.5"
-                    rating={data.rating}
+                    rating={book.data.rating}
                   />
                 </div>
               </div>
@@ -81,12 +73,12 @@ const booksWithContent = await Promise.all(
                     Summary
                   </h3>
                   <p class="border-l-2 border-neutral-100 pl-4 leading-relaxed text-neutral-600 italic dark:border-neutral-700 dark:text-neutral-400">
-                    {data.summary}
+                    {book.data.summary}
                   </p>
                 </section>
 
-                <section class="prose max-w-none prose-neutral dark:prose-invert">
-                  <Content />
+                <section class="book-dialog-markdown prose max-w-none prose-neutral dark:prose-invert">
+                  <p class="text-sm text-neutral-500 dark:text-neutral-400">Loading notes...</p>
                 </section>
               </div>
             </div>
@@ -103,13 +95,71 @@ const booksWithContent = await Promise.all(
     if (!(dialogElement instanceof HTMLDialogElement)) return
 
     const dialog = dialogElement
+    const desktopDialogQuery = window.matchMedia('(min-width: 640px)')
 
     const closeBtn = dialog.querySelector('.book-dialog-close')
     const contents = dialog.querySelectorAll<HTMLElement>('.book-dialog-content')
+    const contentCache = new Map<string, string>()
+    const contentRequests = new Map<string, Promise<string>>()
     let activeSlug: null | string = null
     let openFrame: null | number = null
 
+    function shouldUseDialog(): boolean {
+      return desktopDialogQuery.matches
+    }
+
+    async function fetchBookContent(slug: string): Promise<string> {
+      const inFlight = contentRequests.get(slug)
+      if (inFlight) return inFlight
+
+      const request = fetch(`/reading/content/${slug}/`).then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to load content for ${slug}`)
+        }
+
+        const html = await response.text()
+        contentCache.set(slug, html)
+        return html
+      })
+
+      contentRequests.set(slug, request)
+
+      try {
+        return await request
+      } finally {
+        contentRequests.delete(slug)
+      }
+    }
+
+    async function loadBookContent(slug: string) {
+      const article = [...contents].find((el) => el.dataset.bookId === slug)
+      if (!article) return
+
+      const container = article.querySelector<HTMLElement>('.book-dialog-markdown')
+      if (!container) return
+
+      if (container.dataset.loaded === 'true') return
+
+      const cached = contentCache.get(slug)
+      if (cached) {
+        container.innerHTML = cached
+        container.dataset.loaded = 'true'
+        return
+      }
+
+      try {
+        const html = await fetchBookContent(slug)
+        container.innerHTML = html
+        container.dataset.loaded = 'true'
+      } catch {
+        container.innerHTML =
+          '<p class="text-sm text-red-600 dark:text-red-400">Could not load notes right now.</p>'
+      }
+    }
+
     function showBook(slug: string) {
+      if (!shouldUseDialog()) return
+
       if (openFrame !== null) {
         window.cancelAnimationFrame(openFrame)
         openFrame = null
@@ -126,6 +176,7 @@ const booksWithContent = await Promise.all(
       dialog.setAttribute('aria-label', title)
 
       activeSlug = slug
+      void loadBookContent(slug)
 
       // Let layout settle before opening so the drawer animates from its final size.
       void dialog.offsetHeight
@@ -156,7 +207,13 @@ const booksWithContent = await Promise.all(
     // Listen for card click events
     function handleDialogOpen(e: Event) {
       const slug = (e as CustomEvent).detail?.slug
-      if (slug) showBook(slug)
+      if (slug && shouldUseDialog()) showBook(slug)
+    }
+
+    function handleViewportChange() {
+      if (!shouldUseDialog() && dialog.open) {
+        closeDialog(false)
+      }
     }
 
     // Close button
@@ -176,7 +233,7 @@ const booksWithContent = await Promise.all(
     // Browser back/forward
     function handlePopState() {
       const match = window.location.pathname.match(/^\/reading\/(.+)$/)
-      if (match) {
+      if (match && shouldUseDialog()) {
         showBook(match[1])
       } else if (dialog.open) {
         closeDialog(false)
@@ -185,6 +242,7 @@ const booksWithContent = await Promise.all(
 
     window.addEventListener('book-dialog-open', handleDialogOpen)
     window.addEventListener('popstate', handlePopState)
+    desktopDialogQuery.addEventListener('change', handleViewportChange)
 
     // Cleanup for Astro view transitions
     document.addEventListener(
@@ -192,6 +250,7 @@ const booksWithContent = await Promise.all(
       () => {
         window.removeEventListener('book-dialog-open', handleDialogOpen)
         window.removeEventListener('popstate', handlePopState)
+        desktopDialogQuery.removeEventListener('change', handleViewportChange)
         if (openFrame !== null) {
           window.cancelAnimationFrame(openFrame)
           openFrame = null
@@ -214,14 +273,8 @@ const booksWithContent = await Promise.all(
   }
 
   .book-dialog[open] .book-dialog-panel {
-    animation: panel-slide-up 0.3s ease-out;
-    transform-origin: bottom center;
-  }
-
-  @media (min-width: 640px) {
-    .book-dialog[open] .book-dialog-panel {
-      animation: panel-zoom-in 0.3s ease-out;
-    }
+    animation: panel-zoom-in 0.25s ease-out;
+    transform-origin: center center;
   }
 
   @keyframes backdrop-fade-in {
@@ -233,20 +286,9 @@ const booksWithContent = await Promise.all(
     }
   }
 
-  @keyframes panel-slide-up {
-    from {
-      transform: translateY(100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
   @keyframes panel-zoom-in {
     from {
-      transform: scale(0.95);
+      transform: translateY(8px) scale(0.98);
       opacity: 0;
     }
     to {

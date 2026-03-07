@@ -25,11 +25,6 @@ interface BooksByStatus {
   wishlist: BookEntry[]
 }
 
-export async function getBooksByStatus(status: BookStatus): Promise<BookEntry[]> {
-  const books = await getFilteredBooks()
-  return books.filter((book) => book.data.status === status)
-}
-
 export async function getBooksForReadingPage(): Promise<{
   allBooks: BookEntry[]
   currentlyReading: BookEntry[]
