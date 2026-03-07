@@ -1,4 +1,7 @@
 ---
+// ABOUTME: Book cover card component that links to the standalone book detail page.
+// ABOUTME: Displays cover image, title, and author with hover effects.
+
 import type { BookData } from '@/utils/books'
 
 interface Props {
@@ -9,11 +12,7 @@ interface Props {
 const { book, grayscale = true } = Astro.props
 ---
 
-<a
-  class="group book-card-trigger block w-full cursor-pointer space-y-3 text-left"
-  data-book-slug={book.id}
-  href={`/reading/${book.id}`}
->
+<a class="group block w-full space-y-3" href={`/reading/${book.id}`}>
   <div
     class="relative aspect-2/3 w-full shrink-0 overflow-hidden rounded-lg bg-neutral-100 shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-xl"
   >
@@ -37,40 +36,3 @@ const { book, grayscale = true } = Astro.props
     </p>
   </div>
 </a>
-
-<script>
-  const desktopDialogQuery = window.matchMedia('(min-width: 640px)')
-
-  function handleBookClick(e: MouseEvent) {
-    const target = e.currentTarget as HTMLElement
-    // Allow default browser behavior for modifier clicks (new tab, new window, etc.)
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
-
-    // On mobile, navigate to the standalone page instead of opening a modal dialog.
-    if (!desktopDialogQuery.matches) return
-
-    e.preventDefault()
-    const slug = target.getAttribute('data-book-slug')
-    if (slug) {
-      const url = `/reading/${slug}`
-      // Keep modal URL shareable without adding extra browser history entries.
-      window.history.replaceState({ bookSlug: slug }, '', url)
-      window.dispatchEvent(new CustomEvent('book-dialog-open', { detail: { slug } }))
-    }
-  }
-
-  document.addEventListener('astro:page-load', () => {
-    const triggers = document.querySelectorAll('.book-card-trigger')
-    triggers.forEach((trigger) => {
-      trigger.removeEventListener('click', handleBookClick as EventListener)
-      trigger.addEventListener('click', handleBookClick as EventListener)
-    })
-  })
-
-  document.addEventListener('astro:before-preparation', () => {
-    const triggers = document.querySelectorAll('.book-card-trigger')
-    triggers.forEach((trigger) => {
-      trigger.removeEventListener('click', handleBookClick as EventListener)
-    })
-  })
-</script>

@@ -26,7 +26,6 @@ interface BooksByStatus {
 }
 
 export async function getBooksForReadingPage(): Promise<{
-  allBooks: BookEntry[]
   currentlyReading: BookEntry[]
   finishedBooks: BookEntry[]
 }> {
@@ -34,7 +33,6 @@ export async function getBooksForReadingPage(): Promise<{
   const { finished, reading } = groupBooksByStatus(allBooks)
 
   return {
-    allBooks,
     currentlyReading: reading,
     finishedBooks: finished
   }
