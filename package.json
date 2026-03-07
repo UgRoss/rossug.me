@@ -53,6 +53,8 @@
     "@tailwindcss/typography": "^0.5.19",
     "@types/html-to-text": "^9.0.4",
     "@types/markdown-it": "^14.1.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "@types/sanitize-html": "^2.16.0",
     "@typescript-eslint/eslint-plugin": "^8.48.1",
     "@typescript-eslint/parser": "^8.49.0",
