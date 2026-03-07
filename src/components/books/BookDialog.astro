@@ -199,7 +199,7 @@ const { books } = Astro.props
       dialog.close()
       document.body.style.overflow = ''
       if (restoreUrl && activeSlug) {
-        window.history.pushState({}, '', '/reading')
+        window.history.replaceState(window.history.state, '', '/reading')
       }
       activeSlug = null
     }
