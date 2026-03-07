@@ -1,12 +1,13 @@
 ---
 import BookCard from '@/components/books/BookCard.astro'
-import BookModal from '@/components/books/BookModal'
+import BookDialog from '@/components/books/BookDialog.astro'
 import { themeConfig } from '@/config'
-import { BOOKS } from '@/data/books'
 import IndexLayout from '@/layouts/IndexLayout.astro'
+import { getBooksByStatus, getFilteredBooks, mapBookToData } from '@/utils/books'
 
-const currentlyReading = BOOKS.filter((b) => b.status === 'reading')
-const finishedBooks = BOOKS.filter((b) => b.status === 'finished')
+const currentlyReading = (await getBooksByStatus('reading')).map(mapBookToData)
+const finishedBooks = (await getBooksByStatus('finished')).map(mapBookToData)
+const allBooks = await getFilteredBooks()
 ---
 
 <IndexLayout
@@ -54,5 +55,5 @@ const finishedBooks = BOOKS.filter((b) => b.status === 'finished')
     </div>
   </div>
 
-  <BookModal allBooks={BOOKS} client:load />
+  <BookDialog books={allBooks} />
 </IndexLayout>

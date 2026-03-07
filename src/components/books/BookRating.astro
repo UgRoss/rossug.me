@@ -1,0 +1,39 @@
+---
+// ABOUTME: Shared star rating UI for book surfaces such as cards, dialogs, and standalone pages.
+// ABOUTME: Keeps star rendering logic and styling consistent across the reading experience.
+
+interface Props {
+  className?: string
+  iconClassName?: string
+  rating: number
+}
+
+const { className, iconClassName = 'h-4 w-4', rating } = Astro.props as Props
+const hasRating = rating > 0
+const stars = Array.from({ length: 5 }, (_, index) => index < rating)
+---
+
+{
+  hasRating && (
+    <div class={className}>
+      {stars.map((isFilled) => (
+        <svg
+          class:list={[
+            iconClassName,
+            isFilled ? 'fill-yellow-400 text-yellow-400' : 'fill-none text-neutral-200'
+          ]}
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+          />
+        </svg>
+      ))}
+    </div>
+  )
+}

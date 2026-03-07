@@ -1,0 +1,61 @@
+---
+// ABOUTME: Standalone book detail page rendered at /reading/[slug].
+// ABOUTME: Serves as the canonical URL for each book and the fallback when dialog is not available.
+
+import { render } from 'astro:content'
+
+import type { BookEntry } from '@/utils/books'
+
+import BookRating from '@/components/books/BookRating.astro'
+import BackLink from '@/components/ui/BackLink.astro'
+import { themeConfig } from '@/config'
+import IndexLayout from '@/layouts/IndexLayout.astro'
+import { getFilteredBooks } from '@/utils/books'
+
+export async function getStaticPaths() {
+  const books = await getFilteredBooks()
+  return books.map((book) => ({
+    params: { slug: book.id },
+    props: { book }
+  }))
+}
+
+const { book } = Astro.props as { book: BookEntry }
+const { Content } = await render(book)
+---
+
+<IndexLayout
+  description={book.data.summary}
+  title={`${book.data.title} · ${themeConfig.site.title}`}
+>
+  <div class="space-y-8">
+    <BackLink href="/reading" label="Books" />
+
+    <div class="flex flex-col gap-8 sm:flex-row">
+      <div class="flex shrink-0 flex-col items-center sm:items-start">
+        <div class="h-60 w-40 overflow-hidden rounded-xl shadow-2xl">
+          <img alt={book.data.title} class="h-full w-full object-cover" src={book.data.coverUrl} />
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div class="space-y-1">
+          <h1 class="text-3xl leading-tight font-bold">{book.data.title}</h1>
+          <p class="text-neutral-500">{book.data.author}</p>
+        </div>
+
+        <BookRating className="flex gap-1" iconClassName="h-4 w-4" rating={book.data.rating} />
+
+        <p
+          class="border-l-2 border-neutral-100 pl-4 leading-relaxed text-neutral-600 italic dark:border-neutral-700 dark:text-neutral-400"
+        >
+          {book.data.summary}
+        </p>
+      </div>
+    </div>
+
+    <section class="prose max-w-none prose-neutral dark:prose-invert">
+      <Content />
+    </section>
+  </div>
+</IndexLayout>

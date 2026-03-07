@@ -2,9 +2,7 @@ import { defineCollection, z } from 'astro:content'
 import { glob } from 'astro/loaders'
 
 const posts = defineCollection({
-  // Load Markdown and MDX files in the `src/content/posts/` directory.
   loader: glob({ base: './src/content/posts', pattern: '**/*.{md,mdx}' }),
-  // Type-check frontmatter using a schema
   schema: () =>
     z.object({
       excerpt: z.string().optional(),
@@ -16,16 +14,12 @@ const posts = defineCollection({
 })
 
 const about = defineCollection({
-  // Load Markdown files in the `src/content/about/` directory.
   loader: glob({ base: './src/content/about', pattern: '**/*.md' }),
-  // Type-check frontmatter using a schema
   schema: z.object({})
 })
 
 const notes = defineCollection({
-  // Load Markdown files in the `src/content/notes/` directory.
   loader: glob({ base: './src/content/notes', pattern: '**/*.md' }),
-  // Type-check frontmatter using a schema
   schema: () =>
     z.object({
       category: z.string(),
@@ -37,10 +31,22 @@ const notes = defineCollection({
     })
 })
 
+const books = defineCollection({
+  loader: glob({ base: './src/content/books', pattern: '**/*.md' }),
+  schema: () =>
+    z.object({
+      author: z.string(),
+      coverUrl: z.string(),
+      // 0 represents "not rated", 1-5 represents the rating
+      rating: z.number().int().min(0).max(5).default(0),
+      status: z.enum(['finished', 'reading', 'wishlist']),
+      summary: z.string(),
+      title: z.string()
+    })
+})
+
 const pages = defineCollection({
-  // Load Markdown and MDX files in the `src/content/pages/` directory.
   loader: glob({ base: './src/content/pages', pattern: '**/*.{md,mdx}' }),
-  // Type-check frontmatter using a schema
   schema: z.object({
     description: z.string().optional(),
     pubDate: z.coerce.date(),
@@ -48,4 +54,4 @@ const pages = defineCollection({
   })
 })
 
-export const collections = { about, notes, pages, posts }
+export const collections = { about, books, notes, pages, posts }
