@@ -9,13 +9,14 @@ export interface BookData {
   author: string
   coverUrl: string
   id: string
-  rating: number
-  status: string
+  rating: BookRating
+  status: BookStatus
   summary: string
   title: string
 }
 
 export type BookEntry = CollectionEntry<'books'>
+export type BookRating = BookEntry['data']['rating']
 export type BookStatus = BookEntry['data']['status']
 
 interface BooksByStatus {
@@ -24,7 +25,7 @@ interface BooksByStatus {
   wishlist: BookEntry[]
 }
 
-export async function getBooksByStatus(status: string): Promise<BookEntry[]> {
+export async function getBooksByStatus(status: BookStatus): Promise<BookEntry[]> {
   const books = await getFilteredBooks()
   return books.filter((book) => book.data.status === status)
 }
