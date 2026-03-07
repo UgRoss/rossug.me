@@ -40,15 +40,25 @@ const fadeAnimation = themeConfig.general.fadeAnimation
 </html>
 
 <style is:global>
+  html,
+  body {
+    min-height: 100dvh;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .app-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
   .layout-wrapper {
     display: flex;
     flex-direction: column;
-    min-height: calc(100vh - 5rem);
-  }
-
-  @media (max-width: 768px) {
-    .layout-wrapper {
-      min-height: calc(100vh - 4.5rem);
-    }
+    flex: 1;
   }
 </style>
