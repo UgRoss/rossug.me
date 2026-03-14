@@ -7,10 +7,10 @@ This content will be displayed at the top of the index page.
 You can leave this empty if you don’t want to show any content.
 -->
 
-A static blog theme based on [Astro](https://astro.build), designed for clarity and focus.
+Hi there! I'm Rostyslav — or just Ross. Frontend engineer who loves building interfaces that feel fast, clean, and just right. React and TypeScript are my daily tools.
 
-With a deliberately minimal design, this layout ensures your content takes center stage. It's built for flexibility, offering customization options that honor its clean and elegant aesthetic.
+Ukrainian living in sunny Spain with my little family. Remote work, questionable keyboard spending habits, and a tendency to over-engineer my personal workspace.
 
-Effortlessly share your thoughts in _a calm & dustless space._
+Outside of work I'm into: custom mechanical keyboards, snowboarding, investing, cooking, and traveling with family whenever we can.
 
-Check posts for details and view source on [GitHub](https://github.com/the3ash/astro-chiri).
+I write longer pieces in [posts](/blog), capture quick learnings in [today I learned](/notes), and keep a running list of my gear and tools on the [uses](/uses) page.

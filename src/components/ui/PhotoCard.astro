@@ -1,0 +1,44 @@
+---
+// ABOUTME: Photo card component showing a cropped image with a location label below.
+// ABOUTME: Sized entirely by its parent shell; uses flex to fill height and clip the image.
+
+interface Props {
+  alt: string
+  fallback: string
+  height: number
+  location: string
+  src: string
+  width: number
+}
+
+const { alt, fallback, height, location, src, width } = Astro.props
+---
+
+<article aria-hidden="true" class="photo-card flex h-full w-full flex-col rounded-xl">
+  <div class="min-h-0 flex-1 overflow-hidden rounded-lg">
+    <picture>
+      <source srcset={src} type="image/webp" />
+      <img
+        alt={alt}
+        class="block h-full w-full object-cover"
+        decoding="async"
+        height={height}
+        loading="lazy"
+        src={fallback}
+        width={width}
+      />
+    </picture>
+  </div>
+  <span class="truncate pt-[0.35rem] text-center text-[0.7rem] font-medium">📍 {location}</span>
+</article>
+
+<style>
+  /* Custom bg token, non-standard padding, and layered shadow kept out of Tailwind */
+  .photo-card {
+    background: var(--bg);
+    padding: 0.4rem 0.4rem 0.5rem;
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.25),
+      0 1px 4px rgba(0, 0, 0, 0.15);
+  }
+</style>

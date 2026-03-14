@@ -1,6 +1,7 @@
 ---
 import SimpleContentList from '@/components/ui/SimpleContentList.astro'
 import About from '@/components/widgets/About.astro'
+import PhotoCards from '@/components/widgets/PhotoCards.astro'
 import { themeConfig } from '@/config'
 import IndexLayout from '@/layouts/IndexLayout.astro'
 import { getSortedFilteredPosts } from '@/utils/draft'
@@ -16,6 +17,7 @@ const recentPostItems = posts.map((post) => ({
 ---
 
 <IndexLayout description={themeConfig.site.description} title={themeConfig.site.title}>
+  <PhotoCards />
   <About />
   <main class="mt-12 space-y-10">
     <section>

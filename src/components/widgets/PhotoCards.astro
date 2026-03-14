@@ -1,0 +1,116 @@
+---
+// ABOUTME: Scattered photo card gallery with subtle rotation and scale-on-hover.
+// ABOUTME: Each card shell constrains the size; PhotoCard fills it and clips the image.
+
+import PhotoCard from '@/components/ui/PhotoCard.astro'
+import clsx from 'clsx'
+
+interface PhotoCardConfig {
+  alt: string
+  cardWidth: string
+  fallback: string
+  height: number
+  className?: string
+  location: string
+  maxHeight: number
+  rotation: number
+  src: string
+  width: number
+}
+
+const photos: PhotoCardConfig[] = [
+  {
+    alt: 'Ross in India',
+    cardWidth: 'clamp(120px, 16vw, 200px)',
+    fallback: '/images/me/me_india.jpg',
+    height: 601,
+    location: 'Agra, India',
+    maxHeight: 210,
+    rotation: -10,
+    src: '/images/me/me_india.webp',
+    width: 800
+  },
+  {
+    alt: 'Ross in Malaga',
+    cardWidth: 'clamp(160px, 14vw, 180px)',
+    fallback: '/images/me/me_malaga.jpg',
+    className: 'hidden sm:block',
+    height: 500,
+    location: 'Málaga, Spain',
+    maxHeight: 250,
+    rotation: 3,
+    src: '/images/me/me_malaga.webp',
+    width: 380
+  },
+  {
+    alt: 'Ross in Turkey',
+    cardWidth: 'clamp(140px, 15vw, 170px)',
+    fallback: '/images/me/me_turkey.jpg',
+    height: 600,
+    location: 'Erciyes, Turkey',
+    maxHeight: 220,
+    rotation: -10,
+    src: '/images/me/me_turkey.webp',
+    width: 500
+  }
+]
+
+const buildCardShellStyle = (photo: PhotoCardConfig): string =>
+  [
+    `--rotation: ${photo.rotation}deg`,
+    `--card-width: ${photo.cardWidth}`,
+    `--max-h: ${photo.maxHeight}px`
+  ].join('; ')
+---
+
+<div aria-hidden="true" class="photo-cards flex items-center justify-center pb-16">
+  {
+    photos.map((photo) => (
+      <div class={clsx('photo-card-shell', photo.className)} style={buildCardShellStyle(photo)}>
+        <PhotoCard
+          alt={photo.alt}
+          fallback={photo.fallback}
+          height={photo.height}
+          location={photo.location}
+          src={photo.src}
+          width={photo.width}
+        />
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  /* Shell uses CSS custom props for dynamic rotation/size, and a non-standard 480px breakpoint */
+  .photo-card-shell {
+    width: var(--card-width);
+    height: var(--max-h);
+    transform: rotate(var(--rotation));
+    transition: transform 0.4s ease;
+    margin: 0 -0.75rem;
+  }
+
+  .photo-card-shell:hover {
+    transform: rotate(0deg) scale(1.08);
+    z-index: 10;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .photo-card-shell {
+      transition: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .photo-cards {
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .photo-card-shell {
+      margin: 0;
+      width: clamp(140px, 40vw, 200px);
+      height: 180px;
+    }
+  }
+</style>
