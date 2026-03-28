@@ -3,8 +3,6 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { formatContentDate } from '@/utils/date'
-
 interface Note {
   category: string
   excerpt?: string
@@ -166,9 +164,6 @@ function NoteItem({ note }: { note: Note }) {
           <span className="block min-w-0 truncate font-medium">{note.title}</span>
           <span className="tag hidden cursor-default! sm:inline-flex">{note.category}</span>
         </div>
-        <span className="shrink-0 text-sm whitespace-nowrap text-muted">
-          <time dateTime={note.pubDate}>{formatContentDate(note.pubDate)}</time>
-        </span>
       </a>
     </li>
   )
