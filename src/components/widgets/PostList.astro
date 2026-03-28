@@ -34,7 +34,7 @@ const getPostExcerpt = (post: PostListProps['posts'][number]): string => {
                   alt={post.data.title}
                   class="h-auto w-full object-cover transition-transform duration-300 group-hover:scale-[1.01]"
                   loading="lazy"
-                  src={post.data.image}
+                  src={post.data.image.src}
                 />
               </div>
             )}

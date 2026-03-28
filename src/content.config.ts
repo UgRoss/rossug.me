@@ -3,10 +3,10 @@ import { glob } from 'astro/loaders'
 
 const posts = defineCollection({
   loader: glob({ base: './content/posts', pattern: '**/*.{md,mdx}' }),
-  schema: () =>
+  schema: ({ image }) =>
     z.object({
       excerpt: z.string().optional(),
-      image: z.string().optional(),
+      image: image().optional(),
       // Transform string to Date object
       pubDate: z.coerce.date(),
       title: z.string()
