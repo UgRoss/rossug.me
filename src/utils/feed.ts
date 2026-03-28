@@ -18,7 +18,7 @@ const markdownParser = new MarkdownIt({
 })
 
 const imagesGlob = import.meta.glob<{ default: ImageMetadata }>(
-  '/src/content/posts/_assets/**/*.{jpeg,jpg,png,gif,webp}'
+  '/content/posts/_assets/**/*.{jpeg,jpg,png,gif,webp}'
 )
 
 /**
@@ -78,14 +78,14 @@ async function fixRelativeImagePaths(
     }
 
     if (src.startsWith('./') || src.startsWith('../')) {
-      // Build path relative to /src/content/posts
+      // Build path relative to /content/posts
       let resolvedPath: string
       if (src.startsWith('./')) {
         // ./xxx -> postDir/xxx
-        resolvedPath = path.posix.join('/src/content/posts', postDir, src.slice(2))
+        resolvedPath = path.posix.join('/content/posts', postDir, src.slice(2))
       } else {
         // ../xxx -> Resolve to parent directory
-        resolvedPath = path.posix.resolve('/src/content/posts', postDir, src)
+        resolvedPath = path.posix.resolve('/content/posts', postDir, src)
       }
 
       // Check if corresponding image module exists
@@ -97,7 +97,7 @@ async function fixRelativeImagePaths(
           // In development environment, don't process images, use original paths to ensure cross-platform compatibility
           if (import.meta.env.DEV) {
             // Development environment: use relative paths
-            const relativePath = resolvedPath.replace('/src/content/posts/', '/')
+            const relativePath = resolvedPath.replace('/content/posts/', '/')
             const imageUrl = new URL(relativePath, baseUrl).toString()
             img.setAttribute('src', imageUrl)
           } else {
@@ -114,7 +114,7 @@ async function fixRelativeImagePaths(
         } catch (error) {
           console.error(`[Feed] Image processing failed: ${src} -> ${resolvedPath}`, error)
           // Use original path as fallback when error occurs
-          const relativePath = resolvedPath.replace('/src/content/posts/', '/')
+          const relativePath = resolvedPath.replace('/content/posts/', '/')
           const imageUrl = new URL(relativePath, baseUrl).toString()
           img.setAttribute('src', imageUrl)
         }

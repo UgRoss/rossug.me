@@ -46,19 +46,11 @@ const isMoreActive = moreLinks.some((link) => isActive(link.href))
     class="container mx-auto flex h-12 max-w-150 items-center justify-between"
   >
     <div class="flex items-center gap-1 sm:gap-2">
-      <a
-        aria-label="Home"
-        class="mr-1 hidden shrink-0 items-center justify-center sm:flex"
-        href="/"
-      >
-        <img alt="" class="size-7 rounded-full" height="32" src="/favicon.svg" width="32" />
-      </a>
-
       {
         primaryLinks.map((link) => (
           <a
             aria-current={isActive(link.href) ? 'page' : undefined}
-            class:list={[navLinkClass, { 'is-active': isActive(link.href) }]}
+            class:list={[navLinkClass, { 'is-active bg-(--selection)': isActive(link.href) }]}
             href={link.href}
           >
             {link.label}
