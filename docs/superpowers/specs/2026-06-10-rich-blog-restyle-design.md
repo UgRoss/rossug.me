@@ -34,7 +34,7 @@ Our own version of rich.blog's scale, slightly larger per Ross:
 - Page/post titles (h1): ~`1.25rem` (20px), weight 550
 - Prose `h2`: ~`1.125rem` (18px), weight 550
 - Prose `h3`+: ~`1rem` (16px), weight 550
-- Body unchanged: 15px / 1.6
+- Body unchanged: 15px / 1.6 (keep our 15px base; do not adopt rich.blog's 14.8px)
 - Inter variable font already supports weight 550; expose it as a token (e.g. `--font-weight-medium: 550`) and use it for headings instead of the current bolder weights.
 
 Touches `global.css` (base heading rule) and `prose.css` (in-content headings).
