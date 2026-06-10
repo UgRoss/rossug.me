@@ -1,4 +1,5 @@
 import cloudflare from '@astrojs/cloudflare'
+import { unified } from '@astrojs/markdown-remark'
 import mdx from '@astrojs/mdx'
 import react from '@astrojs/react'
 import sitemap from '@astrojs/sitemap'
@@ -41,8 +42,10 @@ export default defineConfig({
   ],
 
   markdown: {
-    rehypePlugins: [rehypeKatex, rehypeCleanup, rehypeImageProcessor, rehypeCopyCode],
-    remarkPlugins: [remarkMath, remarkDirective, remarkEmbeddedMedia],
+    processor: unified({
+      rehypePlugins: [rehypeKatex, rehypeCleanup, rehypeImageProcessor, rehypeCopyCode],
+      remarkPlugins: [remarkMath, remarkDirective, remarkEmbeddedMedia],
+    }),
     shikiConfig: {
       theme: 'css-variables',
       wrap: false

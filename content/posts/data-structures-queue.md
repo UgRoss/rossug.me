@@ -4,8 +4,8 @@ pubDate: 2020-12-10
 excerpt: 'A Queue is a linear data structure that uses FIFO ordering - elements are added to the end and removed from the front.'
 image: './_assets/queue-queue.jpeg'
 ---
-![Data Structures: Queue](./_assets/queue-queue.jpeg)
 
+![Data Structures: Queue](./_assets/queue-queue.jpeg)
 
 A Queue is a linear data structure where one end is used to add data and the other end is used to remove it. We use queues in everyday life all the time - waiting in line at a supermarket, boarding a plane.
 

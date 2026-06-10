@@ -4,8 +4,8 @@ pubDate: 2020-12-04
 excerpt: 'A Stack is a linear data structure that uses LIFO ordering — the last item pushed is the first one out.'
 image: './_assets/stack-stack.jpeg'
 ---
-![Data Structures: Stack](./_assets/stack-stack.jpeg)
 
+![Data Structures: Stack](./_assets/stack-stack.jpeg)
 
 A Stack is a linear data structure where elements are stacked on top of each other. It's similar to an array, but with a couple of restrictions:
 

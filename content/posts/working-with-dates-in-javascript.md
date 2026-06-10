@@ -4,8 +4,8 @@ pubDate: 2019-03-12
 excerpt: 'Working with dates in JavaScript can be tricky. This article covers the available tools and how to solve the most common date-related tasks.'
 image: './_assets/dates-in-js-code.png'
 ---
-![Working with Dates in JavaScript](./_assets/dates-in-js-code.png)
 
+![Working with Dates in JavaScript](./_assets/dates-in-js-code.png)
 
 Dates in JS have always been one of my weaker spots. I'd figure it out somehow, get it working, and then forget everything a week later. So I figured writing it all down would help it stick.
 

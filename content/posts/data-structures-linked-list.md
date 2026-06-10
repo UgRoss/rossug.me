@@ -4,8 +4,8 @@ pubDate: 2019-05-14
 excerpt: 'A practical introduction to linked lists — what they are, how they work, and when to reach for them over arrays.'
 image: './_assets/linked-list-linked-list-img.jpeg'
 ---
-![Data Structures: Linked List](./_assets/linked-list-linked-list-img.jpeg)
 
+![Data Structures: Linked List](./_assets/linked-list-linked-list-img.jpeg)
 
 A linked list is a linear data structure, meaning its elements are stored in sequence and traversed in order. It's a good choice over arrays when you don't need random/indexed access to your data, and when you want efficient insertion or deletion at the beginning or middle of a list.
 
