@@ -1,7 +1,13 @@
 // ABOUTME: Shared helpers for compact content date formatting across Astro and React.
 // ABOUTME: Uses a year-aware format so older content shows month and year for clarity.
 
-import { format, isSameYear, parseISO } from 'date-fns'
+import {
+  differenceInYears,
+  format,
+  formatDistanceToNowStrict,
+  isSameYear,
+  parseISO
+} from 'date-fns'
 
 export type DateValue = Date | string
 
@@ -15,3 +21,11 @@ export const formatContentDate = (value: DateValue): string => {
 
 export const toDateTimeAttr = (value: DateValue): string =>
   typeof value === 'string' ? value : value.toISOString()
+
+export const formatRelativeListDate = (value: DateValue): string => {
+  const date = toDate(value)
+
+  return differenceInYears(new Date(), date) >= 1
+    ? format(date, 'yyyy')
+    : formatDistanceToNowStrict(date, { addSuffix: true })
+}

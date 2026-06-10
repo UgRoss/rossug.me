@@ -3,6 +3,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { formatRelativeListDate } from '@/utils/date'
+
 interface Note {
   category: string
   excerpt?: string
@@ -161,10 +163,14 @@ function NoteItem({ note }: { note: Note }) {
         href={`/notes/${note.id}`}
         title={note.title}
       >
-        <div className="flex min-w-0 items-center gap-2">
-          <span className="block min-w-0 truncate font-medium">{note.title}</span>
-          <span className="tag hidden cursor-default! sm:inline-flex">{note.category}</span>
-        </div>
+        <span className="block min-w-0 truncate font-medium">{note.title}</span>
+        <time
+          className="shrink-0 text-sm whitespace-nowrap text-muted"
+          dateTime={note.pubDate}
+          suppressHydrationWarning
+        >
+          {formatRelativeListDate(note.pubDate)}
+        </time>
       </a>
     </li>
   )
