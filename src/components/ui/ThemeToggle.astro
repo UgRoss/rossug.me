@@ -1,0 +1,129 @@
+---
+// ABOUTME: Theme toggle dropdown (Automatic/Light/Dark) built on the native Dropdown component.
+// ABOUTME: Ships no framework runtime; selection is wired to theme-controller via a small script.
+
+import type { ThemeMode } from '@/types/theme.types'
+
+import Dropdown from '@/components/ui/Dropdown.astro'
+
+const THEME_OPTIONS: { label: string; value: ThemeMode }[] = [
+  { label: 'Automatic', value: 'system' },
+  { label: 'Light', value: 'light' },
+  { label: 'Dark', value: 'dark' }
+]
+---
+
+<Dropdown align="right" triggerAriaLabel="Theme settings">
+  <span
+    class="flex size-8 cursor-pointer items-center justify-center rounded-md text-muted transition-colors duration-150 hover:bg-(--selection) hover:text-(--text-primary)"
+    slot="trigger"
+  >
+    <svg
+      aria-hidden="true"
+      class="size-4.5 dark:hidden"
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      viewBox="0 0 24 24"
+    >
+      <circle cx="12" cy="12" r="4"></circle>
+      <path
+        d="M12 2v2M12 20v2m-7.07-17.07 1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+      ></path>
+    </svg>
+    <svg
+      aria-hidden="true"
+      class="hidden size-4.5 dark:block"
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      viewBox="0 0 24 24"
+    >
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+    </svg>
+  </span>
+  {
+    THEME_OPTIONS.map(({ label, value }) => (
+      <button
+        aria-pressed="false"
+        class="theme-option flex w-full cursor-pointer items-center gap-2 rounded-md border-none bg-transparent px-3 py-1.5 text-left text-[length:var(--font-size-m)] font-medium text-muted transition-colors duration-150 hover:bg-(--selection) hover:text-(--text-primary)"
+        data-theme-option={value}
+        type="button"
+      >
+        <span
+          aria-hidden="true"
+          class="theme-check inline-flex size-3.5 shrink-0 items-center justify-center"
+        >
+          <svg
+            class="size-3.5"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+        </span>
+        <span>{label}</span>
+      </button>
+    ))
+  }
+</Dropdown>
+
+<script>
+  import type { ThemeMode } from '@/types/theme.types'
+
+  import { getMode, onThemeChange, setTheme } from '@/utils/theme-controller'
+
+  const isThemeMode = (value: string): value is ThemeMode =>
+    value === 'system' || value === 'light' || value === 'dark'
+
+  const syncChecks = (): void => {
+    const mode = getMode()
+    document.querySelectorAll<HTMLButtonElement>('[data-theme-option]').forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.themeOption === mode))
+    })
+  }
+
+  const toggleWindow = window as { __themeToggleBound?: boolean } & Window
+  if (!toggleWindow.__themeToggleBound) {
+    toggleWindow.__themeToggleBound = true
+
+    document.addEventListener('click', (event) => {
+      const target =
+        event.target instanceof Element ? event.target.closest('[data-theme-option]') : null
+      if (!(target instanceof HTMLElement)) return
+
+      const value = target.dataset.themeOption ?? ''
+      if (!isThemeMode(value)) return
+
+      setTheme(value)
+      target.closest('details')?.removeAttribute('open')
+    })
+
+    onThemeChange(syncChecks)
+    document.addEventListener('astro:page-load', syncChecks)
+  }
+
+  syncChecks()
+</script>
+
+<style>
+  .theme-option .theme-check {
+    visibility: hidden;
+  }
+
+  .theme-option[aria-pressed='true'] {
+    color: var(--text-primary);
+  }
+
+  .theme-option[aria-pressed='true'] .theme-check {
+    visibility: visible;
+  }
+</style>
