@@ -12,6 +12,7 @@ import remarkDirective from 'remark-directive'
 import remarkMath from 'remark-math'
 
 import { themeConfig } from './src/config'
+import ogImages from './src/integrations/og-images'
 import rehypeCleanup from './src/plugins/rehype-cleanup.mjs'
 import rehypeCopyCode from './src/plugins/rehype-copy-code.mjs'
 import rehypeImageProcessor from './src/plugins/rehype-image-processor.mjs'
@@ -38,13 +39,14 @@ export default defineConfig({
     }),
     mdx(),
     sitemap(),
-    react()
+    react(),
+    ogImages()
   ],
 
   markdown: {
     processor: unified({
       rehypePlugins: [rehypeKatex, rehypeCleanup, rehypeImageProcessor, rehypeCopyCode],
-      remarkPlugins: [remarkMath, remarkDirective, remarkEmbeddedMedia],
+      remarkPlugins: [remarkMath, remarkDirective, remarkEmbeddedMedia]
     }),
     shikiConfig: {
       theme: 'css-variables',

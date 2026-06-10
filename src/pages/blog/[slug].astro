@@ -3,6 +3,7 @@ import { render } from 'astro:content'
 
 import BackLink from '@/components/ui/BackLink.astro'
 import PostLayout from '@/layouts/PostLayout.astro'
+import { createMetaDescription } from '@/utils/createExcerpt'
 import { getFilteredPosts } from '@/utils/draft'
 
 export async function getStaticPaths() {
@@ -15,9 +16,10 @@ export async function getStaticPaths() {
 
 const post = Astro.props
 const { Content } = await render(post)
+const description = post.data.excerpt ?? createMetaDescription(post.body ?? '')
 ---
 
-<PostLayout {...post.data}>
+<PostLayout {...post.data} description={description} ogImage={`/open-graph/${post.id}.png`}>
   <BackLink href="/blog" label="Posts" slot="back-link" />
 
   <Content />
