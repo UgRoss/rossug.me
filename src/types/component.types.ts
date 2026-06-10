@@ -35,6 +35,8 @@ export interface LayoutProps {
 
 // Post layout props interface (generic, not tied to specific data source)
 export interface PostLayoutProps {
+  description?: string
+  ogImage?: string
   pubDate: Date
   title: string
 }

@@ -12,19 +12,17 @@ import FormattedDate from '@/components/widgets/FormattedDate.astro'
 import { themeConfig } from '@/config'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 
-const { pubDate, title } = Astro.props as PostLayoutProps
-
-const postSlug = Astro.url.pathname.split('/').filter(Boolean).pop() || ''
-const ogImage = `/open-graph/${postSlug}.png`
+const { description, ogImage, pubDate, title } = Astro.props as PostLayoutProps
+const metaDescription = description || themeConfig.site.description
 ---
 
 <BaseLayout
-  description={themeConfig.site.description}
+  description={metaDescription}
   title={`${title} · ${themeConfig.site.title}`}
   type="post"
 >
   <BaseHead
-    description={themeConfig.site.description}
+    description={metaDescription}
     ogImage={ogImage}
     slot="head"
     title={`${title} · ${themeConfig.site.title}`}
