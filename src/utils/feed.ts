@@ -148,7 +148,7 @@ async function generateFeedInstance(context: APIContext) {
       atom: `${siteUrl}/atom.xml`,
       rss: `${siteUrl}/rss.xml`
     },
-    generator: 'Astro Chiri Feed Generator',
+    generator: title,
     id: siteUrl,
     language: language,
     link: siteUrl,
