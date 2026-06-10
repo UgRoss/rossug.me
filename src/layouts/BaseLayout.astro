@@ -22,6 +22,12 @@ const fadeAnimation = themeConfig.general.fadeAnimation
     <slot name="head" />
   </head>
   <body>
+    <a
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[60] focus:rounded-md focus:border focus:border-(--border) focus:bg-(--bg) focus:px-3 focus:py-2"
+      href="#main-content"
+    >
+      Skip to content
+    </a>
     <Navbar />
     <div class="app-wrapper">
       {

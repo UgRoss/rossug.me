@@ -73,63 +73,26 @@ import { themeConfig } from '@/config'
         const codeText = codeElement.textContent || ''
 
         try {
-          // Primary method: use modern clipboard API
           await navigator.clipboard.writeText(codeText)
-          button.setAttribute('data-copying', 'true')
-          button.innerHTML = copiedIcon
-
-          setTimeout(() => {
-            if (!container.matches(':hover')) {
-              button.style.opacity = '0'
-              button.style.pointerEvents = 'none'
-            }
-            button.removeAttribute('data-copying')
-
-            setTimeout(() => {
-              button.innerHTML = copyIcon
-            }, 500)
-          }, 1500)
         } catch (err) {
           console.error('Failed to copy code:', err)
+          return
+        }
 
-          // Fallback method: create temporary textarea for older browsers
-          try {
-            const textArea = document.createElement('textarea')
-            textArea.value = codeText
-            textArea.style.position = 'fixed'
-            textArea.style.opacity = '0'
-            document.body.appendChild(textArea)
-            textArea.focus()
-            textArea.select()
+        button.setAttribute('data-copying', 'true')
+        button.innerHTML = copiedIcon
 
-            navigator.clipboard
-              .writeText(codeText)
-              .then(() => {
-                document.body.removeChild(textArea)
-              })
-              .catch(() => {
-                console.error('Both clipboard methods failed')
-                document.body.removeChild(textArea)
-              })
-          } catch (fallbackErr) {
-            console.error('All clipboard methods failed:', fallbackErr)
+        setTimeout(() => {
+          if (!container.matches(':hover')) {
+            button.style.opacity = '0'
+            button.style.pointerEvents = 'none'
           }
-
-          button.setAttribute('data-copying', 'true')
-          button.innerHTML = copiedIcon
+          button.removeAttribute('data-copying')
 
           setTimeout(() => {
-            if (!container.matches(':hover')) {
-              button.style.opacity = '0'
-              button.style.pointerEvents = 'none'
-            }
-            button.removeAttribute('data-copying')
-
-            setTimeout(() => {
-              button.innerHTML = copyIcon
-            }, 500)
-          }, 1500)
-        }
+            button.innerHTML = copyIcon
+          }, 500)
+        }, 1500)
       })
     })
   }
@@ -195,6 +158,14 @@ import { themeConfig } from '@/config'
 
   .copy-button:hover {
     color: var(--text-primary);
+  }
+
+  /* !important beats the inline styles the script uses for hover hiding */
+  .copy-button:focus-visible {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    outline: 2px solid var(--text-secondary);
+    outline-offset: 1px;
   }
 
   .copy-button svg {

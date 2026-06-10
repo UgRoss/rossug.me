@@ -65,6 +65,8 @@
       const previewImages = document.querySelectorAll('img[data-preview="true"]')
       previewImages.forEach((img) => {
         const imgElement = img as HTMLImageElement
+        if (imgElement.dataset.viewerBound) return
+        imgElement.dataset.viewerBound = 'true'
         imgElement.style.cursor = 'zoom-in'
         imgElement.addEventListener('click', (e) => {
           e.preventDefault()
@@ -87,22 +89,21 @@
       { passive: false }
     )
 
-    document.addEventListener('keydown', (e) => {
+    // Replace any previous handler so re-initialization after view
+    // transitions doesn't stack document-level listeners.
+    const viewerWindow = window as { __imageViewerKeyHandler?: (e: KeyboardEvent) => void } & Window
+    if (viewerWindow.__imageViewerKeyHandler) {
+      document.removeEventListener('keydown', viewerWindow.__imageViewerKeyHandler)
+    }
+    const handleKeydown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && viewer.classList.contains('active')) {
         hideImage()
       }
-    })
+    }
+    document.addEventListener('keydown', handleKeydown)
+    viewerWindow.__imageViewerKeyHandler = handleKeydown
 
     bindImageClickEvents()
-
-    const observer = new MutationObserver(() => {
-      bindImageClickEvents()
-    })
-
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true
-    })
 
     // Hide initially
     viewer.style.visibility = 'hidden'
@@ -139,17 +140,10 @@
   }
 
   .image-viewer img {
-    min-width: 45rem;
-    max-width: 60vw;
-    max-height: 80vh;
+    max-width: 90vw;
+    max-height: 85vh;
     object-fit: contain;
     cursor: zoom-out;
-  }
-
-  @media (max-width: 768px) {
-    .image-viewer img {
-      min-width: 100vw;
-    }
   }
 
   body.image-viewer-open {

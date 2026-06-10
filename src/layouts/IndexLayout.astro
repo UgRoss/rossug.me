@@ -11,7 +11,7 @@ const { description, title } = Astro.props
 <BaseLayout description={description} title={title} type="page">
   <BaseHead description={description} slot="head" title={title} />
   <div class="page-content">
-    <main>
+    <main id="main-content">
       <slot />
     </main>
     {

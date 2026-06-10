@@ -28,7 +28,7 @@ const metaDescription = description || themeConfig.site.description
     title={`${title} · ${themeConfig.site.title}`}
   />
   <div class="post-container">
-    <main>
+    <main id="main-content">
       {
         Astro.slots.has('back-link') && (
           <div class="mb-4">
