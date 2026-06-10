@@ -109,7 +109,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
       <div className="space-y-3">
         <input
           aria-label="Search notes"
-          className="w-full rounded-lg border border-(--border) bg-transparent px-3 py-2 text-sm text-(--text-primary) outline-none placeholder:text-muted focus:ring-2 focus:ring-(--border)"
+          className="h-10 w-full rounded-lg border border-(--border) bg-(--code-bg) px-3 text-sm text-(--text-primary) outline-none placeholder:text-muted focus:border-(--text-tertiary)"
           onChange={(e) => handleSearchChange(e.target.value)}
           placeholder="Search notes…"
           type="text"
@@ -120,7 +120,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
           {categories.map((cat) => (
             <button
               aria-pressed={selectedCategory === cat}
-              className={`tag tag-interactive ${selectedCategory === cat ? 'text-(--text-primary)!' : ''}`}
+              className={`tag tag-interactive ${selectedCategory === cat ? 'tag-selected' : ''}`}
               key={cat}
               onClick={() => handleCategoryToggle(cat)}
               type="button"
