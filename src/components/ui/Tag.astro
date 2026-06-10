@@ -1,28 +1,25 @@
 ---
 interface Props {
-  category?: string
   href?: string
   interactive?: boolean
   label: string
 }
 
-const { category, href, interactive = true, label } = Astro.props
+const { href, interactive = true, label } = Astro.props
 
 const classes = `tag ${interactive ? 'tag-interactive' : ''}`
 ---
 
 {
   href ? (
-    <a class={classes} data-category-filter={category} href={href}>
+    <a class={classes} href={href}>
       {label}
     </a>
   ) : interactive ? (
-    <button class={classes} data-category-filter={category} type="button">
+    <button class={classes} type="button">
       {label}
     </button>
   ) : (
-    <span class={classes} data-category-filter={category}>
-      {label}
-    </span>
+    <span class={classes}>{label}</span>
   )
 }

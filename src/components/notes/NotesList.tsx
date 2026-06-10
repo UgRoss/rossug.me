@@ -119,6 +119,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
         <div className="flex flex-wrap items-center gap-2">
           {categories.map((cat) => (
             <button
+              aria-pressed={selectedCategory === cat}
               className={`tag tag-interactive ${selectedCategory === cat ? 'text-(--text-primary)!' : ''}`}
               key={cat}
               onClick={() => handleCategoryToggle(cat)}

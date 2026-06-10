@@ -7,44 +7,34 @@ interface Props {
 }
 
 const { currentPage, lastPage, nextUrl, prevUrl } = Astro.props
+
+const linkClass =
+  'text-neutral-500 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100'
+const disabledClass = 'text-neutral-300 dark:text-neutral-700'
 ---
 
 {
   lastPage > 1 && (
     <nav aria-label="Pagination" class="mt-12 flex items-center justify-between pt-8 text-sm">
-      <a
-        aria-disabled={!prevUrl}
-        aria-label="Go to previous page"
-        class:list={[
-          'transition-colors',
-          prevUrl
-            ? 'text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100'
-            : 'pointer-events-none text-neutral-300 dark:text-neutral-700'
-        ]}
-        href={prevUrl || '#'}
-        tabindex={prevUrl ? undefined : -1}
-      >
-        &larr; Prev
-      </a>
+      {prevUrl ? (
+        <a aria-label="Go to previous page" class={linkClass} href={prevUrl}>
+          &larr; Prev
+        </a>
+      ) : (
+        <span class={disabledClass}>&larr; Prev</span>
+      )}
 
-      <span aria-current="page" class="text-neutral-400">
+      <span class="text-neutral-400">
         {currentPage} / {lastPage}
       </span>
 
-      <a
-        aria-disabled={!nextUrl}
-        aria-label="Go to next page"
-        class:list={[
-          'transition-colors',
-          nextUrl
-            ? 'text-neutral-500 hover:text-neutral-900 dark:hover:text-neutral-100'
-            : 'pointer-events-none text-neutral-300 dark:text-neutral-700'
-        ]}
-        href={nextUrl || '#'}
-        tabindex={nextUrl ? undefined : -1}
-      >
-        Next &rarr;
-      </a>
+      {nextUrl ? (
+        <a aria-label="Go to next page" class={linkClass} href={nextUrl}>
+          Next &rarr;
+        </a>
+      ) : (
+        <span class={disabledClass}>Next &rarr;</span>
+      )}
     </nav>
   )
 }
