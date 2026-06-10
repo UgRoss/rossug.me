@@ -3,7 +3,7 @@ import type { ThemeConfig } from './types'
 export const themeConfig: ThemeConfig = {
   // GENERAL SETTINGS ////////////////////////////////////////////////////////////////////////////////////
   general: {
-    contentWidth: '42rem', // Content area width
+    contentWidth: '500px', // Content area width
     fadeAnimation: true, // Enable fade animations
     footer: true, // Show footer
     themeToggle: true // Show theme toggle button

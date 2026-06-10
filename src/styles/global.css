@@ -29,8 +29,8 @@
 
 @layer base {
   :root {
-    /* Min Content Width */
-    --content-width: 31.25rem;
+    /* Min Content Width (fallback — themeConfig.general.contentWidth is the source of truth) */
+    --content-width: 500px;
 
     /* Typography */
     --font-size-s: 0.8125rem;
