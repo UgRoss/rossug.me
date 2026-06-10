@@ -39,5 +39,5 @@ coverage/
 *.wav
 *.pdf
 
-# Documentation
-docs/
+# Superpowers specs/plans (untracked, see .gitignore)
+docs/superpowers/

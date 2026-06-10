@@ -111,7 +111,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
       <div className="space-y-3">
         <input
           aria-label="Search notes"
-          className="h-10 w-full rounded-lg border border-(--border) bg-(--code-bg) px-3 text-sm text-(--text-primary) outline-none placeholder:text-muted focus:border-(--text-tertiary)"
+          className="h-10 w-full rounded-lg border border-(--border) bg-(--code-bg) px-3 text-sm text-(--text-primary) outline-none placeholder:text-muted focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-500"
           onChange={(e) => handleSearchChange(e.target.value)}
           placeholder="Search notes…"
           type="text"
@@ -164,6 +164,8 @@ function NoteItem({ note }: { note: Note }) {
         title={note.title}
       >
         <span className="block min-w-0 truncate font-medium">{note.title}</span>
+        {/* Relative date is computed at build time; drift until the next deploy is
+            acceptable, so hydration mismatches are intentionally suppressed. */}
         <time
           className="shrink-0 text-sm whitespace-nowrap text-muted"
           dateTime={note.pubDate}
