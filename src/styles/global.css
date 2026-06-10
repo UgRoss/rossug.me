@@ -30,7 +30,7 @@
 @layer base {
   :root {
     /* Min Content Width */
-    --content-width: 38rem;
+    --content-width: 31.25rem;
 
     /* Typography */
     --font-size-s: 0.8125rem;
@@ -39,6 +39,7 @@
 
     --font-weight-light: 350;
     --font-weight-regular: 400;
+    --font-weight-medium: 550;
     --font-weight-bold: 800;
 
     --spacing-s: -0.08em;
@@ -127,7 +128,7 @@
   h4,
   h5,
   h6 {
-    @apply font-medium;
+    font-weight: var(--font-weight-medium);
   }
 
   code {
