@@ -7,6 +7,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "deploy": "astro build && wrangler deploy",
     "check": "astro check",
     "astro": "astro",
     "lint": "eslint .",
@@ -16,13 +17,11 @@
     "symlinks": "./scripts/create-symlinks.sh"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.7.0",
     "@astrojs/markdown-remark": "^7.2.0",
     "@astrojs/mdx": "^6.0.3",
     "@astrojs/react": "^5.0.7",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.3",
-    "@playform/inline": "^0.1.2",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@radix-ui/react-select": "^2.2.6",
     "@tailwindcss/vite": "^4.1.18",
