@@ -20,3 +20,11 @@ pnpm-debug.log*
 
 # jetbrains setting folders
 .idea/
+
+# wrangler
+.wrangler/
+
+# generated OG images
+public/open-graph/
+
+.playwright-mcp/
