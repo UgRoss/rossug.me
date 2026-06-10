@@ -28,7 +28,6 @@
     "@tailwindcss/vite": "^4.1.18",
     "astro": "^6.4.5",
     "astro-toolkit": "^0.2.10",
-    "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "feed": "^5.1.0",
     "html-to-text": "^9.0.5",
