@@ -3,7 +3,7 @@
 // ABOUTME: Responsive design hides the avatar on small screens to conserve space.
 
 import Dropdown from '@/components/ui/Dropdown.astro'
-import ThemeToggle from '@/components/ui/ThemeToggle'
+import ThemeToggle from '@/components/ui/ThemeToggle.astro'
 import { themeConfig } from '@/config'
 
 const currentPath = Astro.url.pathname
@@ -98,7 +98,7 @@ const isMoreActive = moreLinks.some((link) => isActive(link.href))
       </Dropdown>
     </div>
 
-    {themeConfig.general.themeToggle && <ThemeToggle client:idle />}
+    {themeConfig.general.themeToggle && <ThemeToggle />}
   </nav>
 </header>
 
