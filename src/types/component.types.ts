@@ -10,21 +10,6 @@ export interface FormattedDateProps {
   date: Date | string
 }
 
-// ImageOptimizer component props interface
-export interface ImageOptimizerProps {
-  alt: string
-  caption?: string
-  class?: string
-  decoding?: 'async' | 'auto' | 'sync'
-  format?: 'avif' | 'jpeg' | 'png' | 'webp'
-  height?: number
-  loading?: 'eager' | 'lazy'
-  priority?: boolean
-  quality?: number
-  src: ImageMetadata | string
-  width?: number
-}
-
 // Layout props interface
 export interface LayoutProps {
   class?: string
