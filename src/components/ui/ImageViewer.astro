@@ -45,21 +45,6 @@
       document.body.style.overflow = ''
     }
 
-    // Hide and clear image after transition ends
-    viewer.addEventListener('transitionend', (e) => {
-      if (e.propertyName === 'opacity' && !viewer.classList.contains('active')) {
-        viewer.style.visibility = 'hidden'
-        if (viewerImg) {
-          viewerImg.src = ''
-          viewerImg.alt = ''
-        }
-        viewer.style.cursor = 'auto'
-        setTimeout(() => {
-          viewer.style.cursor = ''
-        }, 10)
-      }
-    })
-
     // Bind click events to images with data-preview="true" attribute
     function bindImageClickEvents() {
       const previewImages = document.querySelectorAll('img[data-preview="true"]')
@@ -76,18 +61,39 @@
       })
     }
 
-    viewer?.addEventListener('click', hideImage)
+    // Viewer-level listeners bind once per element: init runs for both
+    // DOMContentLoaded and astro:page-load on the initial page view.
+    if (!viewer.dataset.bound) {
+      viewer.dataset.bound = 'true'
 
-    // Prevent touch scroll in image viewer
-    viewer?.addEventListener(
-      'touchmove',
-      (e) => {
-        if (viewer.classList.contains('active')) {
-          e.preventDefault()
+      // Hide and clear image after transition ends
+      viewer.addEventListener('transitionend', (e) => {
+        if (e.propertyName === 'opacity' && !viewer.classList.contains('active')) {
+          viewer.style.visibility = 'hidden'
+          if (viewerImg) {
+            viewerImg.src = ''
+            viewerImg.alt = ''
+          }
+          viewer.style.cursor = 'auto'
+          setTimeout(() => {
+            viewer.style.cursor = ''
+          }, 10)
         }
-      },
-      { passive: false }
-    )
+      })
+
+      viewer.addEventListener('click', hideImage)
+
+      // Prevent touch scroll in image viewer
+      viewer.addEventListener(
+        'touchmove',
+        (e) => {
+          if (viewer.classList.contains('active')) {
+            e.preventDefault()
+          }
+        },
+        { passive: false }
+      )
+    }
 
     // Replace any previous handler so re-initialization after view
     // transitions doesn't stack document-level listeners.

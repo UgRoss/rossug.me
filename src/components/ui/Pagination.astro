@@ -21,9 +21,7 @@ const disabledClass = 'text-neutral-300 dark:text-neutral-700'
           &larr; Prev
         </a>
       ) : (
-        <span aria-hidden="true" class={disabledClass}>
-          &larr; Prev
-        </span>
+        <span class={disabledClass}>&larr; Prev</span>
       )}
 
       <span class="text-neutral-400">
@@ -35,9 +33,7 @@ const disabledClass = 'text-neutral-300 dark:text-neutral-700'
           Next &rarr;
         </a>
       ) : (
-        <span aria-hidden="true" class={disabledClass}>
-          Next &rarr;
-        </span>
+        <span class={disabledClass}>Next &rarr;</span>
       )}
     </nav>
   )
