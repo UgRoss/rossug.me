@@ -1,117 +1,84 @@
 ---
-// ABOUTME: Scattered photo card gallery with subtle rotation and scale-on-hover.
-// ABOUTME: Each card shell constrains the size; PhotoCard fills it and clips the image.
+// ABOUTME: Scattered polaroid-style travel photo gallery for the home page.
+// ABOUTME: Images are optimized via astro:assets; per-card rotation comes from a CSS variable.
 
-import clsx from 'clsx'
+import type { ImageMetadata } from 'astro'
 
-import PhotoCard from '@/components/ui/PhotoCard.astro'
+import { Image } from 'astro:assets'
 
-interface PhotoCardConfig {
-  alt: string
-  cardWidth: string
-  className?: string
-  fallback: string
-  height: number
+import india from '@/assets/photos/me-india.jpg'
+import malaga from '@/assets/photos/me-malaga.jpg'
+import turkey from '@/assets/photos/me-turkey.jpg'
+
+interface Photo {
+  class?: string
+  image: ImageMetadata
   location: string
-  maxHeight: number
   rotation: number
-  src: string
-  width: number
 }
 
-const photos: PhotoCardConfig[] = [
-  {
-    alt: 'Ross in India',
-    cardWidth: 'clamp(120px, 16vw, 200px)',
-    fallback: '/images/me/me_india.jpg',
-    height: 601,
-    location: 'Agra, India',
-    maxHeight: 210,
-    rotation: -10,
-    src: '/images/me/me_india.webp',
-    width: 800
-  },
-  {
-    alt: 'Ross in Malaga',
-    cardWidth: 'clamp(160px, 14vw, 180px)',
-    className: 'hidden sm:block',
-    fallback: '/images/me/me_malaga.jpg',
-    height: 500,
-    location: 'Málaga, Spain',
-    maxHeight: 250,
-    rotation: 3,
-    src: '/images/me/me_malaga.webp',
-    width: 380
-  },
-  {
-    alt: 'Ross in Turkey',
-    cardWidth: 'clamp(140px, 15vw, 170px)',
-    fallback: '/images/me/me_turkey.jpg',
-    height: 600,
-    location: 'Erciyes, Turkey',
-    maxHeight: 220,
-    rotation: -10,
-    src: '/images/me/me_turkey.webp',
-    width: 500
-  }
+const photos: Photo[] = [
+  { image: india, location: 'Agra, India', rotation: -10 },
+  { class: 'hidden sm:block', image: malaga, location: 'Málaga, Spain', rotation: 3 },
+  { image: turkey, location: 'Erciyes, Turkey', rotation: -10 }
 ]
-
-const buildCardShellStyle = (photo: PhotoCardConfig): string =>
-  [
-    `--rotation: ${photo.rotation}deg`,
-    `--card-width: ${photo.cardWidth}`,
-    `--max-h: ${photo.maxHeight}px`
-  ].join('; ')
 ---
 
-<div aria-hidden="true" class="photo-cards flex items-center justify-center pb-16">
+<ul class="flex list-none items-center justify-center gap-6 p-0 pb-16 sm:gap-0">
   {
-    photos.map((photo) => (
-      <div class={clsx('photo-card-shell', photo.className)} style={buildCardShellStyle(photo)}>
-        <PhotoCard
-          alt={photo.alt}
-          fallback={photo.fallback}
-          height={photo.height}
-          location={photo.location}
-          src={photo.src}
-          width={photo.width}
-        />
-      </div>
+    photos.map((photo, index) => (
+      <li class:list={['photo-card', photo.class]} style={`--rotation: ${photo.rotation}deg`}>
+        <figure class="flex h-full flex-col">
+          <div class="min-h-0 flex-1 overflow-hidden rounded-lg">
+            <Image
+              alt={`Ross in ${photo.location}`}
+              class="h-full w-full object-cover"
+              fetchpriority={index === 0 ? 'high' : 'auto'}
+              loading="eager"
+              src={photo.image}
+              width={400}
+            />
+          </div>
+          <figcaption class="truncate pt-1.5 text-center text-[0.7rem] font-medium">
+            📍 {photo.location}
+          </figcaption>
+        </figure>
+      </li>
     ))
   }
-</div>
+</ul>
 
 <style>
-  /* Shell uses CSS custom props for dynamic rotation/size, and a non-standard 480px breakpoint */
-  .photo-card-shell {
-    width: var(--card-width);
-    height: var(--max-h);
+  .photo-card {
+    width: clamp(8.75rem, 40vw, 12.5rem);
+    height: 11.25rem;
+    padding: 0.4rem 0.4rem 0.5rem;
+    border-radius: 0.75rem;
+    background: var(--bg);
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.25),
+      0 1px 4px rgba(0, 0, 0, 0.15);
     transform: rotate(var(--rotation));
     transition: transform 0.4s ease;
-    margin: 0 -0.75rem;
   }
 
-  .photo-card-shell:hover {
+  /* z-index works here without position because list items are flex items */
+  .photo-card:hover {
     transform: rotate(0deg) scale(1.08);
     z-index: 10;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .photo-card-shell {
-      transition: none;
+  @media (min-width: 640px) {
+    .photo-card {
+      width: clamp(8.5rem, 15vw, 11.5rem);
+      height: 13.75rem;
+      margin: 0 -0.75rem;
     }
   }
 
-  @media (max-width: 480px) {
-    .photo-cards {
-      flex-wrap: wrap;
-      gap: 1.5rem;
-    }
-
-    .photo-card-shell {
-      margin: 0;
-      width: clamp(140px, 40vw, 200px);
-      height: 180px;
+  @media (prefers-reduced-motion: reduce) {
+    .photo-card {
+      transition: none;
     }
   }
 </style>
