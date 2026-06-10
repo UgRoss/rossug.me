@@ -7,7 +7,7 @@ import { getCollection } from 'astro:content'
 
 export interface BookData {
   author: string
-  coverSrc: string
+  cover: BookEntry['data']['cover']
   id: string
   rating: BookRating
   status: BookStatus
@@ -60,7 +60,7 @@ export function groupBooksByStatus(books: BookEntry[]): BooksByStatus {
 export function mapBookToData(book: BookEntry): BookData {
   return {
     author: book.data.author,
-    coverSrc: book.data.cover.src,
+    cover: book.data.cover,
     id: book.id,
     rating: book.data.rating,
     status: book.data.status,

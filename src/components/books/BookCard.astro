@@ -2,6 +2,8 @@
 // ABOUTME: Book cover card component that links to the standalone book detail page.
 // ABOUTME: Displays cover image, title, and author with hover effects.
 
+import { Image } from 'astro:assets'
+
 import type { BookData } from '@/utils/books'
 
 interface Props {
@@ -16,14 +18,15 @@ const { book, grayscale = true } = Astro.props
   <div
     class="relative aspect-2/3 w-full shrink-0 overflow-hidden rounded-lg bg-neutral-100 shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-xl"
   >
-    <img
+    <Image
       alt={book.title}
       class:list={[
         'h-full w-full object-cover transition-all duration-700',
         grayscale && 'grayscale group-hover:grayscale-0'
       ]}
       loading="lazy"
-      src={book.coverSrc}
+      src={book.cover}
+      width={400}
     />
   </div>
 
