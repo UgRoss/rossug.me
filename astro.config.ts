@@ -29,7 +29,11 @@ export default defineConfig({
       remarkPlugins: [remarkMath, remarkDirective, remarkEmbeddedMedia]
     }),
     shikiConfig: {
-      theme: 'css-variables',
+      defaultColor: false,
+      themes: {
+        dark: 'one-dark-pro',
+        light: 'github-light'
+      },
       wrap: false
     }
   },

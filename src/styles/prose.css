@@ -110,7 +110,7 @@
 }
 
 .prose th {
-  background: var(--astro-code-background);
+  background: var(--code-bg);
   font-weight: var(--font-weight-bold);
 }
 
@@ -201,10 +201,18 @@
   margin-bottom: 2em;
 }
 
+/* Code blocks — overrides the typography plugin's dark pre background;
+   token colors come from the Shiki vars (see global.css) */
+.prose pre {
+  background-color: var(--code-bg);
+  color: var(--text-primary);
+}
+
 /* Custom Inline Code */
 .prose :not(pre) > code {
   padding: 2.5px 3.5px;
   border-radius: 5px;
+  font-weight: var(--font-weight-regular);
   background-color: var(--code-bg);
   border: 0.5px solid var(--border);
   font-family: var(--font-mono);
