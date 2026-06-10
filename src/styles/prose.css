@@ -3,6 +3,31 @@
   @apply font-sans;
 }
 
+/* Compact heading scale (rich.blog-inspired) */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  font-weight: var(--font-weight-medium);
+}
+
+.prose h1 {
+  font-size: 1.25rem;
+}
+
+.prose h2 {
+  font-size: 1.125rem;
+}
+
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  font-size: 1rem;
+}
+
 .prose .title {
   margin-bottom: 2.5em;
 }
