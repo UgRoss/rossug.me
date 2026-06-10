@@ -25,7 +25,7 @@ const moreLinks: NavItem[] = [
 ]
 
 const navLinkClass =
-  'flex items-center gap-1 rounded-md px-3 py-1.5 text-[length:var(--font-size-m)] font-medium text-(--text-secondary) no-underline transition-colors duration-150 hover:bg-(--selection) hover:text-(--text-primary)'
+  'flex items-center gap-1 px-2 py-1.5 text-[length:var(--font-size-m)] font-medium text-(--text-secondary) no-underline transition-colors duration-150 hover:text-(--text-primary)'
 
 const dropdownItemClass =
   'block rounded-md px-3 py-1.5 text-[length:var(--font-size-m)] font-medium text-(--text-secondary) no-underline transition-colors duration-150 hover:bg-(--selection) hover:text-(--text-primary)'
@@ -50,7 +50,7 @@ const isMoreActive = moreLinks.some((link) => isActive(link.href))
         primaryLinks.map((link) => (
           <a
             aria-current={isActive(link.href) ? 'page' : undefined}
-            class:list={[navLinkClass, { 'is-active bg-(--selection)': isActive(link.href) }]}
+            class:list={[navLinkClass, { 'is-active': isActive(link.href) }]}
             href={link.href}
           >
             {link.label}
