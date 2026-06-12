@@ -100,25 +100,40 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
     fetchAllNotes()
   }
 
-  const handleReset = (): void => {
-    setSearchQuery('')
-    setSelectedCategory(null)
-  }
-
   return (
     <div className="space-y-8">
       {/* Search & filter controls */}
       <div className="space-y-3">
-        <input
-          aria-label="Search notes"
-          className="h-10 w-full rounded-lg border border-(--border) bg-(--code-bg) px-3 text-sm text-(--text-primary) outline-none placeholder:text-muted focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-500"
-          onChange={(e) => handleSearchChange(e.target.value)}
-          placeholder="Search notes…"
-          type="text"
-          value={searchQuery}
-        />
+        <div className="relative">
+          <input
+            aria-label="Search notes"
+            className="h-10 w-full rounded-lg border border-(--border) bg-(--code-bg) pr-9 pl-3 text-sm text-(--text-primary) outline-none placeholder:text-muted focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-500"
+            onChange={(e) => handleSearchChange(e.target.value)}
+            placeholder="Search notes…"
+            type="text"
+            value={searchQuery}
+          />
+          {searchQuery !== '' && (
+            <button
+              aria-label="Clear search"
+              className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-sm text-muted transition-colors hover:text-(--text-primary)"
+              onClick={() => setSearchQuery('')}
+              type="button"
+            >
+              ✕
+            </button>
+          )}
+        </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          <button
+            aria-pressed={selectedCategory === null}
+            className={`tag tag-interactive ${selectedCategory === null ? 'tag-selected' : ''}`}
+            onClick={() => setSelectedCategory(null)}
+            type="button"
+          >
+            All
+          </button>
           {categories.map((cat) => (
             <button
               aria-pressed={selectedCategory === cat}
@@ -130,16 +145,6 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
               {cat}
             </button>
           ))}
-
-          {isFiltering && (
-            <button
-              className="ml-auto cursor-pointer text-xs text-muted transition-colors hover:text-(--text-primary)"
-              onClick={handleReset}
-              type="button"
-            >
-              Clear
-            </button>
-          )}
         </div>
       </div>
 
