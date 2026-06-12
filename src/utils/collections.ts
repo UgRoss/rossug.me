@@ -1,14 +1,18 @@
-// ABOUTME: Shared helpers for content collection entries used by the posts/notes/books utils.
-// ABOUTME: Centralizes the draft-filtering and date-sorting rules so they exist in one place.
+// ABOUTME: Shared helpers for content collections used by posts, notes, and books utilities.
+// ABOUTME: Centralizes the draft filter (filenames prefixed with _) and date sorting.
 
 interface DatedEntry {
   data: { pubDate: Date }
 }
 
+interface IdentifiableEntry {
+  id: string
+}
+
 /**
  * Entries whose filenames start with _ are drafts and excluded from the site
  */
-export const isPublished = (entry: { id: string }): boolean => !entry.id.startsWith('_')
+export const isPublished = (entry: IdentifiableEntry): boolean => !entry.id.startsWith('_')
 
 /**
  * Comparator for sorting entries by publication date, newest first
