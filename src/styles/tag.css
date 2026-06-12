@@ -1,7 +1,7 @@
 /* Tag component styles - shared between Astro and React */
 
 .tag {
-  @apply relative z-10 inline-flex items-center rounded-lg px-3 py-2;
+  @apply relative z-10 inline-flex items-center rounded-lg px-3 py-1.5;
   @apply text-[length:var(--font-size-m)] font-normal;
   @apply no-underline transition-colors;
   border: 1px solid var(--border);
