@@ -1,7 +1,7 @@
 ---
 // ABOUTME: Notes (TIL) listing page with pagination.
 
-import type { GetStaticPaths } from 'astro'
+import type { GetStaticPaths, Page } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 
 import NotesList from '@/components/notes/NotesList'
@@ -9,7 +9,7 @@ import Pagination from '@/components/ui/Pagination.astro'
 import { themeConfig } from '@/config'
 import IndexLayout from '@/layouts/IndexLayout.astro'
 import { formatRelativeListDate, toDateTimeAttr } from '@/utils/date'
-import { getSortedFilteredNotes, getUniqueNotesCategories } from '@/utils/notes'
+import { getSortedFilteredNotes, getUniqueNotesCategories, mapNotesToMetadata } from '@/utils/notes'
 
 export const getStaticPaths = (async ({ paginate }) => {
   const sortedNotes = await getSortedFilteredNotes()
@@ -23,24 +23,12 @@ export const getStaticPaths = (async ({ paginate }) => {
 
 interface Props {
   categories: string[]
-  page: {
-    currentPage: number
-    data: CollectionEntry<'notes'>[]
-    lastPage: number
-    url: { next?: string; prev?: string }
-  }
+  page: Page<CollectionEntry<'notes'>>
 }
 
 const { categories, page } = Astro.props
 const sortedNotes = page.data
-
-const serializedNotes = sortedNotes.map((note) => ({
-  category: note.data.category,
-  excerpt: note.data.excerpt,
-  id: note.id,
-  pubDate: note.data.pubDate.toISOString(),
-  title: note.data.title
-}))
+const serializedNotes = mapNotesToMetadata(sortedNotes)
 ---
 
 <IndexLayout

@@ -30,8 +30,10 @@ const metaDescription = description || themeConfig.site.description
   <BaseHead
     description={metaDescription}
     ogImage={ogImage}
+    publishedTime={pubDate}
     slot="head"
     title={`${title} · ${themeConfig.site.title}`}
+    type="article"
   />
   <div class="post-container">
     <main>
