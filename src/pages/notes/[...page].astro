@@ -16,7 +16,7 @@ export const getStaticPaths = (async ({ paginate }) => {
   const categories = getUniqueNotesCategories(sortedNotes)
 
   return paginate(sortedNotes, {
-    pageSize: themeConfig.pagination.til,
+    pageSize: themeConfig.pagination.notes,
     props: { categories }
   })
 }) satisfies GetStaticPaths

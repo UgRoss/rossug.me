@@ -5,7 +5,7 @@ import Pagination from '@/components/ui/Pagination.astro'
 import PostList from '@/components/ui/PostList.astro'
 import { themeConfig } from '@/config'
 import IndexLayout from '@/layouts/IndexLayout.astro'
-import { getSortedFilteredPosts } from '@/utils/draft'
+import { getSortedFilteredPosts } from '@/utils/posts'
 
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getSortedFilteredPosts()

@@ -3,23 +3,17 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { formatRelativeListDate } from '@/utils/date'
+import type { NoteMetadata } from '@/utils/notes'
 
-interface Note {
-  category: string
-  excerpt?: string
-  id: string
-  pubDate: string
-  title: string
-}
+import { formatRelativeListDate } from '@/utils/date'
 
 interface NotesListProps {
   categories: string[]
-  notes: Note[]
+  notes: NoteMetadata[]
 }
 
 export default function NotesList({ categories, notes: initialNotes }: NotesListProps) {
-  const [allNotes, setAllNotes] = useState<Note[]>([])
+  const [allNotes, setAllNotes] = useState<NoteMetadata[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<null | string>(null)
   const [hasFetched, setHasFetched] = useState(false)
@@ -36,6 +30,8 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
     if (searchParam) setSearchQuery(searchParam)
     if (categoryParam && categories.includes(categoryParam)) setSelectedCategory(categoryParam)
     if (searchParam || categoryParam) fetchAllNotes()
+    // One-time init from the URL; deps would re-run it after the first fetch for no benefit
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Sync filter state to URL query string
@@ -57,7 +53,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
     try {
       const res = await fetch('/notes/index.json')
       if (!res.ok) throw new Error(`Failed to load notes (${res.status})`)
-      const data: Note[] = await res.json()
+      const data: NoteMetadata[] = await res.json()
       setAllNotes(data)
       setHasFetched(true)
     } catch (err) {
@@ -160,7 +156,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
   )
 }
 
-function NoteItem({ note }: { note: Note }) {
+function NoteItem({ note }: { note: NoteMetadata }) {
   return (
     <li className="group list-none">
       <a

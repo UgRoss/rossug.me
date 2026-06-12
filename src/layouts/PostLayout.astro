@@ -1,7 +1,5 @@
 ---
 import '@/styles/global.css'
-import type { PostLayoutProps } from '@/types'
-
 import BaseHead from '@/components/layout/BaseHead.astro'
 import Footer from '@/components/layout/Footer.astro'
 import CopyCode from '@/components/ui/CopyCode.astro'
@@ -12,7 +10,15 @@ import ImageViewer from '@/components/ui/ImageViewer.astro'
 import { themeConfig } from '@/config'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 
-const { description, ogImage, pubDate, title } = Astro.props as PostLayoutProps
+// Post layout props are generic, not tied to a specific data source
+interface Props {
+  description?: string
+  ogImage?: string
+  pubDate: Date
+  title: string
+}
+
+const { description, ogImage, pubDate, title } = Astro.props
 const metaDescription = description || themeConfig.site.description
 ---
 

@@ -3,8 +3,8 @@ import { render } from 'astro:content'
 
 import BackLink from '@/components/ui/BackLink.astro'
 import PostLayout from '@/layouts/PostLayout.astro'
-import { createMetaDescription } from '@/utils/createExcerpt'
-import { getFilteredPosts } from '@/utils/draft'
+import { createMetaDescription } from '@/utils/excerpt'
+import { getFilteredPosts } from '@/utils/posts'
 
 export async function getStaticPaths() {
   const posts = await getFilteredPosts()

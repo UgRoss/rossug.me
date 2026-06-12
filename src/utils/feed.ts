@@ -1,8 +1,6 @@
 import type { APIContext, ImageMetadata } from 'astro'
-import type { CollectionEntry } from 'astro:content'
 
 import { getImage } from 'astro:assets'
-import { getCollection } from 'astro:content'
 import { Feed } from 'feed'
 import MarkdownIt from 'markdown-it'
 import { parse as htmlParser } from 'node-html-parser'
@@ -10,6 +8,7 @@ import path from 'node:path'
 import sanitizeHtml from 'sanitize-html'
 
 import { themeConfig } from '@/config'
+import { getSortedFilteredPosts } from '@/utils/posts'
 
 const markdownParser = new MarkdownIt({
   html: true,
@@ -24,7 +23,7 @@ const imagesGlob = import.meta.glob<{ default: ImageMetadata }>(
 /**
  * Generate Atom 1.0 feed
  */
-export async function generateAtom(context: APIContext) {
+export async function generateAtom(context: APIContext): Promise<Response> {
   const feed = await generateFeedInstance(context)
   const atomXml = feed
     .atom1()
@@ -40,7 +39,7 @@ export async function generateAtom(context: APIContext) {
 /**
  * Generate RSS 2.0 feed
  */
-export async function generateRSS(context: APIContext) {
+export async function generateRSS(context: APIContext): Promise<Response> {
   const feed = await generateFeedInstance(context)
   const rssXml = feed
     .rss2()
@@ -133,7 +132,7 @@ async function fixRelativeImagePaths(
 /**
  * Generate a generic Feed instance
  */
-async function generateFeedInstance(context: APIContext) {
+async function generateFeedInstance(context: APIContext): Promise<Feed> {
   const siteUrl = (context.site?.toString() || themeConfig.site.website).replace(/\/$/, '')
   const { author = '', description = '', language = 'en-US', title = '' } = themeConfig.site
 
@@ -156,14 +155,7 @@ async function generateFeedInstance(context: APIContext) {
     updated: new Date()
   })
 
-  const posts = await getCollection(
-    'posts',
-    ({ id }: CollectionEntry<'posts'>) => !id.startsWith('_')
-  )
-  const sortedPosts = posts.sort(
-    (a: CollectionEntry<'posts'>, b: CollectionEntry<'posts'>) =>
-      b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-  )
+  const sortedPosts = await getSortedFilteredPosts()
 
   for (const post of sortedPosts) {
     const postSlug = post.id.replace(/\.[^/.]+$/, '')

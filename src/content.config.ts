@@ -20,15 +20,14 @@ const about = defineCollection({
 
 const notes = defineCollection({
   loader: glob({ base: './content/notes', pattern: '**/*.md' }),
-  schema: () =>
-    z.object({
-      category: z.string(),
-      excerpt: z.string().optional(),
-      // Transform string to Date object
-      pubDate: z.coerce.date(),
-      title: z.string(),
-      updateDate: z.coerce.date().optional()
-    })
+  schema: z.object({
+    category: z.string(),
+    excerpt: z.string().optional(),
+    // Transform string to Date object
+    pubDate: z.coerce.date(),
+    title: z.string(),
+    updateDate: z.coerce.date().optional()
+  })
 })
 
 const books = defineCollection({

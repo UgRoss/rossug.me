@@ -2,6 +2,7 @@ import eslint from '@eslint/js'
 import prettier from 'eslint-config-prettier'
 import eslintPluginAstro from 'eslint-plugin-astro'
 import perfectionist from 'eslint-plugin-perfectionist'
+import reactHooks from 'eslint-plugin-react-hooks'
 import unusedImports from 'eslint-plugin-unused-imports'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
@@ -12,6 +13,18 @@ export default [
   ...tseslint.configs.stylistic,
   ...eslintPluginAstro.configs.recommended,
   ...eslintPluginAstro.configs['jsx-a11y-strict'],
+  {
+    files: ['**/*.tsx'],
+    plugins: {
+      'react-hooks': reactHooks
+    },
+    // Only the classic rules; the rest of the recommended preset targets
+    // codebases compiled with the React Compiler, which this site does not use.
+    rules: {
+      'react-hooks/exhaustive-deps': 'warn',
+      'react-hooks/rules-of-hooks': 'error'
+    }
+  },
   {
     plugins: {
       perfectionist,
