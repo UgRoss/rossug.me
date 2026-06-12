@@ -6,7 +6,7 @@ import { render } from 'astro:content'
 import BackLink from '@/components/ui/BackLink.astro'
 import Tag from '@/components/ui/Tag.astro'
 import PostLayout from '@/layouts/PostLayout.astro'
-import { createMetaDescription } from '@/utils/createExcerpt'
+import { createMetaDescription } from '@/utils/excerpt'
 import { getFilteredNotes } from '@/utils/notes'
 
 type Props = CollectionEntry<'notes'>

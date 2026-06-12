@@ -185,23 +185,6 @@
   text-align: center;
 }
 
-.prose p > img {
-  position: relative;
-  margin-bottom: 2em;
-}
-
-.prose p > img::after {
-  content: attr(alt);
-  display: block;
-  position: absolute;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  color: var(--text-secondary);
-  font-size: var(--font-size-s);
-  margin-top: 0.75em;
-}
-
 .prose .img-caption {
   display: block;
   text-align: center;
@@ -241,7 +224,6 @@
 .prose ul.contains-task-list {
   list-style: none;
   margin-left: 0;
-  white-space: nowrap;
   padding-inline-start: 0;
 }
 
@@ -296,7 +278,6 @@
   display: inline;
   margin-left: 0;
   line-height: 1.75;
-  white-space: nowrap;
 }
 
 /* Keyboard input & Highlights */

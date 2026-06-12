@@ -1,9 +1,11 @@
 ---
-import type { FormattedDateProps } from '@/types'
-
 import { formatContentDate, toDateTimeAttr } from '@/utils/date'
 
-const { date } = Astro.props as FormattedDateProps
+interface Props {
+  date: Date | string
+}
+
+const { date } = Astro.props
 ---
 
 <time datetime={toDateTimeAttr(date)}>{formatContentDate(date)}</time>

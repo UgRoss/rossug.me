@@ -30,7 +30,7 @@ Before finalizing changes: run `pnpm lint` and `pnpm format:check`.
 - **Logic**: Prefer Functional Programming patterns
 - **Astro components**: Use `astro-toolkit` but **avoid** the `For` component
 - **Dates**: Use `date-fns` for all date manipulations
-- **React UI**: Use `radix-ui` components where appropriate
+- **React**: Only for islands that need client-side state (currently just `NotesList`); prefer native Astro + vanilla scripts elsewhere
 - **Styling**: Tailwind CSS v4 (via `@tailwindcss/vite` plugin, no config file)
 - **Markdown content**: Use Tailwind CSS Typography (`prose`) class
 
@@ -73,17 +73,23 @@ Math via KaTeX (`remark-math` + `rehype-katex`). Syntax highlighting via Shiki w
 
 ### Utilities (`src/utils/`)
 
-- `draft.ts` — `getFilteredPosts()`, `getSortedFilteredPosts()` (excludes `_` prefixed files)
-- `notes.ts` — equivalent helpers for notes + category extraction
+- `collections.ts` — shared `isPublished` draft filter + `byPubDateDesc` comparator
+- `posts.ts` — `getFilteredPosts()`, `getSortedFilteredPosts()` (excludes `_` prefixed files)
+- `notes.ts` — equivalent helpers for notes + category extraction + `NoteMetadata` serialization
 - `books.ts` — book collection helpers
+- `excerpt.ts` — excerpt and meta description generation from markdown
 - `feed.ts` — RSS/Atom feed generation
 - `date.ts` — date formatting wrappers
-- `theme-controller.ts` / `use-theme.ts` — theme management
+- `theme-controller.ts` — theme management
 
 ### Theme
 
-Theme toggling uses CSS custom properties. `ThemeManager.astro` injects a script that runs before paint to avoid FOUC. `ThemeToggle.tsx` is the React toggle button.
+Theme toggling uses CSS custom properties. `ThemeManager.astro` injects a script that runs before paint to avoid FOUC. `ThemeToggle.astro` is the native dropdown toggle (system/light/dark).
+
+### OG Images
+
+`src/integrations/og-images.ts` generates Open Graph cards (satori + resvg) into `public/open-graph/` (gitignored) on build and dev server start.
 
 ### Deployment
 
-Cloudflare Workers (`@astrojs/cloudflare` adapter). Config in `wrangler.jsonc`. Build output goes to `dist/`.
+Fully static — no adapter, deliberately. Built `dist/` is served as Cloudflare Workers static assets via `wrangler` (`pnpm deploy`). Config in `wrangler.jsonc`.

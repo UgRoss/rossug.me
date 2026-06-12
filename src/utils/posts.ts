@@ -1,20 +1,19 @@
 import { type CollectionEntry, getCollection } from 'astro:content'
 
+import { byPubDateDesc, isPublished } from '@/utils/collections'
+
 /**
  * Get all posts, filtering out posts whose filenames start with _
  */
-export async function getFilteredPosts() {
+export async function getFilteredPosts(): Promise<CollectionEntry<'posts'>[]> {
   const posts = await getCollection('posts')
-  return posts.filter((post: CollectionEntry<'posts'>) => !post.id.startsWith('_'))
+  return posts.filter(isPublished)
 }
 
 /**
  * Get all posts sorted by publication date, filtering out posts whose filenames start with _
  */
-export async function getSortedFilteredPosts() {
+export async function getSortedFilteredPosts(): Promise<CollectionEntry<'posts'>[]> {
   const posts = await getFilteredPosts()
-  return posts.sort(
-    (a: CollectionEntry<'posts'>, b: CollectionEntry<'posts'>) =>
-      b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-  )
+  return posts.sort(byPubDateDesc)
 }

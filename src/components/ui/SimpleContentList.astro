@@ -2,7 +2,7 @@
 // ABOUTME: Reusable minimal list for linked content rows with optional badge and date.
 // ABOUTME: Matches the visual style used by the notes list for consistent scanning.
 
-import FormattedDate from '@/components/widgets/FormattedDate.astro'
+import FormattedDate from '@/components/ui/FormattedDate.astro'
 
 interface Props {
   emptyMessage?: string
@@ -16,7 +16,7 @@ interface SimpleContentListItem {
   title: string
 }
 
-const { emptyMessage = 'No items found.', items } = Astro.props as Props
+const { emptyMessage = 'No items found.', items } = Astro.props
 ---
 
 <ul class="my-5 flex list-none flex-col p-0">

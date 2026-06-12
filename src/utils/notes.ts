@@ -1,11 +1,24 @@
 import { type CollectionEntry, getCollection } from 'astro:content'
 
+import { byPubDateDesc, isPublished } from '@/utils/collections'
+
+/**
+ * Serializable note metadata shape shared with the notes JSON API and client components
+ */
+export interface NoteMetadata {
+  category: string
+  excerpt?: string
+  id: string
+  pubDate: string
+  title: string
+}
+
 /**
  * Get all notes, filtering out notes whose filenames start with _
  */
 export async function getFilteredNotes(): Promise<CollectionEntry<'notes'>[]> {
   const notes = await getCollection('notes')
-  return notes.filter((note) => !note.id.startsWith('_'))
+  return notes.filter(isPublished)
 }
 
 /**
@@ -13,7 +26,7 @@ export async function getFilteredNotes(): Promise<CollectionEntry<'notes'>[]> {
  */
 export async function getSortedFilteredNotes(): Promise<CollectionEntry<'notes'>[]> {
   const notes = await getFilteredNotes()
-  return notes.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  return notes.sort(byPubDateDesc)
 }
 
 /**
@@ -26,7 +39,7 @@ export function getUniqueNotesCategories(notes: CollectionEntry<'notes'>[]): str
 /**
  * Transform notes to a serializable metadata format for JSON API
  */
-export function mapNotesToMetadata(notes: CollectionEntry<'notes'>[]) {
+export function mapNotesToMetadata(notes: CollectionEntry<'notes'>[]): NoteMetadata[] {
   return notes.map((note) => ({
     category: note.data.category,
     excerpt: note.data.excerpt,

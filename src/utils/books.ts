@@ -5,6 +5,8 @@ import type { CollectionEntry } from 'astro:content'
 
 import { getCollection } from 'astro:content'
 
+import { isPublished } from '@/utils/collections'
+
 export interface BookData {
   author: string
   cover: BookEntry['data']['cover']
@@ -22,7 +24,6 @@ export type BookStatus = BookEntry['data']['status']
 interface BooksByStatus {
   finished: BookEntry[]
   reading: BookEntry[]
-  wishlist: BookEntry[]
 }
 
 export async function getBooksForReadingPage(): Promise<{
@@ -40,7 +41,7 @@ export async function getBooksForReadingPage(): Promise<{
 
 export async function getFilteredBooks(): Promise<BookEntry[]> {
   const books = await getCollection('books')
-  return books.filter((book) => !book.id.startsWith('_'))
+  return books.filter(isPublished)
 }
 
 export function groupBooksByStatus(books: BookEntry[]): BooksByStatus {
@@ -51,8 +52,7 @@ export function groupBooksByStatus(books: BookEntry[]): BooksByStatus {
     },
     {
       finished: [],
-      reading: [],
-      wishlist: []
+      reading: []
     }
   )
 }

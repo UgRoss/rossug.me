@@ -11,6 +11,9 @@ import { themeConfig } from '../config.js'
  */
 export default function rehypeImageProcessor() {
   return (tree) => {
+    // Tracks images across the whole document so only the first one loads eagerly
+    let documentImageCount = 0
+
     visit(tree, 'element', (node, index, parent) => {
       if (node.tagName !== 'p') {
         return
@@ -39,6 +42,11 @@ export default function rehypeImageProcessor() {
       for (const imgNode of imgNodes) {
         const alt = imgNode.properties?.alt?.trim()
 
+        // The first image in the document is likely above the fold, so it loads
+        // eagerly at high priority; all later images lazy-load at default priority.
+        const isFirstImage = documentImageCount === 0
+        documentImageCount += 1
+
         // Enhanced image properties with performance optimizations
         imgNode.properties = {
           ...imgNode.properties,
@@ -46,10 +54,8 @@ export default function rehypeImageProcessor() {
           'data-preview': themeConfig.post.imageViewer ? 'true' : 'false',
           // Add decoding hint for better performance
           decoding: 'async',
-          // Add fetchpriority for critical images (first image gets high priority)
-          fetchpriority: newNodes.length === 0 ? 'high' : 'auto',
-          // Add lazy loading for better performance
-          loading: 'lazy'
+          fetchpriority: isFirstImage ? 'high' : 'auto',
+          loading: isFirstImage ? 'eager' : 'lazy'
         }
 
         if (!alt || alt.includes('_')) {

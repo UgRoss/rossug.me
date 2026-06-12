@@ -1,5 +1,6 @@
-import { defineCollection, z } from 'astro:content'
+import { defineCollection } from 'astro:content'
 import { glob } from 'astro/loaders'
+import { z } from 'astro/zod'
 
 const posts = defineCollection({
   loader: glob({ base: './content/posts', pattern: '**/*.{md,mdx}' }),
@@ -20,15 +21,14 @@ const about = defineCollection({
 
 const notes = defineCollection({
   loader: glob({ base: './content/notes', pattern: '**/*.md' }),
-  schema: () =>
-    z.object({
-      category: z.string(),
-      excerpt: z.string().optional(),
-      // Transform string to Date object
-      pubDate: z.coerce.date(),
-      title: z.string(),
-      updateDate: z.coerce.date().optional()
-    })
+  schema: z.object({
+    category: z.string(),
+    excerpt: z.string().optional(),
+    // Transform string to Date object
+    pubDate: z.coerce.date(),
+    title: z.string(),
+    updateDate: z.coerce.date().optional()
+  })
 })
 
 const books = defineCollection({
@@ -39,7 +39,7 @@ const books = defineCollection({
       cover: image(),
       // 0 represents "not rated", 1-5 represents the rating
       rating: z.number().int().min(0).max(5).default(0),
-      status: z.enum(['finished', 'reading', 'wishlist']),
+      status: z.enum(['finished', 'reading']),
       summary: z.string(),
       title: z.string()
     })

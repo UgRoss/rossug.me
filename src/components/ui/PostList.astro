@@ -1,16 +1,20 @@
 ---
+import type { CollectionEntry } from 'astro:content'
+
 import { Image } from 'astro:assets'
 
-import type { PostListProps } from '@/types'
+import FormattedDate from '@/components/ui/FormattedDate.astro'
+import { createExcerpt } from '@/utils/excerpt'
 
-import FormattedDate from '@/components/widgets/FormattedDate.astro'
-import { createExcerpt } from '@/utils/createExcerpt'
+interface Props {
+  posts: CollectionEntry<'posts'>[]
+}
 
-const { posts } = Astro.props as PostListProps
+const { posts } = Astro.props
 
 const EXCERPT_LENGTH = 120
 
-const getPostExcerpt = (post: PostListProps['posts'][number]): string => {
+const getPostExcerpt = (post: CollectionEntry<'posts'>): string => {
   const excerpt = post.data.excerpt ?? createExcerpt(post.body ?? '')
 
   if (excerpt.length <= EXCERPT_LENGTH) {

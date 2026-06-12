@@ -1,12 +1,10 @@
 @import 'tailwindcss';
 
 @import './fonts.css';
-@import './index-list.css';
 @import './prose.css';
 @import './tag.css';
 
 @plugin '@tailwindcss/typography';
-@plugin 'tailwindcss-animate';
 
 @custom-variant dark (&:where(.dark, .dark *));
 

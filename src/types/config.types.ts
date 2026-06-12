@@ -9,7 +9,7 @@ export interface GeneralSettings {
 // Pagination settings configuration type
 export interface PaginationSettings {
   blog: number
-  til: number
+  notes: number
 }
 
 // Post settings configuration type
