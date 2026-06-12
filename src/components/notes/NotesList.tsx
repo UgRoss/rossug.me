@@ -103,11 +103,11 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
   return (
     <div className="space-y-8">
       {/* Search & filter controls */}
-      <div className="space-y-3">
+      <div className="space-y-4">
         <div className="relative">
           <input
             aria-label="Search notes"
-            className="h-10 w-full rounded-lg border border-(--border) bg-(--code-bg) pr-9 pl-3 text-sm text-(--text-primary) outline-none placeholder:text-muted focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-500"
+            className="h-10 w-full rounded-lg border border-(--border) bg-(--code-bg) pr-9 pl-3 text-(--text-primary) outline-none placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--border) focus-visible:outline-solid"
             onChange={(e) => handleSearchChange(e.target.value)}
             placeholder="Search notes…"
             type="text"
