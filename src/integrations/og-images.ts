@@ -8,6 +8,7 @@ import { Resvg } from '@resvg/resvg-js'
 import matter from 'gray-matter'
 import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import satori from 'satori'
 
 import { themeConfig } from '../config'
@@ -21,10 +22,10 @@ interface OGPage {
 
 const OUTPUT_DIR = 'public/open-graph'
 const CONTENT_DIRS = ['content/posts']
-const FONT_CACHE_DIR = 'node_modules/.cache/og-fonts'
+const FONT_DIR = fileURLToPath(new URL('../assets/fonts', import.meta.url))
 const FONTS = [
-  { url: 'https://api.fontsource.org/v1/fonts/inter/latin-400-normal.ttf', weight: 400 },
-  { url: 'https://api.fontsource.org/v1/fonts/inter/latin-700-normal.ttf', weight: 700 }
+  { file: 'inter-latin-400-normal.ttf', weight: 400 },
+  { file: 'inter-latin-700-normal.ttf', weight: 700 }
 ] as const
 
 const CARD = {
@@ -36,22 +37,7 @@ const CARD = {
   width: 1200
 }
 
-const loadFont = async (url: string): Promise<Buffer> => {
-  const cachePath = path.join(FONT_CACHE_DIR, path.basename(url))
-
-  try {
-    return await readFile(cachePath)
-  } catch {
-    const response = await fetch(url)
-    if (!response.ok) {
-      throw new Error(`[og-images] Failed to download font ${url}: ${response.status}`)
-    }
-    const data = Buffer.from(await response.arrayBuffer())
-    await mkdir(FONT_CACHE_DIR, { recursive: true })
-    await writeFile(cachePath, data)
-    return data
-  }
-}
+const loadFont = (file: string): Promise<Buffer> => readFile(path.join(FONT_DIR, file))
 
 const readPagesFromDir = async (dir: string): Promise<OGPage[]> => {
   // Recursive to mirror the collection's `**/*.{md,mdx}` glob; slugs keep their
@@ -180,8 +166,8 @@ const generateOGImages = async (): Promise<void> => {
 
   await mkdir(OUTPUT_DIR, { recursive: true })
   const fonts = await Promise.all(
-    FONTS.map(async ({ url, weight }) => ({
-      data: await loadFont(url),
+    FONTS.map(async ({ file, weight }) => ({
+      data: await loadFont(file),
       name: 'Inter',
       style: 'normal' as const,
       weight

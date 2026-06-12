@@ -19,32 +19,9 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
   const [selectedCategory, setSelectedCategory] = useState<null | string>(null)
   const [hasFetched, setHasFetched] = useState(false)
   const fetchingRef = useRef(false)
+  const initializedRef = useRef(false)
 
   const isFiltering = searchQuery !== '' || selectedCategory !== null
-
-  // Initialize from URL params on mount
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const searchParam = params.get('search')
-    const categoryParam = params.get('category')
-
-    if (searchParam) setSearchQuery(searchParam)
-    if (categoryParam && categories.includes(categoryParam)) setSelectedCategory(categoryParam)
-    if (searchParam || categoryParam) fetchAllNotes()
-    // One-time init from the URL; deps would re-run it after the first fetch for no benefit
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  // Sync filter state to URL query string
-  useEffect(() => {
-    const params = new URLSearchParams()
-    if (searchQuery) params.set('search', searchQuery)
-    if (selectedCategory) params.set('category', selectedCategory)
-
-    const qs = params.toString()
-    const newUrl = qs ? `${window.location.pathname}?${qs}` : window.location.pathname
-    window.history.replaceState({}, '', newUrl)
-  }, [searchQuery, selectedCategory])
 
   // Fetch all notes from API (needed when filtering across pages)
   const fetchAllNotes = useCallback(async () => {
@@ -64,6 +41,34 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
     }
   }, [hasFetched])
 
+  // Initialize from URL params once after hydration: the query string is only
+  // readable in the browser, so the prerendered HTML can't include it and the
+  // synchronous setState (one extra render before paint) is intentional.
+  useEffect(() => {
+    if (initializedRef.current) return
+    initializedRef.current = true
+
+    const params = new URLSearchParams(window.location.search)
+    const searchParam = params.get('search')
+    const categoryParam = params.get('category')
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- URL state is browser-only, see above
+    if (searchParam) setSearchQuery(searchParam)
+    if (categoryParam && categories.includes(categoryParam)) setSelectedCategory(categoryParam)
+    if (searchParam || categoryParam) fetchAllNotes()
+  }, [categories, fetchAllNotes])
+
+  // Sync filter state to URL query string
+  useEffect(() => {
+    const params = new URLSearchParams()
+    if (searchQuery) params.set('search', searchQuery)
+    if (selectedCategory) params.set('category', selectedCategory)
+
+    const qs = params.toString()
+    const newUrl = qs ? `${window.location.pathname}?${qs}` : window.location.pathname
+    window.history.replaceState({}, '', newUrl)
+  }, [searchQuery, selectedCategory])
+
   // Hide/show pagination when filtering
   useEffect(() => {
     const pagination = document.getElementById('notes-pagination')
@@ -79,14 +84,10 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
 
     if (!isFiltering) return initialNotes
 
-    const query = searchQuery.toLowerCase()
-
     return source.filter((note) => {
       const matchesCategory = !selectedCategory || note.category === selectedCategory
       const matchesSearch =
-        !searchQuery ||
-        note.title.toLowerCase().includes(query) ||
-        (note.excerpt?.toLowerCase().includes(query) ?? false)
+        !searchQuery || note.title.toLowerCase().includes(searchQuery.toLowerCase())
       return matchesCategory && matchesSearch
     })
   }, [allNotes, hasFetched, initialNotes, isFiltering, searchQuery, selectedCategory])
