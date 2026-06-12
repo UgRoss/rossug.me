@@ -11,9 +11,9 @@ Based on the excellent [astro-chiri](https://github.com/the3ash/astro-chiri) the
 - 🎨 Dark/light theme support (system-based)
 - 📐 Math equations with KaTeX
 - 🎯 Syntax highlighting with custom themes
-- 📊 Table of contents generation
 - 🖼️ Image viewer and optimization
 - 📋 Code copy functionality
+- 🃏 Open Graph card generation
 - 📡 RSS and Atom feeds
 - 🗺️ Sitemap generation
 - ⚡ Fast and optimized with Astro
@@ -50,21 +50,13 @@ pnpm run preview
 Edit `src/config.ts` to customize:
 
 - Site information (title, description, author)
-- Layout settings (width, centered layout, theme toggle)
-- Date format and display
-- Post features (reading time, TOC, image viewer, code copy)
+- Layout settings (content width, footer, theme toggle)
+- Pagination sizes
+- Post features (image viewer, code copy)
 
 ## 📝 Creating Posts
 
-Posts are stored in `src/content/posts/` as Markdown or MDX files.
-
-```bash
-# Create a new post
-pnpm run new <title>
-
-# Create a draft (prefix with underscore)
-pnpm run new _title
-```
+Posts are stored in `content/posts/` as Markdown or MDX files. Drafts use a `_` filename prefix.
 
 ### Post Frontmatter
 
@@ -80,9 +72,8 @@ image: './path/to/image.jpg' # optional
 
 The theme uses TailwindCSS for styling. Customize the design in:
 
-- `tailwind.config.mjs` - Tailwind configuration
-- `src/styles/global.css` - Global styles and CSS variables
-- `src/styles/post.css` - Post-specific styles
+- `src/styles/global.css` - Global styles, CSS variables, and Tailwind setup
+- `src/styles/prose.css` - Post/markdown typography styles
 
 ## 📄 License
 
