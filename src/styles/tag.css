@@ -1,16 +1,25 @@
 /* Tag component styles - shared between Astro and React */
 
 .tag {
-  @apply relative z-10 px-1.5 py-0.5;
-  @apply text-[10px] font-medium tracking-widest text-neutral-400 uppercase;
-  @apply transition-colors;
-  @apply before:mr-0.5 before:content-['#'];
-  @apply dark:text-neutral-500;
+  @apply relative z-10 inline-flex items-center rounded-lg px-3 py-1.5;
+  @apply text-[length:var(--font-size-m)] font-normal;
+  @apply no-underline transition-colors;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
 }
 
 .tag-interactive {
   @apply cursor-pointer;
-  @apply hover:text-neutral-900;
-  @apply dark:hover:text-neutral-200;
   @apply focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:outline-none dark:focus-visible:ring-neutral-500;
+}
+
+.tag-interactive:hover {
+  border-color: var(--text-tertiary);
+}
+
+.tag-selected,
+.tag-selected:hover {
+  background-color: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--bg);
 }

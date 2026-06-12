@@ -6,9 +6,9 @@ import type { CollectionEntry } from 'astro:content'
 
 import NotesList from '@/components/notes/NotesList'
 import Pagination from '@/components/ui/Pagination.astro'
-import FormattedDate from '@/components/widgets/FormattedDate.astro'
 import { themeConfig } from '@/config'
 import IndexLayout from '@/layouts/IndexLayout.astro'
+import { formatRelativeListDate, toDateTimeAttr } from '@/utils/date'
 import { getSortedFilteredNotes, getUniqueNotesCategories } from '@/utils/notes'
 
 export const getStaticPaths = (async ({ paginate }) => {
@@ -48,7 +48,7 @@ const serializedNotes = sortedNotes.map((note) => ({
   title={`Notes - ${themeConfig.site.title}`}
 >
   <div class="mb-8">
-    <h1 class="mb-2 text-4xl font-bold">Notes</h1>
+    <h1 class="mb-2 text-xl">Notes</h1>
     <p class="text-muted">TILs (Today I Learned) and quick technical snippets.</p>
   </div>
 
@@ -65,13 +65,13 @@ const serializedNotes = sortedNotes.map((note) => ({
               href={`/notes/${note.id}`}
               title={note.data.title}
             >
-              <div class="flex min-w-0 items-center gap-2">
-                <span>{note.data.title}</span>
-                <span class="tag cursor-default!">{note.data.category}</span>
-              </div>
-              <span class="shrink-0 text-sm whitespace-nowrap text-muted">
-                <FormattedDate date={note.data.pubDate} />
-              </span>
+              <span class="block min-w-0 truncate font-medium">{note.data.title}</span>
+              <time
+                class="shrink-0 text-sm whitespace-nowrap text-muted"
+                datetime={toDateTimeAttr(note.data.pubDate)}
+              >
+                {formatRelativeListDate(note.data.pubDate)}
+              </time>
             </a>
           </li>
         ))

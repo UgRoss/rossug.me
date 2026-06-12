@@ -1,6 +1,35 @@
 /* Custom Typography & Layout */
 .prose {
   @apply font-sans;
+  /* Extra horizontal room for breakout elements (code blocks, images):
+     space left beyond the column and page padding, capped at 10rem total.
+     Resolves to 0px on narrow viewports, grows fluidly with the window. */
+  --breakout: min(10rem, max(0px, 100vw - var(--content-width) - 4rem));
+}
+
+/* Compact heading scale (rich.blog-inspired) */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  font-weight: var(--font-weight-medium);
+}
+
+.prose h1 {
+  font-size: 1.25rem;
+}
+
+.prose h2 {
+  font-size: 1.125rem;
+}
+
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  font-size: 1rem;
 }
 
 .prose .title {
@@ -17,7 +46,7 @@
   letter-spacing: 0;
 }
 
-.prose a {
+.prose a:not(.tag) {
   color: var(--text-primary);
   text-decoration: underline;
   text-decoration-color: var(--text-tertiary);
@@ -85,7 +114,7 @@
 }
 
 .prose th {
-  background: var(--astro-code-background);
+  background: var(--code-bg);
   font-weight: var(--font-weight-bold);
 }
 
@@ -109,10 +138,16 @@
 
 /* Custom Image Handling & Captions */
 .prose img {
-  max-width: 100%;
+  max-width: calc(100% + var(--breakout));
   height: auto;
   display: block;
   margin: 2em 0;
+  border-radius: 1rem;
+  /* Center within the column so breakout overflows both sides equally;
+     also centers images narrower than the column */
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .img-placeholder {
@@ -175,10 +210,24 @@
   margin-bottom: 2em;
 }
 
+/* Code blocks — overrides the typography plugin's dark pre background;
+   token colors come from the Shiki vars (see global.css) */
+.prose pre {
+  background-color: var(--code-bg);
+  color: var(--text-primary);
+}
+
+/* Breakout: code blocks extend past the column when the viewport allows.
+   The margin goes on the wrapper so the copy button rides along. */
+.prose .copy-code-wrapper {
+  margin-inline: calc(var(--breakout) / -2);
+}
+
 /* Custom Inline Code */
 .prose :not(pre) > code {
   padding: 2.5px 3.5px;
   border-radius: 5px;
+  font-weight: var(--font-weight-regular);
   background-color: var(--code-bg);
   border: 0.5px solid var(--border);
   font-family: var(--font-mono);

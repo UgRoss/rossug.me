@@ -3,6 +3,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { formatRelativeListDate } from '@/utils/date'
+
 interface Note {
   category: string
   excerpt?: string
@@ -98,29 +100,44 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
     fetchAllNotes()
   }
 
-  const handleReset = (): void => {
-    setSearchQuery('')
-    setSelectedCategory(null)
-  }
-
   return (
     <div className="space-y-8">
       {/* Search & filter controls */}
-      <div className="space-y-3">
-        <input
-          aria-label="Search notes"
-          className="w-full rounded-lg border border-(--border) bg-transparent px-3 py-2 text-sm text-(--text-primary) outline-none placeholder:text-muted focus:ring-2 focus:ring-(--border)"
-          onChange={(e) => handleSearchChange(e.target.value)}
-          placeholder="Search notes…"
-          type="text"
-          value={searchQuery}
-        />
+      <div className="space-y-4">
+        <div className="relative">
+          <input
+            aria-label="Search notes"
+            className="h-10 w-full rounded-lg border border-(--border) bg-(--code-bg) pr-9 pl-3 text-(--text-primary) outline-none placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--border) focus-visible:outline-solid"
+            onChange={(e) => handleSearchChange(e.target.value)}
+            placeholder="Search notes…"
+            type="text"
+            value={searchQuery}
+          />
+          {searchQuery !== '' && (
+            <button
+              aria-label="Clear search"
+              className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-sm text-muted transition-colors hover:text-(--text-primary)"
+              onClick={() => setSearchQuery('')}
+              type="button"
+            >
+              ✕
+            </button>
+          )}
+        </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          <button
+            aria-pressed={selectedCategory === null}
+            className={`tag tag-interactive ${selectedCategory === null ? 'tag-selected' : ''}`}
+            onClick={() => setSelectedCategory(null)}
+            type="button"
+          >
+            All
+          </button>
           {categories.map((cat) => (
             <button
               aria-pressed={selectedCategory === cat}
-              className={`tag tag-interactive ${selectedCategory === cat ? 'text-(--text-primary)!' : ''}`}
+              className={`tag tag-interactive ${selectedCategory === cat ? 'tag-selected' : ''}`}
               key={cat}
               onClick={() => handleCategoryToggle(cat)}
               type="button"
@@ -128,16 +145,6 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
               {cat}
             </button>
           ))}
-
-          {isFiltering && (
-            <button
-              className="ml-auto cursor-pointer text-xs text-muted transition-colors hover:text-(--text-primary)"
-              onClick={handleReset}
-              type="button"
-            >
-              Clear
-            </button>
-          )}
         </div>
       </div>
 
@@ -161,10 +168,16 @@ function NoteItem({ note }: { note: Note }) {
         href={`/notes/${note.id}`}
         title={note.title}
       >
-        <div className="flex min-w-0 items-center gap-2">
-          <span className="block min-w-0 truncate font-medium">{note.title}</span>
-          <span className="tag hidden cursor-default! sm:inline-flex">{note.category}</span>
-        </div>
+        <span className="block min-w-0 truncate font-medium">{note.title}</span>
+        {/* Relative date is computed at build time; drift until the next deploy is
+            acceptable, so hydration mismatches are intentionally suppressed. */}
+        <time
+          className="shrink-0 text-sm whitespace-nowrap text-muted"
+          dateTime={note.pubDate}
+          suppressHydrationWarning
+        >
+          {formatRelativeListDate(note.pubDate)}
+        </time>
       </a>
     </li>
   )

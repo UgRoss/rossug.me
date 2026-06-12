@@ -15,7 +15,7 @@ const finishedBookCards = finishedBooks.map(mapBookToData)
 >
   <div class="space-y-12">
     <header class="space-y-2">
-      <h1 class="text-4xl font-bold tracking-tight">Books</h1>
+      <h1 class="text-xl">Books</h1>
       <p class="text-neutral-500">A collection of books I've read or am currently exploring.</p>
     </header>
 
@@ -27,7 +27,7 @@ const finishedBookCards = finishedBooks.map(mapBookToData)
             <h2 class="text-xs font-semibold tracking-widest text-neutral-400 uppercase">
               Currently Reading
             </h2>
-            <div class="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 md:grid-cols-4">
+            <div class="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3">
               {currentlyReadingCards.map((book) => (
                 <BookCard book={book} grayscale={false} />
               ))}
@@ -43,7 +43,7 @@ const finishedBookCards = finishedBooks.map(mapBookToData)
             <h2 class="text-xs font-semibold tracking-widest text-neutral-400 uppercase">
               Finished
             </h2>
-            <div class="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 md:grid-cols-4">
+            <div class="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3">
               {finishedBookCards.map((book) => (
                 <BookCard book={book} />
               ))}

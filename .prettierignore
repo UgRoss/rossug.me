@@ -38,3 +38,6 @@ coverage/
 *.mp3
 *.wav
 *.pdf
+
+# Superpowers specs/plans (untracked, see .gitignore)
+docs/superpowers/

@@ -28,3 +28,5 @@ pnpm-debug.log*
 public/open-graph/
 
 .playwright-mcp/
+# superpowers specs/plans (local only)
+docs/superpowers/
