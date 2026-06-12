@@ -1,24 +1,17 @@
 ---
 import '@/styles/global.css'
+import type { PostLayoutProps } from '@/types'
+
 import BaseHead from '@/components/layout/BaseHead.astro'
 import Footer from '@/components/layout/Footer.astro'
 import CopyCode from '@/components/ui/CopyCode.astro'
-import FootnoteScroll from '@/components/ui/FootnoteScroll.astro'
-import FormattedDate from '@/components/ui/FormattedDate.astro'
 import ImagePlaceholderCleanup from '@/components/ui/ImagePlaceholderCleanup.astro'
 import ImageViewer from '@/components/ui/ImageViewer.astro'
+import FormattedDate from '@/components/widgets/FormattedDate.astro'
 import { themeConfig } from '@/config'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 
-// Post layout props are generic, not tied to a specific data source
-interface Props {
-  description?: string
-  ogImage?: string
-  pubDate: Date
-  title: string
-}
-
-const { description, ogImage, pubDate, title } = Astro.props
+const { description, ogImage, pubDate, title } = Astro.props as PostLayoutProps
 const metaDescription = description || themeConfig.site.description
 ---
 
@@ -30,10 +23,8 @@ const metaDescription = description || themeConfig.site.description
   <BaseHead
     description={metaDescription}
     ogImage={ogImage}
-    publishedTime={pubDate}
     slot="head"
     title={`${title} · ${themeConfig.site.title}`}
-    type="article"
   />
   <div class="post-container">
     <main>
@@ -56,7 +47,6 @@ const metaDescription = description || themeConfig.site.description
       </div>
     </main>
     <ImagePlaceholderCleanup />
-    <FootnoteScroll />
     <CopyCode />
     {themeConfig.post.imageViewer && <ImageViewer />}
     {themeConfig.general.footer && <Footer />}

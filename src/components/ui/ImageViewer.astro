@@ -21,12 +21,8 @@
         viewerImg.src = src
         viewerImg.alt = alt || ''
       }
-      // Show visibility first
-      viewer.style.visibility = 'visible'
-      void viewer.offsetWidth
       viewer.classList.add('active')
       document.body.classList.add('image-viewer-open')
-      document.body.style.overflow = 'hidden'
       viewer.style.cursor = 'auto'
       setTimeout(() => {
         viewer.style.cursor = ''
@@ -41,7 +37,6 @@
 
       viewer.classList.remove('active')
       document.body.classList.remove('image-viewer-open')
-      document.body.style.overflow = ''
     }
 
     // Bind click events to images with data-preview="true" attribute
@@ -65,10 +60,9 @@
     if (!viewer.dataset.bound) {
       viewer.dataset.bound = 'true'
 
-      // Hide and clear image after transition ends
+      // Clear image after the fade-out transition ends
       viewer.addEventListener('transitionend', (e) => {
         if (e.propertyName === 'opacity' && !viewer.classList.contains('active')) {
-          viewer.style.visibility = 'hidden'
           if (viewerImg) {
             viewerImg.src = ''
             viewerImg.alt = ''
@@ -109,9 +103,6 @@
     viewerWindow.__imageViewerKeyHandler = handleKeydown
 
     bindImageClickEvents()
-
-    // Hide initially
-    viewer.style.visibility = 'hidden'
   }
 
   if (document.readyState === 'loading') {
@@ -135,13 +126,19 @@
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: opacity 0.15s ease-in-out;
+    /* visibility transitions discretely: the overlay stays click-through and
+       hidden until opened, and only snaps hidden after the fade-out ends */
+    visibility: hidden;
+    transition:
+      opacity 0.15s ease-in-out,
+      visibility 0.15s;
     background: color-mix(in srgb, var(--bg) 90%, transparent);
     cursor: zoom-out;
   }
 
   .image-viewer.active {
     opacity: 1;
+    visibility: visible;
   }
 
   .image-viewer img {

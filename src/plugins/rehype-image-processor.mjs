@@ -11,9 +11,6 @@ import { themeConfig } from '../config.js'
  */
 export default function rehypeImageProcessor() {
   return (tree) => {
-    // Tracks images across the whole document so only the first one loads eagerly
-    let documentImageCount = 0
-
     visit(tree, 'element', (node, index, parent) => {
       if (node.tagName !== 'p') {
         return
@@ -42,20 +39,16 @@ export default function rehypeImageProcessor() {
       for (const imgNode of imgNodes) {
         const alt = imgNode.properties?.alt?.trim()
 
-        // The first image in the document is likely above the fold, so it loads
-        // eagerly at high priority; all later images lazy-load at default priority.
-        const isFirstImage = documentImageCount === 0
-        documentImageCount += 1
-
-        // Enhanced image properties with performance optimizations
+        // In-content images sit below the fold on this layout, so they all
+        // lazy-load; a fetchpriority hint would contradict that.
         imgNode.properties = {
           ...imgNode.properties,
-          class: [...(imgNode.properties.class || []), 'img-placeholder'],
+          className: [...(imgNode.properties?.className || []), 'img-placeholder'],
           'data-preview': themeConfig.post.imageViewer ? 'true' : 'false',
           // Add decoding hint for better performance
           decoding: 'async',
-          fetchpriority: isFirstImage ? 'high' : 'auto',
-          loading: isFirstImage ? 'eager' : 'lazy'
+          // Add lazy loading for better performance
+          loading: 'lazy'
         }
 
         if (!alt || alt.includes('_')) {

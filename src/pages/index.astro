@@ -4,6 +4,7 @@ import PhotoCards from '@/components/ui/PhotoCards.astro'
 import SimpleContentList from '@/components/ui/SimpleContentList.astro'
 import { themeConfig } from '@/config'
 import IndexLayout from '@/layouts/IndexLayout.astro'
+import { blogPath } from '@/utils/paths'
 import { getSortedFilteredPosts } from '@/utils/posts'
 
 const allPosts = await getSortedFilteredPosts()
@@ -11,7 +12,7 @@ const posts = allPosts.slice(0, 4)
 
 const recentPostItems = posts.map((post) => ({
   date: post.data.pubDate,
-  href: `/blog/${post.id}/`,
+  href: blogPath(post.id),
   title: post.data.title
 }))
 ---

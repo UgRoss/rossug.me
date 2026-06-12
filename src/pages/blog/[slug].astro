@@ -20,7 +20,7 @@ const description = post.data.excerpt ?? createMetaDescription(post.body ?? '')
 ---
 
 <PostLayout {...post.data} description={description} ogImage={`/open-graph/${post.id}.png`}>
-  <BackLink href="/blog" label="Posts" slot="back-link" />
+  <BackLink href="/blog/" label="Posts" slot="back-link" />
 
   <Content />
 </PostLayout>

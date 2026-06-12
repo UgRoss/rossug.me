@@ -5,6 +5,7 @@ import { Image } from 'astro:assets'
 
 import FormattedDate from '@/components/ui/FormattedDate.astro'
 import { createExcerpt } from '@/utils/excerpt'
+import { blogPath } from '@/utils/paths'
 
 interface Props {
   posts: CollectionEntry<'posts'>[]
@@ -32,7 +33,7 @@ const getPostExcerpt = (post: CollectionEntry<'posts'>): string => {
         <article>
           <a
             class="group -mx-4 block rounded-xl px-4 py-4 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
-            href={`/blog/${post.id}/`}
+            href={blogPath(post.id)}
           >
             {post.data.image && (
               <div class="mb-5 overflow-hidden rounded-2xl bg-(--code-bg)">
