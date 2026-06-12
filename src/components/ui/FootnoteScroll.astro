@@ -23,6 +23,12 @@
         window.scrollTo({
           top: targetPosition
         })
+
+        // Keep keyboard/screen-reader position in sync with the visual jump
+        if (target instanceof HTMLElement) {
+          target.setAttribute('tabindex', '-1')
+          target.focus({ preventScroll: true })
+        }
       })
     })
   }
