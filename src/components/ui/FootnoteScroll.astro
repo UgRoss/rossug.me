@@ -3,6 +3,10 @@
     const footnoteLinks = document.querySelectorAll('[data-footnote-ref], [data-footnote-backref]')
 
     footnoteLinks.forEach((link) => {
+      // Avoid binding twice when both DOMContentLoaded and astro:page-load fire
+      if (link instanceof HTMLElement && link.dataset.footnoteScrollBound) return
+      if (link instanceof HTMLElement) link.dataset.footnoteScrollBound = '1'
+
       link.addEventListener('click', (e) => {
         e.preventDefault()
         const href = link.getAttribute('href')

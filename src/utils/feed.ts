@@ -119,7 +119,6 @@ async function fixRelativeImagePaths(
         }
       } else {
         console.warn(`[Feed] Image module not found: ${resolvedPath}`)
-        console.warn(`[Feed] Available image modules:`, Object.keys(imagesGlob))
       }
     } else if (src.startsWith('/')) {
       img.setAttribute('src', new URL(src, baseUrl).toString())

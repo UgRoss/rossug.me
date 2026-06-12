@@ -54,8 +54,12 @@ const loadFont = async (url: string): Promise<Buffer> => {
 }
 
 const readPagesFromDir = async (dir: string): Promise<OGPage[]> => {
-  const files = await readdir(dir)
-  const markdownFiles = files.filter((file) => /\.(md|mdx)$/.test(file) && !file.startsWith('_'))
+  // Recursive to mirror the collection's `**/*.{md,mdx}` glob; slugs keep their
+  // subdirectory prefix so they match entry ids. Draft filtering mirrors isPublished.
+  const files = await readdir(dir, { recursive: true })
+  const markdownFiles = files
+    .map((file) => file.split(path.sep).join('/'))
+    .filter((file) => /\.(md|mdx)$/.test(file) && !file.startsWith('_'))
 
   return Promise.all(
     markdownFiles.map(async (file): Promise<OGPage> => {
@@ -188,6 +192,9 @@ const generateOGImages = async (): Promise<void> => {
   for (const page of pages) {
     const outputPath = path.join(OUTPUT_DIR, `${page.slug}.png`)
     if (await isUpToDate(page, outputPath)) continue
+
+    // Slugs from nested content dirs need their parent directory created
+    await mkdir(path.dirname(outputPath), { recursive: true })
 
     // Satori accepts element-shaped plain objects at runtime, but its types only declare ReactNode.
     const svg = await satori(cardElement(page) as unknown as ReactNode, {

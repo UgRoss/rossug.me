@@ -39,7 +39,7 @@ const books = defineCollection({
       cover: image(),
       // 0 represents "not rated", 1-5 represents the rating
       rating: z.number().int().min(0).max(5).default(0),
-      status: z.enum(['finished', 'reading', 'wishlist']),
+      status: z.enum(['finished', 'reading']),
       summary: z.string(),
       title: z.string()
     })

@@ -24,7 +24,6 @@ export type BookStatus = BookEntry['data']['status']
 interface BooksByStatus {
   finished: BookEntry[]
   reading: BookEntry[]
-  wishlist: BookEntry[]
 }
 
 export async function getBooksForReadingPage(): Promise<{
@@ -53,8 +52,7 @@ export function groupBooksByStatus(books: BookEntry[]): BooksByStatus {
     },
     {
       finished: [],
-      reading: [],
-      wishlist: []
+      reading: []
     }
   )
 }

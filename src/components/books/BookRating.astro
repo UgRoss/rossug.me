@@ -8,7 +8,7 @@ interface Props {
   rating: number
 }
 
-const { className, iconClassName = 'h-4 w-4', rating } = Astro.props as Props
+const { className, iconClassName = 'h-4 w-4', rating } = Astro.props
 const hasRating = rating > 0
 const ratingLabel = `${rating} out of 5 stars`
 const stars = Array.from({ length: 5 }, (_, index) => index < rating)
