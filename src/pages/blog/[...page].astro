@@ -1,5 +1,6 @@
 ---
-import type { GetStaticPaths } from 'astro'
+import type { GetStaticPaths, Page } from 'astro'
+import type { CollectionEntry } from 'astro:content'
 
 import Pagination from '@/components/ui/Pagination.astro'
 import PostList from '@/components/ui/PostList.astro'
@@ -11,6 +12,10 @@ export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getSortedFilteredPosts()
   return paginate(posts, { pageSize: themeConfig.pagination.blog })
 }) satisfies GetStaticPaths
+
+interface Props {
+  page: Page<CollectionEntry<'posts'>>
+}
 
 const { page } = Astro.props
 ---

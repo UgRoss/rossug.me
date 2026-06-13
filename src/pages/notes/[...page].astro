@@ -1,7 +1,7 @@
 ---
 // ABOUTME: Notes (TIL) listing page with pagination.
 
-import type { GetStaticPaths } from 'astro'
+import type { GetStaticPaths, Page } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 
 import NotesList from '@/components/notes/NotesList'
@@ -22,12 +22,7 @@ export const getStaticPaths = (async ({ paginate }) => {
 
 interface Props {
   categories: string[]
-  page: {
-    currentPage: number
-    data: CollectionEntry<'notes'>[]
-    lastPage: number
-    url: { next?: string; prev?: string }
-  }
+  page: Page<CollectionEntry<'notes'>>
 }
 
 const { categories, page } = Astro.props
