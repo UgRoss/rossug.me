@@ -1,7 +1,5 @@
 ---
 import '@/styles/global.css'
-import type { PostLayoutProps } from '@/types'
-
 import BaseHead from '@/components/layout/BaseHead.astro'
 import Footer from '@/components/layout/Footer.astro'
 import CopyCode from '@/components/ui/CopyCode.astro'
@@ -11,15 +9,18 @@ import FormattedDate from '@/components/widgets/FormattedDate.astro'
 import { themeConfig } from '@/config'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 
-const { description, ogImage, pubDate, title } = Astro.props as PostLayoutProps
+interface Props {
+  description?: string
+  ogImage?: string
+  pubDate: Date
+  title: string
+}
+
+const { description, ogImage, pubDate, title } = Astro.props
 const metaDescription = description || themeConfig.site.description
 ---
 
-<BaseLayout
-  description={metaDescription}
-  title={`${title} · ${themeConfig.site.title}`}
-  type="post"
->
+<BaseLayout type="post">
   <BaseHead
     description={metaDescription}
     ogImage={ogImage}

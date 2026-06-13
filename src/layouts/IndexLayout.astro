@@ -5,11 +5,18 @@ import Footer from '@/components/layout/Footer.astro'
 import { themeConfig } from '@/config'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 
+interface Props {
+  description?: string
+  title?: string
+}
+
 const { description, title } = Astro.props
+const metaTitle = title ?? themeConfig.site.title
+const metaDescription = description ?? themeConfig.site.description
 ---
 
-<BaseLayout description={description} title={title} type="page">
-  <BaseHead description={description} slot="head" title={title} />
+<BaseLayout type="page">
+  <BaseHead description={metaDescription} slot="head" title={metaTitle} />
   <div class="page-content">
     <main>
       <slot />

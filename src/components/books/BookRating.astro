@@ -3,12 +3,16 @@
 // ABOUTME: Keeps star rendering logic and styling consistent across the reading experience.
 
 interface Props {
-  className?: string
-  iconClassName?: string
+  class?: string
+  iconClass?: string
   rating: number
 }
 
+<<<<<<< HEAD
 const { className, iconClassName = 'h-4 w-4', rating } = Astro.props
+=======
+const { class: className, iconClass: iconClassName = 'h-4 w-4', rating } = Astro.props
+>>>>>>> 86c382d (refactor: colocate component props and slim shared types)
 const hasRating = rating > 0
 const ratingLabel = `${rating} out of 5 stars`
 const stars = Array.from({ length: 5 }, (_, index) => index < rating)

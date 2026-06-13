@@ -7,14 +7,22 @@ import 'katex/dist/katex.min.css'
 interface Props {
   description: string
   ogImage?: string
+<<<<<<< HEAD
   publishedTime?: Date
   title: string
   type?: 'article' | 'website'
+=======
+  title: string
+>>>>>>> 86c382d (refactor: colocate component props and slim shared types)
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 
+<<<<<<< HEAD
 const { description, ogImage, publishedTime, title, type = 'website' } = Astro.props
+=======
+const { description, ogImage, title } = Astro.props
+>>>>>>> 86c382d (refactor: colocate component props and slim shared types)
 const imageUrl = ogImage
   ? new URL(ogImage, Astro.url)
   : new URL('/open-graph/default.png', Astro.url)
