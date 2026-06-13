@@ -40,9 +40,7 @@ const finishedBookCards = finishedBooks.map(mapBookToData)
       {
         finishedBookCards.length > 0 && (
           <section class="space-y-6">
-            <h2 class="text-xs font-semibold tracking-widest text-muted uppercase">
-              Finished
-            </h2>
+            <h2 class="text-xs font-semibold tracking-widest text-muted uppercase">Finished</h2>
             <div class="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3">
               {finishedBookCards.map((book) => (
                 <BookCard book={book} />

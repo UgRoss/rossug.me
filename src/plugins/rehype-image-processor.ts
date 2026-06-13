@@ -1,6 +1,14 @@
+import type { Element, ElementContent, Root } from 'hast'
+
 import { visit } from 'unist-util-visit'
 
-import { themeConfig } from '../config.js'
+import { themeConfig } from '../config'
+
+const toClassList = (value: Element['properties']['className']): string[] => {
+  if (Array.isArray(value)) return value.map(String)
+  if (typeof value === 'string') return [value]
+  return []
+}
 
 /**
  * Rehype plugin that processes images in markdown content:
@@ -10,7 +18,7 @@ import { themeConfig } from '../config.js'
  * - Handles multiple images in a single paragraph
  */
 export default function rehypeImageProcessor() {
-  return (tree) => {
+  return (tree: Root): void => {
     visit(tree, 'element', (node, index, parent) => {
       if (node.tagName !== 'p') {
         return
@@ -19,7 +27,7 @@ export default function rehypeImageProcessor() {
         return
       }
 
-      const imgNodes = []
+      const imgNodes: Element[] = []
       let hasNonImageContent = false
 
       for (const child of node.children) {
@@ -34,16 +42,17 @@ export default function rehypeImageProcessor() {
         return
       }
 
-      const newNodes = []
+      const newNodes: ElementContent[] = []
 
       for (const imgNode of imgNodes) {
-        const alt = imgNode.properties?.alt?.trim()
+        const rawAlt = imgNode.properties?.alt
+        const alt = typeof rawAlt === 'string' ? rawAlt.trim() : ''
 
         // In-content images sit below the fold on this layout, so they all
         // lazy-load; a fetchpriority hint would contradict that.
         imgNode.properties = {
           ...imgNode.properties,
-          className: [...(imgNode.properties?.className || []), 'img-placeholder'],
+          className: [...toClassList(imgNode.properties?.className), 'img-placeholder'],
           'data-preview': themeConfig.post.imageViewer ? 'true' : 'false',
           // Add decoding hint for better performance
           decoding: 'async',
@@ -51,31 +60,23 @@ export default function rehypeImageProcessor() {
           loading: 'lazy'
         }
 
+        // An underscore in alt text opts the image out of a rendered caption
         if (!alt || alt.includes('_')) {
           newNodes.push(imgNode)
           continue
         }
 
-        const figure = {
+        const figure: Element = {
           children: [
             imgNode,
             {
-              children: [
-                {
-                  type: 'text',
-                  value: alt
-                }
-              ],
-              properties: {
-                className: ['img-caption']
-              },
+              children: [{ type: 'text', value: alt }],
+              properties: { className: ['img-caption'] },
               tagName: 'figcaption',
               type: 'element'
             }
           ],
-          properties: {
-            className: ['image-caption-wrapper']
-          },
+          properties: { className: ['image-caption-wrapper'] },
           tagName: 'figure',
           type: 'element'
         }
