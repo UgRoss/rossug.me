@@ -24,7 +24,7 @@ const imagesGlob = import.meta.glob<{ default: ImageMetadata }>(
 /**
  * Generate Atom 1.0 feed
  */
-export async function generateAtom(context: APIContext) {
+export async function generateAtom(context: APIContext): Promise<Response> {
   const feed = await generateFeedInstance(context)
   const atomXml = feed
     .atom1()
@@ -40,7 +40,7 @@ export async function generateAtom(context: APIContext) {
 /**
  * Generate RSS 2.0 feed
  */
-export async function generateRSS(context: APIContext) {
+export async function generateRSS(context: APIContext): Promise<Response> {
   const feed = await generateFeedInstance(context)
   const rssXml = feed
     .rss2()
@@ -105,7 +105,7 @@ async function fixRelativeImagePaths(
 /**
  * Generate a generic Feed instance
  */
-async function generateFeedInstance(context: APIContext) {
+async function generateFeedInstance(context: APIContext): Promise<Feed> {
   const siteUrl = (context.site?.toString() || themeConfig.site.website).replace(/\/$/, '')
   const { author = '', description = '', language = 'en-US', title = '' } = themeConfig.site
 

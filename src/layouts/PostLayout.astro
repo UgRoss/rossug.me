@@ -3,9 +3,9 @@ import '@/styles/global.css'
 import BaseHead from '@/components/layout/BaseHead.astro'
 import Footer from '@/components/layout/Footer.astro'
 import CopyCode from '@/components/ui/CopyCode.astro'
+import FormattedDate from '@/components/ui/FormattedDate.astro'
 import ImagePlaceholderCleanup from '@/components/ui/ImagePlaceholderCleanup.astro'
 import ImageViewer from '@/components/ui/ImageViewer.astro'
-import FormattedDate from '@/components/widgets/FormattedDate.astro'
 import { themeConfig } from '@/config'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { formatPageTitle } from '@/utils/seo'
@@ -25,8 +25,10 @@ const metaDescription = description || themeConfig.site.description
   <BaseHead
     description={metaDescription}
     ogImage={ogImage}
+    publishedTime={pubDate}
     slot="head"
     title={formatPageTitle(title)}
+    type="article"
   />
   <div class="post-container">
     <main>

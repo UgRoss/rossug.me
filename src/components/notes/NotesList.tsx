@@ -86,8 +86,11 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
 
     return source.filter((note) => {
       const matchesCategory = !selectedCategory || note.category === selectedCategory
+      const query = searchQuery.toLowerCase()
       const matchesSearch =
-        !searchQuery || note.title.toLowerCase().includes(searchQuery.toLowerCase())
+        !searchQuery ||
+        note.title.toLowerCase().includes(query) ||
+        (note.excerpt?.toLowerCase().includes(query) ?? false)
       return matchesCategory && matchesSearch
     })
   }, [allNotes, hasFetched, initialNotes, isFiltering, searchQuery, selectedCategory])
