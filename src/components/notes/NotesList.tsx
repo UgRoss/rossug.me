@@ -109,7 +109,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
         <div className="relative">
           <input
             aria-label="Search notes"
-            className="h-10 w-full rounded-lg border border-(--border) bg-(--code-bg) pr-9 pl-3 text-(--text-primary) outline-none placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--border) focus-visible:outline-solid"
+            className="h-10 w-full rounded-lg border border-(--border) bg-(--code-bg) pr-9 pl-3 text-(--text-primary) outline-none placeholder:text-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--border) focus-visible:outline-solid"
             onChange={(e) => handleSearchChange(e.target.value)}
             placeholder="Search notes…"
             type="text"
@@ -118,7 +118,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
           {searchQuery !== '' && (
             <button
               aria-label="Clear search"
-              className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-sm text-muted transition-colors hover:text-(--text-primary)"
+              className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-sm text-secondary transition-colors hover:text-(--text-primary)"
               onClick={() => setSearchQuery('')}
               type="button"
             >
@@ -153,7 +153,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
       {/* Notes list */}
       <ul className="my-5 flex list-none flex-col p-0">
         {displayNotes.length === 0 ? (
-          <li className="list-none py-4 text-sm text-muted">No notes found.</li>
+          <li className="list-none py-4 text-sm text-secondary">No notes found.</li>
         ) : (
           displayNotes.map((note) => <NoteItem key={note.id} note={note} />)
         )}
@@ -174,7 +174,7 @@ function NoteItem({ note }: { note: NoteMetadata }) {
         {/* Relative date is computed at build time; drift until the next deploy is
             acceptable, so hydration mismatches are intentionally suppressed. */}
         <time
-          className="shrink-0 text-sm whitespace-nowrap text-muted"
+          className="shrink-0 text-sm whitespace-nowrap text-secondary"
           dateTime={note.pubDate}
           suppressHydrationWarning
         >

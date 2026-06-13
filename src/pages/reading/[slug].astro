@@ -51,12 +51,12 @@ const { Content } = await render(book)
       <div class="space-y-4">
         <div class="space-y-1">
           <h1 class="text-xl leading-tight">{book.data.title}</h1>
-          <p class="text-muted">{book.data.author}</p>
+          <p class="text-secondary">{book.data.author}</p>
         </div>
 
         <BookRating class="flex gap-1" iconClass="h-4 w-4" rating={book.data.rating} />
 
-        <p class="border-l-2 border-(--border) pl-4 leading-relaxed text-muted italic">
+        <p class="border-l-2 border-(--border) pl-4 leading-relaxed text-secondary italic">
           {book.data.summary}
         </p>
       </div>

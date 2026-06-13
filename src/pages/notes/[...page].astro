@@ -33,7 +33,7 @@ const serializedNotes = mapNotesToMetadata(page.data)
 <IndexLayout description="TILs (Today I Learned) and quick technical snippets" title="Notes">
   <div class="mb-8">
     <h1 class="mb-2 text-xl">Notes</h1>
-    <p class="text-muted">TILs (Today I Learned) and quick technical snippets.</p>
+    <p class="text-secondary">TILs (Today I Learned) and quick technical snippets.</p>
   </div>
 
   <NotesList categories={categories} client:load notes={serializedNotes} />

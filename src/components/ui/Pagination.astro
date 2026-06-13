@@ -8,8 +8,8 @@ interface Props {
 
 const { currentPage, lastPage, nextUrl, prevUrl } = Astro.props
 
-const linkClass = 'text-muted transition-colors hover:text-(--text-primary)'
-const disabledClass = 'text-faint'
+const linkClass = 'text-secondary transition-colors hover:text-(--text-primary)'
+const disabledClass = 'text-tertiary'
 ---
 
 {
@@ -23,7 +23,7 @@ const disabledClass = 'text-faint'
         <span class={disabledClass}>&larr; Prev</span>
       )}
 
-      <span class="text-faint">
+      <span class="text-tertiary">
         {currentPage} / {lastPage}
       </span>
 
