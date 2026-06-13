@@ -1,12 +1,12 @@
 // ABOUTME: Astro integration that generates Open Graph card images into public/open-graph/.
 // ABOUTME: Uses satori + resvg in the Node build process, independent of the adapter's prerender runtime.
 
-import type { AstroIntegration } from 'astro'
+import type { AstroIntegration, AstroIntegrationLogger } from 'astro'
 import type { ReactNode } from 'react'
 
 import { Resvg } from '@resvg/resvg-js'
 import matter from 'gray-matter'
-import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises'
+import { mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import satori from 'satori'
@@ -160,11 +160,28 @@ const STATIC_PAGES: OGPage[] = [
   }
 ]
 
-const generateOGImages = async (): Promise<void> => {
+/**
+ * Delete generated PNGs that no longer correspond to a known page (e.g. removed posts)
+ */
+const removeOrphans = async (expectedSlugs: Set<string>, logger: AstroIntegrationLogger) => {
+  const entries = await readdir(OUTPUT_DIR).catch(() => [] as string[])
+  const orphans = entries.filter(
+    (file) => file.endsWith('.png') && !expectedSlugs.has(file.replace(/\.png$/, ''))
+  )
+
+  await Promise.all(orphans.map((file) => rm(path.join(OUTPUT_DIR, file))))
+  if (orphans.length > 0) {
+    logger.info(`Removed ${orphans.length} orphaned Open Graph image(s)`)
+  }
+}
+
+const generateOGImages = async (logger: AstroIntegrationLogger): Promise<void> => {
   const pagesPerDir = await Promise.all(CONTENT_DIRS.map(readPagesFromDir))
   const pages: OGPage[] = [...pagesPerDir.flat(), ...STATIC_PAGES]
 
   await mkdir(OUTPUT_DIR, { recursive: true })
+  await removeOrphans(new Set(pages.map((page) => page.slug)), logger)
+
   const fonts = await Promise.all(
     FONTS.map(async ({ file, weight }) => ({
       data: await loadFont(file),
@@ -194,15 +211,15 @@ const generateOGImages = async (): Promise<void> => {
   }
 
   if (generated > 0) {
-    console.warn(`[og-images] Generated ${generated} Open Graph image(s)`)
+    logger.info(`Generated ${generated} Open Graph image(s)`)
   }
 }
 
 export default function ogImages(): AstroIntegration {
   return {
     hooks: {
-      'astro:build:start': generateOGImages,
-      'astro:server:start': generateOGImages
+      'astro:build:start': ({ logger }) => generateOGImages(logger),
+      'astro:server:start': ({ logger }) => generateOGImages(logger)
     },
     name: 'og-images'
   }

@@ -1,6 +1,5 @@
 ---
 import BookCard from '@/components/books/BookCard.astro'
-import { themeConfig } from '@/config'
 import IndexLayout from '@/layouts/IndexLayout.astro'
 import { getBooksForReadingPage, mapBookToData } from '@/utils/books'
 
@@ -9,10 +8,7 @@ const currentlyReadingCards = currentlyReading.map(mapBookToData)
 const finishedBookCards = finishedBooks.map(mapBookToData)
 ---
 
-<IndexLayout
-  description="Reading list and book notes"
-  title={`Reading - ${themeConfig.site.title}`}
->
+<IndexLayout description="Reading list and book notes" title="Reading">
   <div class="space-y-12">
     <header class="space-y-2">
       <h1 class="text-xl">Books</h1>

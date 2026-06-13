@@ -2,11 +2,17 @@ import type { Element, Root } from 'hast'
 
 import { visit } from 'unist-util-visit'
 
+import { themeConfig } from '../config'
+
 /**
  * Rehype plugin that adds copy button to code blocks for easy code copying functionality
  */
 export default function rehypeCopyCode() {
   return (tree: Root): void => {
+    if (!themeConfig.post.copyCode) {
+      return
+    }
+
     visit(tree, 'element', (node, index, parent) => {
       // Only process pre elements
       if (node.tagName !== 'pre') {

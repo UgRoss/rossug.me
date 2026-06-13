@@ -8,6 +8,7 @@ import ImageViewer from '@/components/ui/ImageViewer.astro'
 import FormattedDate from '@/components/widgets/FormattedDate.astro'
 import { themeConfig } from '@/config'
 import BaseLayout from '@/layouts/BaseLayout.astro'
+import { formatPageTitle } from '@/utils/seo'
 
 interface Props {
   description?: string
@@ -25,7 +26,7 @@ const metaDescription = description || themeConfig.site.description
     description={metaDescription}
     ogImage={ogImage}
     slot="head"
-    title={`${title} · ${themeConfig.site.title}`}
+    title={formatPageTitle(title)}
   />
   <div class="post-container">
     <main>

@@ -2,9 +2,10 @@
 import BaseHead from '@/components/layout/BaseHead.astro'
 import ThemeManager from '@/components/ui/ThemeManager.astro'
 import { themeConfig } from '@/config'
+import { formatPageTitle } from '@/utils/seo'
 import '@/styles/global.css'
 
-const title = `404 - ${themeConfig.site.title}`
+const title = formatPageTitle('404')
 const description = 'Page Not Found'
 ---
 

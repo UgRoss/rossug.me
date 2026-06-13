@@ -1,3 +1,7 @@
+---
+import { STORAGE_KEY, SYSTEM_QUERY } from '@/utils/theme-controller'
+---
+
 <!--
   This is a critical style block to prevent flashing on page load in dark mode.
   It is injected into the <head> of the document before the main stylesheets are loaded.
@@ -18,11 +22,8 @@
   }
 </style>
 
-<script is:inline>
+<script define:vars={{ STORAGE_KEY, SYSTEM_QUERY }} is:inline>
   ;(function () {
-    const SYSTEM_THEME_QUERY = '(prefers-color-scheme: dark)'
-    const STORAGE_KEY = 'rossug-theme'
-
     // Apply as early as possible to avoid initial flash.
     let storedTheme = null
     try {
@@ -34,7 +35,7 @@
     const appliedTheme =
       storedTheme === 'light' || storedTheme === 'dark'
         ? storedTheme
-        : window.matchMedia(SYSTEM_THEME_QUERY).matches
+        : window.matchMedia(SYSTEM_QUERY).matches
           ? 'dark'
           : 'light'
 
