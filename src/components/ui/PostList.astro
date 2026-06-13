@@ -46,12 +46,12 @@ const getPostExcerpt = (post: Props['posts'][number]): string =>
                 {post.data.title}
               </h2>
 
-              <p class="shrink-0 pt-1 text-sm text-neutral-400 dark:text-neutral-500">
+              <p class="shrink-0 pt-1 text-sm text-faint">
                 <FormattedDate date={post.data.pubDate} />
               </p>
             </div>
 
-            <p class="mt-2 max-w-3xl text-neutral-700 dark:text-neutral-300">
+            <p class="mt-2 max-w-3xl text-muted">
               {getPostExcerpt(post)}
             </p>
           </a>
