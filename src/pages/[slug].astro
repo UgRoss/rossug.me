@@ -1,0 +1,32 @@
+---
+import type { GetStaticPaths } from 'astro'
+
+import { getCollection, render } from 'astro:content'
+
+import { themeConfig } from '@/config'
+import IndexLayout from '@/layouts/IndexLayout.astro'
+import { isPublished } from '@/utils/collections'
+
+export const getStaticPaths = (async () => {
+  const pages = await getCollection('pages')
+  return pages.filter(isPublished).map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry }
+  }))
+}) satisfies GetStaticPaths
+
+const { entry } = Astro.props
+const { Content } = await render(entry)
+const description = entry.data.description ?? themeConfig.site.description
+---
+
+<IndexLayout description={description} title={`${entry.data.title} - ${themeConfig.site.title}`}>
+  <div class="mx-auto max-w-2xl">
+    <header class="mb-8">
+      <h1 class="text-xl text-(--text-primary)">{entry.data.title}</h1>
+    </header>
+    <article class="prose max-w-none dark:prose-invert">
+      <Content />
+    </article>
+  </div>
+</IndexLayout>
