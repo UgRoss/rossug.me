@@ -1,17 +1,10 @@
 ---
 import type { CollectionEntry } from 'astro:content'
-<<<<<<< HEAD:src/components/ui/PostList.astro
-
-import { Image } from 'astro:assets'
-
-import FormattedDate from '@/components/ui/FormattedDate.astro'
-=======
 
 import { Image } from 'astro:assets'
 
 import FormattedDate from '@/components/widgets/FormattedDate.astro'
->>>>>>> 86c382d (refactor: colocate component props and slim shared types):src/components/widgets/PostList.astro
-import { createExcerpt } from '@/utils/excerpt'
+import { createExcerpt, truncateAtWord } from '@/utils/excerpt'
 import { blogPath } from '@/utils/paths'
 
 interface Props {
@@ -22,19 +15,8 @@ const { posts } = Astro.props
 
 const EXCERPT_LENGTH = 120
 
-<<<<<<< HEAD:src/components/ui/PostList.astro
-const getPostExcerpt = (post: CollectionEntry<'posts'>): string => {
-=======
-const getPostExcerpt = (post: Props['posts'][number]): string => {
->>>>>>> 86c382d (refactor: colocate component props and slim shared types):src/components/widgets/PostList.astro
-  const excerpt = post.data.excerpt ?? createExcerpt(post.body ?? '')
-
-  if (excerpt.length <= EXCERPT_LENGTH) {
-    return excerpt
-  }
-
-  return `${excerpt.substring(0, EXCERPT_LENGTH).trimEnd()}...`
-}
+const getPostExcerpt = (post: Props['posts'][number]): string =>
+  truncateAtWord(post.data.excerpt ?? createExcerpt(post.body ?? ''), EXCERPT_LENGTH)
 ---
 
 <ul class="mt-8 space-y-8">

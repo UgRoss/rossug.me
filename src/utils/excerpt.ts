@@ -21,16 +21,20 @@ export const createExcerpt = (body: string): string => {
   return text.trim()
 }
 
-const META_DESCRIPTION_LENGTH = 160
-
-export const createMetaDescription = (body: string): string => {
-  const text = createExcerpt(body)
-
-  if (text.length <= META_DESCRIPTION_LENGTH) {
+/**
+ * Truncate at the last word boundary within maxLength, appending an ellipsis
+ */
+export const truncateAtWord = (text: string, maxLength: number): string => {
+  if (text.length <= maxLength) {
     return text
   }
 
-  const truncated = text.substring(0, META_DESCRIPTION_LENGTH)
+  const truncated = text.substring(0, maxLength)
   const lastSpace = truncated.lastIndexOf(' ')
-  return `${truncated.substring(0, lastSpace > 0 ? lastSpace : META_DESCRIPTION_LENGTH).trimEnd()}…`
+  return `${truncated.substring(0, lastSpace > 0 ? lastSpace : maxLength).trimEnd()}…`
 }
+
+const META_DESCRIPTION_LENGTH = 160
+
+export const createMetaDescription = (body: string): string =>
+  truncateAtWord(createExcerpt(body), META_DESCRIPTION_LENGTH)

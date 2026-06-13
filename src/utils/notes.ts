@@ -28,14 +28,14 @@ export async function getFilteredNotes(): Promise<CollectionEntry<'notes'>[]> {
  */
 export async function getSortedFilteredNotes(): Promise<CollectionEntry<'notes'>[]> {
   const notes = await getFilteredNotes()
-  return notes.sort(byPubDateDesc)
+  return notes.toSorted(byPubDateDesc)
 }
 
 /**
  * Extract unique categories from a list of notes, sorted alphabetically
  */
 export function getUniqueNotesCategories(notes: CollectionEntry<'notes'>[]): string[] {
-  return [...new Set(notes.map((note) => note.data.category))].sort()
+  return [...new Set(notes.map((note) => note.data.category))].toSorted()
 }
 
 /**
