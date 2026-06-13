@@ -1,13 +1,14 @@
 // ABOUTME: Astro integration that generates Open Graph card images into public/open-graph/.
 // ABOUTME: Uses satori + resvg in the Node build process, independent of the adapter's prerender runtime.
 
-import type { AstroIntegration } from 'astro'
+import type { AstroIntegration, AstroIntegrationLogger } from 'astro'
 import type { ReactNode } from 'react'
 
 import { Resvg } from '@resvg/resvg-js'
 import matter from 'gray-matter'
-import { mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises'
+import { mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import satori from 'satori'
 
 import { themeConfig } from '../config'
@@ -21,10 +22,10 @@ interface OGPage {
 
 const OUTPUT_DIR = 'public/open-graph'
 const CONTENT_DIRS = ['content/posts']
-const FONT_CACHE_DIR = 'node_modules/.cache/og-fonts'
+const FONT_DIR = fileURLToPath(new URL('../assets/fonts', import.meta.url))
 const FONTS = [
-  { url: 'https://api.fontsource.org/v1/fonts/inter/latin-400-normal.ttf', weight: 400 },
-  { url: 'https://api.fontsource.org/v1/fonts/inter/latin-700-normal.ttf', weight: 700 }
+  { file: 'inter-latin-400-normal.ttf', weight: 400 },
+  { file: 'inter-latin-700-normal.ttf', weight: 700 }
 ] as const
 
 const CARD = {
@@ -36,22 +37,7 @@ const CARD = {
   width: 1200
 }
 
-const loadFont = async (url: string): Promise<Buffer> => {
-  const cachePath = path.join(FONT_CACHE_DIR, path.basename(url))
-
-  try {
-    return await readFile(cachePath)
-  } catch {
-    const response = await fetch(url)
-    if (!response.ok) {
-      throw new Error(`[og-images] Failed to download font ${url}: ${response.status}`)
-    }
-    const data = Buffer.from(await response.arrayBuffer())
-    await mkdir(FONT_CACHE_DIR, { recursive: true })
-    await writeFile(cachePath, data)
-    return data
-  }
-}
+const loadFont = (file: string): Promise<Buffer> => readFile(path.join(FONT_DIR, file))
 
 const readPagesFromDir = async (dir: string): Promise<OGPage[]> => {
   // Recursive to mirror the collection's `**/*.{md,mdx}` glob; slugs keep their
@@ -174,14 +160,31 @@ const STATIC_PAGES: OGPage[] = [
   }
 ]
 
-const generateOGImages = async (): Promise<void> => {
+/**
+ * Delete generated PNGs that no longer correspond to a known page (e.g. removed posts)
+ */
+const removeOrphans = async (expectedSlugs: Set<string>, logger: AstroIntegrationLogger) => {
+  const entries = await readdir(OUTPUT_DIR).catch(() => [] as string[])
+  const orphans = entries.filter(
+    (file) => file.endsWith('.png') && !expectedSlugs.has(file.replace(/\.png$/, ''))
+  )
+
+  await Promise.all(orphans.map((file) => rm(path.join(OUTPUT_DIR, file))))
+  if (orphans.length > 0) {
+    logger.info(`Removed ${orphans.length} orphaned Open Graph image(s)`)
+  }
+}
+
+const generateOGImages = async (logger: AstroIntegrationLogger): Promise<void> => {
   const pagesPerDir = await Promise.all(CONTENT_DIRS.map(readPagesFromDir))
   const pages: OGPage[] = [...pagesPerDir.flat(), ...STATIC_PAGES]
 
   await mkdir(OUTPUT_DIR, { recursive: true })
+  await removeOrphans(new Set(pages.map((page) => page.slug)), logger)
+
   const fonts = await Promise.all(
-    FONTS.map(async ({ url, weight }) => ({
-      data: await loadFont(url),
+    FONTS.map(async ({ file, weight }) => ({
+      data: await loadFont(file),
       name: 'Inter',
       style: 'normal' as const,
       weight
@@ -208,15 +211,15 @@ const generateOGImages = async (): Promise<void> => {
   }
 
   if (generated > 0) {
-    console.warn(`[og-images] Generated ${generated} Open Graph image(s)`)
+    logger.info(`Generated ${generated} Open Graph image(s)`)
   }
 }
 
 export default function ogImages(): AstroIntegration {
   return {
     hooks: {
-      'astro:build:start': generateOGImages,
-      'astro:server:start': generateOGImages
+      'astro:build:start': ({ logger }) => generateOGImages(logger),
+      'astro:server:start': ({ logger }) => generateOGImages(logger)
     },
     name: 'og-images'
   }

@@ -1,4 +1,6 @@
-import { type CollectionEntry, getCollection } from 'astro:content'
+import type { CollectionEntry } from 'astro:content'
+
+import { getCollection } from 'astro:content'
 
 import { byPubDateDesc, isPublished } from '@/utils/collections'
 
@@ -15,5 +17,5 @@ export async function getFilteredPosts(): Promise<CollectionEntry<'posts'>[]> {
  */
 export async function getSortedFilteredPosts(): Promise<CollectionEntry<'posts'>[]> {
   const posts = await getFilteredPosts()
-  return posts.sort(byPubDateDesc)
+  return posts.toSorted(byPubDateDesc)
 }

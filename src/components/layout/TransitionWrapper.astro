@@ -1,13 +1,14 @@
 ---
-import type { LayoutProps } from '@/types'
-
-type Props = LayoutProps
+interface Props {
+  class?: string
+  type?: 'page' | 'post'
+}
 
 const { class: className = '', type } = Astro.props
 const transitionName = type === 'post' ? 'post-content' : 'page-content'
 ---
 
-<div class={className} id="transition-wrapper" transition:name={transitionName}>
+<div class={className} transition:name={transitionName}>
   <slot />
 </div>
 

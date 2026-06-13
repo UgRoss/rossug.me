@@ -4,14 +4,14 @@ import { themeConfig } from '@/config'
 const today = new Date()
 
 const navLinks = [
-  { href: '/colophon', label: 'Colophon' },
+  { href: '/colophon/', label: 'Colophon' },
   { href: '/rss.xml', label: 'RSS' }
 ]
 ---
 
 <footer class="mt-8 border-t border-(--border)">
   <div class="flex flex-col items-start justify-between gap-4 py-4 sm:flex-row sm:items-center">
-    <div class="text-(length:--font-size-m) text-muted">
+    <div class="text-(length:--font-size-m) text-secondary">
       &copy; {today.getFullYear()}
       {themeConfig.site.author}
     </div>
@@ -21,11 +21,14 @@ const navLinks = [
         navLinks.map((link, index) => (
           <>
             {index > 0 && (
-              <span aria-hidden="true" class="text-faint">
+              <span aria-hidden="true" class="text-tertiary">
                 ·
               </span>
             )}
-            <a class="text-muted transition-colors hover:text-(--text-primary)" href={link.href}>
+            <a
+              class="text-secondary transition-colors hover:text-(--text-primary)"
+              href={link.href}
+            >
               {link.label}
             </a>
           </>

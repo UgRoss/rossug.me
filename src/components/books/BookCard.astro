@@ -6,6 +6,8 @@ import { Image } from 'astro:assets'
 
 import type { BookData } from '@/utils/books'
 
+import { readingPath } from '@/utils/paths'
+
 interface Props {
   book: BookData
   grayscale?: boolean
@@ -14,9 +16,9 @@ interface Props {
 const { book, grayscale = true } = Astro.props
 ---
 
-<a class="group block w-full space-y-3" href={`/reading/${book.id}`}>
+<a class="group block w-full space-y-3" href={readingPath(book.id)}>
   <div
-    class="relative aspect-2/3 w-full shrink-0 overflow-hidden rounded-lg bg-neutral-100 shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-xl"
+    class="relative aspect-2/3 w-full shrink-0 overflow-hidden rounded-lg bg-(--code-bg) shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-xl"
   >
     <Image
       alt={book.title}
@@ -31,10 +33,10 @@ const { book, grayscale = true } = Astro.props
   </div>
 
   <div class="space-y-1">
-    <h3 class="text-sm leading-tight font-bold transition-colors group-hover:text-neutral-600">
+    <h3 class="text-sm leading-tight font-bold transition-colors group-hover:text-secondary">
       {book.title}
     </h3>
-    <p class="text-[11px] font-medium text-neutral-400">
+    <p class="text-[11px] font-medium text-tertiary">
       {book.author}
     </p>
   </div>

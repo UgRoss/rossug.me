@@ -4,12 +4,20 @@ import BaseHead from '@/components/layout/BaseHead.astro'
 import Footer from '@/components/layout/Footer.astro'
 import { themeConfig } from '@/config'
 import BaseLayout from '@/layouts/BaseLayout.astro'
+import { formatPageTitle } from '@/utils/seo'
+
+interface Props {
+  description?: string
+  title?: string
+}
 
 const { description, title } = Astro.props
+const metaTitle = formatPageTitle(title)
+const metaDescription = description ?? themeConfig.site.description
 ---
 
-<BaseLayout description={description} title={title} type="page">
-  <BaseHead description={description} slot="head" title={title} />
+<BaseLayout type="page">
+  <BaseHead description={metaDescription} slot="head" title={metaTitle} />
   <div class="page-content">
     <main>
       <slot />

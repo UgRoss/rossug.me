@@ -30,44 +30,11 @@ import { themeConfig } from '@/config'
       if (button.dataset.copyInit) return
       button.dataset.copyInit = '1'
 
-      // Find the closest pre element with the .copy-code-block class
-      let preElement = button.closest('.copy-code-block')
-      if (!preElement) {
-        const parent = button.parentElement
-        if (parent) {
-          preElement = parent.querySelector('.copy-code-block')
-        }
-      }
-      if (!preElement) return
-
-      const codeElement = preElement.querySelector('code')
+      // The rehype plugin always renders div.copy-code-wrapper > [button, pre > code]
+      const codeElement = button.parentElement?.querySelector('.copy-code-block code')
       if (!codeElement) return
 
-      if (!button.querySelector('svg')) {
-        button.innerHTML = copyIcon
-      }
-
-      button.style.opacity = '0'
-      button.style.pointerEvents = 'none'
-
-      // Determine the container to attach hover events
-      let container = preElement
-      const parent = button.parentElement
-      if (parent && parent.classList.contains('copy-code-wrapper')) {
-        container = parent
-      }
-
-      container.addEventListener('mouseenter', () => {
-        button.style.opacity = '1'
-        button.style.pointerEvents = 'auto'
-      })
-
-      container.addEventListener('mouseleave', () => {
-        if (!button.hasAttribute('data-copying')) {
-          button.style.opacity = '0'
-          button.style.pointerEvents = 'none'
-        }
-      })
+      button.innerHTML = copyIcon
 
       button.addEventListener('click', async () => {
         const codeText = codeElement.textContent || ''
@@ -83,10 +50,6 @@ import { themeConfig } from '@/config'
         button.innerHTML = copiedIcon
 
         setTimeout(() => {
-          if (!container.matches(':hover')) {
-            button.style.opacity = '0'
-            button.style.pointerEvents = 'none'
-          }
           button.removeAttribute('data-copying')
 
           setTimeout(() => {
@@ -138,6 +101,13 @@ import { themeConfig } from '@/config'
     display: none !important;
   }
 
+  /* Reveal on hover; stay visible while the copied state is showing */
+  .copy-code-wrapper:hover .copy-button,
+  .copy-button[data-copying] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
   .copy-button::before {
     content: '';
     position: absolute;
@@ -160,10 +130,10 @@ import { themeConfig } from '@/config'
     color: var(--text-primary);
   }
 
-  /* !important beats the inline styles the script uses for hover hiding */
+  /* Keep the button keyboard-reachable despite the hover-reveal behavior */
   .copy-button:focus-visible {
-    opacity: 1 !important;
-    pointer-events: auto !important;
+    opacity: 1;
+    pointer-events: auto;
     outline: 2px solid var(--text-secondary);
     outline-offset: 1px;
   }

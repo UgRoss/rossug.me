@@ -288,6 +288,11 @@
   padding: 3px 1px;
 }
 
+/* Keep anchor targets (footnotes, heading links) clear of the viewport top */
+.prose :target {
+  scroll-margin-top: 8rem;
+}
+
 /* Custom Footnotes */
 .prose .footnotes {
   margin-top: 4rem;

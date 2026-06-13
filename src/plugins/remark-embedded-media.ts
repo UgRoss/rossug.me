@@ -1,10 +1,16 @@
+import type { Root } from 'mdast'
+import type { ContainerDirective, LeafDirective, TextDirective } from 'mdast-util-directive'
+
 import { visit } from 'unist-util-visit'
 
+type DirectiveNode = ContainerDirective | LeafDirective | TextDirective
+type EmbedHandler = (node: DirectiveNode) => false | string
+
 /**
- * A remark plugin that converts custom directives to embedded media HTML elements
- * Supports: link cards, Spotify, YouTube, Bilibili, X posts, and GitHub repository cards
+ * A remark plugin that converts custom directives to embedded media HTML elements.
+ * Supports: Bilibili, Spotify, and YouTube.
  */
-const embedHandlers = {
+const embedHandlers: Record<string, EmbedHandler> = {
   // Bilibili
   bilibili: (node) => {
     let bvid = node.attributes?.id ?? ''
@@ -105,23 +111,33 @@ const embedHandlers = {
 }
 
 export default function remarkEmbeddedMedia() {
-  return (tree) => {
+  return (tree: Root): void => {
     visit(tree, ['leafDirective', 'containerDirective', 'textDirective'], (node) => {
-      const handler = embedHandlers[node.name]
+      const directive = node as DirectiveNode
+      const handler = embedHandlers[directive.name]
       if (!handler) {
         return
       }
 
-      const htmlContent = handler(node)
+      const htmlContent = handler(directive)
       if (!htmlContent) {
         return
       }
 
-      node.type = 'html'
-      node.value = htmlContent
-      delete node.name
-      delete node.attributes
-      delete node.children
+      // Rewrite the directive node in place into a raw HTML node, dropping the
+      // now-irrelevant directive fields
+      const mutable = node as unknown as {
+        attributes?: unknown
+        children?: unknown
+        name?: unknown
+        type: string
+        value: string
+      }
+      mutable.type = 'html'
+      mutable.value = htmlContent
+      delete mutable.name
+      delete mutable.attributes
+      delete mutable.children
     })
   }
 }

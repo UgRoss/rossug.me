@@ -22,7 +22,7 @@ const { emptyMessage = 'No items found.', items } = Astro.props
 <ul class="my-5 flex list-none flex-col p-0">
   {
     items.length === 0 ? (
-      <li class="list-none py-4 text-sm text-muted">{emptyMessage}</li>
+      <li class="list-none py-4 text-sm text-secondary">{emptyMessage}</li>
     ) : (
       items.map((item) => (
         <li class="group list-none">
@@ -37,7 +37,7 @@ const { emptyMessage = 'No items found.', items } = Astro.props
                 <span class="tag hidden cursor-default! sm:inline-flex">{item.label}</span>
               )}
             </div>
-            <span class="shrink-0 text-sm whitespace-nowrap text-muted">
+            <span class="shrink-0 text-sm whitespace-nowrap text-secondary">
               <FormattedDate date={item.date} />
             </span>
           </a>

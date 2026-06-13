@@ -2,9 +2,10 @@
 import BaseHead from '@/components/layout/BaseHead.astro'
 import ThemeManager from '@/components/ui/ThemeManager.astro'
 import { themeConfig } from '@/config'
+import { formatPageTitle } from '@/utils/seo'
 import '@/styles/global.css'
 
-const title = `404 - ${themeConfig.site.title}`
+const title = formatPageTitle('404')
 const description = 'Page Not Found'
 ---
 
@@ -17,10 +18,10 @@ const description = 'Page Not Found'
   <body class="bg-(--bg) text-(--text-primary) antialiased">
     <main class="flex min-h-screen flex-col items-center justify-center p-4 text-center">
       <h1 class="animate-bounce-slow mb-6 text-8xl font-bold tracking-tighter">404</h1>
-      <p class="mb-8 max-w-xs text-muted">
+      <p class="mb-8 max-w-xs text-secondary">
         Oops! It looks like this page has drifted off into the digital void.
       </p>
-      <a class="font-bold transition-colors duration-200 hover:text-muted" href="/">
+      <a class="font-bold transition-colors duration-200 hover:text-secondary" href="/">
         ← Back to Home
       </a>
     </main>

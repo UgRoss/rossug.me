@@ -11,10 +11,10 @@ import remarkMath from 'remark-math'
 
 import { themeConfig } from './src/config'
 import ogImages from './src/integrations/og-images'
-import rehypeCleanup from './src/plugins/rehype-cleanup.mjs'
-import rehypeCopyCode from './src/plugins/rehype-copy-code.mjs'
-import rehypeImageProcessor from './src/plugins/rehype-image-processor.mjs'
-import remarkEmbeddedMedia from './src/plugins/remark-embedded-media.mjs'
+import rehypeCleanup from './src/plugins/rehype-cleanup'
+import rehypeCopyCode from './src/plugins/rehype-copy-code'
+import rehypeImageProcessor from './src/plugins/rehype-image-processor'
+import remarkEmbeddedMedia from './src/plugins/remark-embedded-media'
 
 export default defineConfig({
   devToolbar: {
@@ -39,6 +39,9 @@ export default defineConfig({
   },
 
   site: themeConfig.site.website,
+
+  // Match Cloudflare's static-asset serving so internal links never 307-redirect
+  trailingSlash: 'always',
 
   vite: {
     plugins: [tailwindcss()],

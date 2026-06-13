@@ -30,11 +30,11 @@ const description = note.data.excerpt ?? createMetaDescription(note.body ?? '')
   pubDate={note.data.pubDate}
   title={note.data.title}
 >
-  <BackLink href="/notes" label="Notes" slot="back-link" />
+  <BackLink href="/notes/" label="Notes" slot="back-link" />
 
   <div class="mb-4">
     <Tag
-      href={`/notes?category=${encodeURIComponent(note.data.category)}`}
+      href={`/notes/?category=${encodeURIComponent(note.data.category)}`}
       label={note.data.category}
     />
   </div>
