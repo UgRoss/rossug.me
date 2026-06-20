@@ -8,11 +8,11 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@utility text-muted {
+@utility text-secondary {
   color: var(--text-secondary);
 }
 
-@utility text-faint {
+@utility text-tertiary {
   color: var(--text-tertiary);
 }
 
@@ -35,19 +35,18 @@
     --font-size-m: 0.95rem;
     --font-size-l: 1.125rem;
 
-    --font-weight-light: 350;
     --font-weight-regular: 400;
     --font-weight-medium: 550;
     --font-weight-bold: 800;
 
-    --spacing-s: -0.08em;
     --spacing-m: -0.02em;
 
     /* Light Mode Colors (Default) */
     --bg: #ffffff;
     --text-primary: rgba(0, 0, 0, 0.85);
-    --text-secondary: rgba(0, 0, 0, 0.4);
-    --text-tertiary: rgba(0, 0, 0, 0.24);
+    --text-secondary: rgba(0, 0, 0, 0.62);
+    --text-tertiary: rgba(0, 0, 0, 0.45);
+    --text-accent: var(--text-primary);
     --border: rgba(0, 0, 0, 0.1);
     --selection: rgba(0, 0, 0, 0.08);
     --code-bg: rgba(0, 0, 0, 0.04);
@@ -58,8 +57,9 @@
   html.dark {
     --bg: #1c1c1c;
     --text-primary: rgba(255, 255, 255, 0.9);
-    --text-secondary: rgba(255, 255, 255, 0.4);
-    --text-tertiary: rgba(255, 255, 255, 0.24);
+    --text-secondary: rgba(255, 255, 255, 0.62);
+    --text-tertiary: rgba(255, 255, 255, 0.45);
+    --text-accent: var(--text-primary);
     --border: rgba(255, 255, 255, 0.1);
     --selection: rgba(255, 255, 255, 0.08);
     --code-bg: rgba(255, 255, 255, 0.04);

@@ -34,7 +34,7 @@ const { Content } = await render(book)
   title={`${book.data.title} · ${themeConfig.site.title}`}
 >
   <div class="space-y-8">
-    <BackLink href="/reading" label="Books" />
+    <BackLink href="/reading/" label="Books" />
 
     <div class="flex flex-col gap-8 sm:flex-row">
       <div class="flex shrink-0 flex-col items-center sm:items-start">
@@ -51,14 +51,12 @@ const { Content } = await render(book)
       <div class="space-y-4">
         <div class="space-y-1">
           <h1 class="text-xl leading-tight">{book.data.title}</h1>
-          <p class="text-neutral-500">{book.data.author}</p>
+          <p class="text-secondary">{book.data.author}</p>
         </div>
 
-        <BookRating className="flex gap-1" iconClassName="h-4 w-4" rating={book.data.rating} />
+        <BookRating class="flex gap-1" iconClass="h-4 w-4" rating={book.data.rating} />
 
-        <p
-          class="border-l-2 border-neutral-100 pl-4 leading-relaxed text-neutral-600 italic dark:border-neutral-700 dark:text-neutral-400"
-        >
+        <p class="border-l-2 border-(--border) pl-4 leading-relaxed text-secondary italic">
           {book.data.summary}
         </p>
       </div>

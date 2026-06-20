@@ -8,7 +8,6 @@ import NotesList from '@/components/notes/NotesList'
 import Pagination from '@/components/ui/Pagination.astro'
 import { themeConfig } from '@/config'
 import IndexLayout from '@/layouts/IndexLayout.astro'
-import { formatRelativeListDate, toDateTimeAttr } from '@/utils/date'
 import { getSortedFilteredNotes, getUniqueNotesCategories, mapNotesToMetadata } from '@/utils/notes'
 
 export const getStaticPaths = (async ({ paginate }) => {
@@ -27,45 +26,17 @@ interface Props {
 }
 
 const { categories, page } = Astro.props
-const sortedNotes = page.data
-const serializedNotes = mapNotesToMetadata(sortedNotes)
+
+const serializedNotes = mapNotesToMetadata(page.data)
 ---
 
-<IndexLayout
-  description="TILs (Today I Learned) and quick technical snippets"
-  title={`Notes - ${themeConfig.site.title}`}
->
+<IndexLayout description="TILs (Today I Learned) and quick technical snippets" title="Notes">
   <div class="mb-8">
     <h1 class="mb-2 text-xl">Notes</h1>
-    <p class="text-muted">TILs (Today I Learned) and quick technical snippets.</p>
+    <p class="text-secondary">TILs (Today I Learned) and quick technical snippets.</p>
   </div>
 
   <NotesList categories={categories} client:load notes={serializedNotes} />
-
-  {/* No-JS fallback — hidden once React hydrates */}
-  <noscript>
-    <ul class="my-5 flex list-none flex-col gap-0.5 p-0">
-      {
-        sortedNotes.map((note) => (
-          <li class="group list-none">
-            <a
-              class="-mx-2 flex items-center justify-between gap-6 rounded-sm px-2 py-1 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
-              href={`/notes/${note.id}`}
-              title={note.data.title}
-            >
-              <span class="block min-w-0 truncate font-medium">{note.data.title}</span>
-              <time
-                class="shrink-0 text-sm whitespace-nowrap text-muted"
-                datetime={toDateTimeAttr(note.data.pubDate)}
-              >
-                {formatRelativeListDate(note.data.pubDate)}
-              </time>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </noscript>
 
   <div id="notes-pagination">
     <Pagination

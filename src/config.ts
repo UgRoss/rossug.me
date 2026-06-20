@@ -1,4 +1,4 @@
-import type { ThemeConfig } from './types'
+import type { ThemeConfig } from './types/config.types'
 
 export const themeConfig: ThemeConfig = {
   // GENERAL SETTINGS ////////////////////////////////////////////////////////////////////////////////////

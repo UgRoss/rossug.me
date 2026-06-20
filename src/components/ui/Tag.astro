@@ -15,10 +15,6 @@ const classes = `tag ${interactive ? 'tag-interactive' : ''}`
     <a class={classes} href={href}>
       {label}
     </a>
-  ) : interactive ? (
-    <button class={classes} type="button">
-      {label}
-    </button>
   ) : (
     <span class={classes}>{label}</span>
   )

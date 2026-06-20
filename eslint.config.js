@@ -1,6 +1,7 @@
 import eslint from '@eslint/js'
 import prettier from 'eslint-config-prettier'
 import eslintPluginAstro from 'eslint-plugin-astro'
+import jsxA11y from 'eslint-plugin-jsx-a11y'
 import perfectionist from 'eslint-plugin-perfectionist'
 import reactHooks from 'eslint-plugin-react-hooks'
 import unusedImports from 'eslint-plugin-unused-imports'
@@ -13,6 +14,18 @@ export default [
   ...tseslint.configs.stylistic,
   ...eslintPluginAstro.configs.recommended,
   ...eslintPluginAstro.configs['jsx-a11y-strict'],
+  // React islands: hook correctness + a11y (the astro configs above only cover .astro files)
+  {
+    files: ['**/*.tsx'],
+    plugins: {
+      'jsx-a11y': jsxA11y,
+      'react-hooks': reactHooks
+    },
+    rules: {
+      ...reactHooks.configs.recommended.rules,
+      ...jsxA11y.flatConfigs.strict.rules
+    }
+  },
   {
     files: ['**/*.tsx'],
     plugins: {

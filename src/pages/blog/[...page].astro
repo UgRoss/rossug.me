@@ -1,5 +1,6 @@
 ---
-import type { GetStaticPaths } from 'astro'
+import type { GetStaticPaths, Page } from 'astro'
+import type { CollectionEntry } from 'astro:content'
 
 import Pagination from '@/components/ui/Pagination.astro'
 import PostList from '@/components/ui/PostList.astro'
@@ -12,13 +13,17 @@ export const getStaticPaths = (async ({ paginate }) => {
   return paginate(posts, { pageSize: themeConfig.pagination.blog })
 }) satisfies GetStaticPaths
 
+interface Props {
+  page: Page<CollectionEntry<'posts'>>
+}
+
 const { page } = Astro.props
 ---
 
-<IndexLayout description="Blog posts and articles" title={`Blog - ${themeConfig.site.title}`}>
+<IndexLayout description="Blog posts and articles" title="Blog">
   <h1 class="mb-4 text-xl">Blog</h1>
 
-  <p class="mb-8 text-neutral-600 dark:text-neutral-400">
+  <p class="mb-8 text-secondary">
     Writing about frontend development, JavaScript, and things I learn along the way. Here are some
     of the most recent thoughts and learnings.
   </p>

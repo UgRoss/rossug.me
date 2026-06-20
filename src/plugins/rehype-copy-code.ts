@@ -1,10 +1,18 @@
+import type { Element, Root } from 'hast'
+
 import { visit } from 'unist-util-visit'
+
+import { themeConfig } from '../config'
 
 /**
  * Rehype plugin that adds copy button to code blocks for easy code copying functionality
  */
 export default function rehypeCopyCode() {
-  return (tree) => {
+  return (tree: Root): void => {
+    if (!themeConfig.post.copyCode) {
+      return
+    }
+
     visit(tree, 'element', (node, index, parent) => {
       // Only process pre elements
       if (node.tagName !== 'pre') {
@@ -12,25 +20,27 @@ export default function rehypeCopyCode() {
       }
 
       // Validate pre element has children
-      if (!node.children?.length) {
+      if (!node.children.length) {
         return
       }
 
       // Ensure code element exists
-      const hasCodeElement = node.children.some((child) => child.tagName === 'code')
+      const hasCodeElement = node.children.some(
+        (child) => child.type === 'element' && child.tagName === 'code'
+      )
       if (!hasCodeElement) {
         return
       }
 
       // Mark the pre element with class for styling
-      node.properties = node.properties || {}
-      node.properties.className = node.properties.className || []
-      if (!node.properties.className.includes('copy-code-block')) {
-        node.properties.className.push('copy-code-block')
+      const className = node.properties.className
+      const classes = Array.isArray(className) ? className : []
+      if (!classes.includes('copy-code-block')) {
+        node.properties.className = [...classes, 'copy-code-block']
       }
 
       // Create copy button
-      const copyButton = {
+      const copyButton: Element = {
         children: [],
         properties: {
           'aria-label': 'Copy code to clipboard',
@@ -42,11 +52,9 @@ export default function rehypeCopyCode() {
       }
 
       // Wrap pre and button in a container for better layout control
-      const wrapper = {
+      const wrapper: Element = {
         children: [copyButton, node],
-        properties: {
-          className: ['copy-code-wrapper']
-        },
+        properties: { className: ['copy-code-wrapper'] },
         tagName: 'div',
         type: 'element'
       }

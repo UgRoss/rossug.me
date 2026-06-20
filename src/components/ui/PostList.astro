@@ -4,7 +4,8 @@ import type { CollectionEntry } from 'astro:content'
 import { Image } from 'astro:assets'
 
 import FormattedDate from '@/components/ui/FormattedDate.astro'
-import { createExcerpt } from '@/utils/excerpt'
+import { createExcerpt, truncateAtWord } from '@/utils/excerpt'
+import { blogPath } from '@/utils/paths'
 
 interface Props {
   posts: CollectionEntry<'posts'>[]
@@ -14,15 +15,8 @@ const { posts } = Astro.props
 
 const EXCERPT_LENGTH = 120
 
-const getPostExcerpt = (post: CollectionEntry<'posts'>): string => {
-  const excerpt = post.data.excerpt ?? createExcerpt(post.body ?? '')
-
-  if (excerpt.length <= EXCERPT_LENGTH) {
-    return excerpt
-  }
-
-  return `${excerpt.substring(0, EXCERPT_LENGTH).trimEnd()}...`
-}
+const getPostExcerpt = (post: Props['posts'][number]): string =>
+  truncateAtWord(post.data.excerpt ?? createExcerpt(post.body ?? ''), EXCERPT_LENGTH)
 ---
 
 <ul class="mt-8 space-y-8">
@@ -32,7 +26,7 @@ const getPostExcerpt = (post: CollectionEntry<'posts'>): string => {
         <article>
           <a
             class="group -mx-4 block rounded-xl px-4 py-4 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
-            href={`/blog/${post.id}/`}
+            href={blogPath(post.id)}
           >
             {post.data.image && (
               <div class="mb-5 overflow-hidden rounded-2xl bg-(--code-bg)">
@@ -52,14 +46,12 @@ const getPostExcerpt = (post: CollectionEntry<'posts'>): string => {
                 {post.data.title}
               </h2>
 
-              <p class="shrink-0 pt-1 text-sm text-neutral-400 dark:text-neutral-500">
+              <p class="shrink-0 pt-1 text-sm text-tertiary">
                 <FormattedDate date={post.data.pubDate} />
               </p>
             </div>
 
-            <p class="mt-2 max-w-3xl text-neutral-700 dark:text-neutral-300">
-              {getPostExcerpt(post)}
-            </p>
+            <p class="mt-2 max-w-3xl text-secondary">{getPostExcerpt(post)}</p>
           </a>
         </article>
       </li>

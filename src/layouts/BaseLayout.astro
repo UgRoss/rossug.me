@@ -1,14 +1,14 @@
 ---
 import { ClientRouter } from 'astro:transitions'
 
-import type { LayoutProps } from '@/types'
-
 import Navbar from '@/components/layout/Navbar.astro'
 import TransitionWrapper from '@/components/layout/TransitionWrapper.astro'
 import ThemeManager from '@/components/ui/ThemeManager.astro'
 import { themeConfig } from '@/config'
 
-type Props = LayoutProps
+interface Props {
+  type?: 'page' | 'post'
+}
 
 const { type = 'page' } = Astro.props
 const language = themeConfig.site.language || 'en-US'

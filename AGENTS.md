@@ -28,7 +28,6 @@ Before finalizing changes: run `pnpm lint` and `pnpm format:check`.
 
 - **Package manager**: `pnpm`
 - **Logic**: Prefer Functional Programming patterns
-- **Astro components**: Use `astro-toolkit` but **avoid** the `For` component
 - **Dates**: Use `date-fns` for all date manipulations
 - **React**: Only for islands that need client-side state (currently just `NotesList`); prefer native Astro + vanilla scripts elsewhere
 - **Styling**: Tailwind CSS v4 (via `@tailwindcss/vite` plugin, no config file)
