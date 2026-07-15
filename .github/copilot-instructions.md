@@ -11,7 +11,7 @@
 ## First steps in a fresh cloud-agent session
 
 1. `pnpm install --frozen-lockfile`
-2. Read `AGENTS.md` (mirrors `CLAUDE.md`) for repo conventions.
+2. Read `AGENTS.md` (a copy of `CLAUDE.md`) for repo conventions.
 3. Run baseline validation before edits:
    - `pnpm lint`
    - `pnpm check`
