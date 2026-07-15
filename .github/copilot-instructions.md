@@ -63,9 +63,9 @@ CI (`.github/workflows/validate.yml`) also runs: `pnpm format:check`, `pnpm lint
 
 ## Errors encountered during onboarding and workarounds
 
-During `pnpm build`, Astro emitted warnings that GIF assets cannot be optimized by Sharp:
+During `pnpm build`, Astro may emit warnings that GIF assets cannot be optimized by Sharp (example):
 
-- `Astro could not optimize image "/_astro/console-api-console-dir.D8STU0SY.gif". Sharp doesn't support this format.`
+- `Astro could not optimize image "/_astro/<asset>.gif". Sharp doesn't support this format.`
 
 Workarounds:
 
