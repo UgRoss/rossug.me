@@ -1,0 +1,128 @@
+---
+// ABOUTME: Internal reference page rendering design tokens and shared interaction primitives.
+// ABOUTME: Public but unlinked - visit directly at /styleguide to check for visual drift.
+
+import Tag from '@/components/ui/Tag.astro'
+import IndexLayout from '@/layouts/IndexLayout.astro'
+
+const colorTokens = [
+  { label: 'bg', variable: '--bg' },
+  { label: 'text-primary', variable: '--text-primary' },
+  { label: 'text-secondary', variable: '--text-secondary' },
+  { label: 'text-tertiary', variable: '--text-tertiary' },
+  { label: 'border', variable: '--border' },
+  { label: 'selection', variable: '--selection' },
+  { label: 'code-bg', variable: '--code-bg' },
+  { label: 'mark', variable: '--mark' }
+]
+
+const radiusScale = [
+  { className: 'rounded-md', label: 'rounded-md (0.375rem) — .menu-item' },
+  { className: 'rounded-lg', label: 'rounded-lg (0.5rem) — .link-row' }
+]
+---
+
+<IndexLayout description="Design tokens and shared interaction primitives." title="Styleguide">
+  <main class="mt-12 space-y-12">
+    <header>
+      <h1 class="text-lg">Styleguide</h1>
+      <p class="mt-2 text-secondary">
+        Design tokens and shared interaction primitives, rendered live so drift is visible. Tab
+        through the interactive examples below to check focus states.
+      </p>
+    </header>
+
+    <section>
+      <h2 class="mb-4 text-lg">Color tokens</h2>
+      <ul class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        {
+          colorTokens.map((token) => (
+            <li class="space-y-2">
+              <div
+                class="h-12 w-full rounded-lg border border-(--border)"
+                style={`background-color: var(${token.variable})`}
+              />
+              <p class="text-sm text-secondary">{token.label}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="mb-4 text-lg">Radius scale</h2>
+      <p class="text-secondary">
+        Primitives reuse Tailwind's own built-in radius utilities rather than custom tokens.
+      </p>
+      <ul class="mt-3 flex flex-wrap gap-4">
+        {
+          radiusScale.map((step) => (
+            <li class="space-y-2">
+              <div
+                class:list={['h-16 w-16 border border-(--border) bg-(--code-bg)', step.className]}
+              />
+              <p class="text-sm text-secondary">{step.label}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="mb-4 text-lg">.link-muted</h2>
+      <p class="text-secondary">
+        Text-only hover treatment. Used by <code>Pagination</code>, <code>BackLink</code>, the
+        navbar's primary links, and the notes search clear button.
+      </p>
+      <p class="mt-3">
+        {/* eslint-disable-next-line astro/jsx-a11y/anchor-is-valid */}
+        <a class="link-muted" href="#">Example muted link</a>
+      </p>
+    </section>
+
+    <section>
+      <h2 class="mb-4 text-lg">.menu-item</h2>
+      <p class="text-secondary">
+        Background-swap hover/focus treatment for pill-like menu items. Used by the navbar's "More"
+        dropdown and the theme toggle menu.
+      </p>
+      <p class="mt-3">
+        {/* eslint-disable-next-line astro/jsx-a11y/anchor-is-valid */}
+        <a class="menu-item inline-block px-3 py-1.5" href="#">Example menu item</a>
+      </p>
+    </section>
+
+    <section>
+      <h2 class="mb-4 text-lg">.link-row</h2>
+      <p class="text-secondary">
+        Background-swap hover/focus treatment for full-width list rows. Used by
+        <code>PostList</code>, <code>SimpleContentList</code>, and the notes list.
+      </p>
+      {/* eslint-disable-next-line astro/jsx-a11y/anchor-is-valid */}
+      <a class="link-row -mx-2 block px-2 py-1.5" href="#">Example row link</a>
+    </section>
+
+    <section>
+      <h2 class="mb-4 text-lg">.focus-ring</h2>
+      <p class="text-secondary">
+        Outline-based focus treatment for elements without a natural hover background, such as tag
+        chips and form inputs. Tab to this example to see it.
+      </p>
+      <p class="mt-3">
+        {/* eslint-disable-next-line astro/jsx-a11y/anchor-is-valid */}
+        <a class="focus-ring inline-block rounded-md px-2 py-1" href="#">
+          Example focus-ring target
+        </a>
+      </p>
+    </section>
+
+    <section>
+      <h2 class="mb-4 text-lg">Tags</h2>
+      <div class="flex flex-wrap gap-2">
+        <Tag interactive={false} label="Static" />
+        <Tag href="#" label="Interactive" />
+        <Tag href="#" label="Selected" />
+      </div>
+    </section>
+  </main>
+</IndexLayout>
