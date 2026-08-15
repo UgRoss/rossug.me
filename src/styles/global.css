@@ -3,6 +3,7 @@
 @import './fonts.css';
 @import './prose.css';
 @import './tag.css';
+@import './primitives.css';
 
 @plugin '@tailwindcss/typography';
 

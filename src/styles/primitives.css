@@ -1,0 +1,37 @@
+/* Shared interaction primitives - reused across Astro components and the NotesList React island */
+
+.link-muted {
+  @apply text-secondary transition-colors duration-150;
+}
+
+.link-muted:hover {
+  @apply text-(--text-primary);
+}
+
+.menu-item {
+  @apply rounded-md text-secondary transition-colors duration-150;
+}
+
+.menu-item:hover,
+.menu-item:focus-visible {
+  @apply text-(--text-primary);
+  background-color: var(--selection);
+}
+
+.link-row {
+  @apply rounded-lg no-underline transition-colors duration-150;
+}
+
+.link-row:hover,
+.link-row:focus-visible {
+  background-color: var(--selection);
+}
+
+.focus-ring {
+  outline: none;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid var(--border);
+  outline-offset: 2px;
+}
