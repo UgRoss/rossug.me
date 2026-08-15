@@ -28,7 +28,7 @@ const navLinkClass =
   'link-muted flex items-center gap-1 px-2 py-1.5 text-[length:var(--font-size-m)] font-medium no-underline'
 
 const dropdownItemClass =
-  'block rounded-md px-3 py-1.5 text-[length:var(--font-size-m)] font-medium text-(--text-secondary) no-underline transition-colors duration-150 hover:bg-(--selection) hover:text-(--text-primary)'
+  'menu-item block px-3 py-1.5 text-[length:var(--font-size-m)] font-medium no-underline'
 
 const isActive = (href: string): boolean => {
   if (href === '/') return currentPath === '/'
