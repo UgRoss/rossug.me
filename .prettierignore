@@ -41,3 +41,4 @@ coverage/
 
 # Superpowers specs/plans (untracked, see .gitignore)
 docs/superpowers/
+.superpowers/
