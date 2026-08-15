@@ -121,7 +121,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
           {searchQuery !== '' && (
             <button
               aria-label="Clear search"
-              className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-sm text-secondary transition-colors hover:text-(--text-primary)"
+              className="link-muted absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-sm"
               onClick={() => setSearchQuery('')}
               type="button"
             >
