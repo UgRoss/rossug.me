@@ -169,7 +169,7 @@ function NoteItem({ note }: { note: NoteMetadata }) {
   return (
     <li className="group list-none">
       <a
-        className="-mx-2 flex items-center justify-between gap-6 rounded-sm px-2 py-1.5 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
+        className="link-row -mx-2 flex items-center justify-between gap-6 px-2 py-1.5"
         href={notePath(note.id)}
         title={note.title}
       >

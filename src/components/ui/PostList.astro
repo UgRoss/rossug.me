@@ -24,10 +24,7 @@ const getPostExcerpt = (post: Props['posts'][number]): string =>
     posts.map((post) => (
       <li class="list-none">
         <article>
-          <a
-            class="group -mx-4 block rounded-xl px-4 py-4 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
-            href={blogPath(post.id)}
-          >
+          <a class="link-row group -mx-4 block px-4 py-4" href={blogPath(post.id)}>
             {post.data.image && (
               <div class="mb-5 overflow-hidden rounded-2xl bg-(--code-bg)">
                 <Image
