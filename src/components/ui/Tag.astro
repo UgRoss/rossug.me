@@ -7,7 +7,7 @@ interface Props {
 
 const { href, interactive = true, label } = Astro.props
 
-const classes = `tag ${interactive ? 'tag-interactive' : ''}`
+const classes = `tag ${interactive ? 'tag-interactive focus-ring' : ''}`
 ---
 
 {

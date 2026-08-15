@@ -112,7 +112,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
         <div className="relative">
           <input
             aria-label="Search notes"
-            className="h-10 w-full rounded-lg border border-(--border) bg-(--code-bg) pr-9 pl-3 text-(--text-primary) outline-none placeholder:text-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--border) focus-visible:outline-solid"
+            className="focus-ring h-10 w-full rounded-lg border border-(--border) bg-(--code-bg) pr-9 pl-3 text-(--text-primary) placeholder:text-secondary"
             onChange={(e) => handleSearchChange(e.target.value)}
             placeholder="Search notes…"
             type="text"
@@ -133,7 +133,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
         <div className="flex flex-wrap items-center gap-2">
           <button
             aria-pressed={selectedCategory === null}
-            className={`tag tag-interactive ${selectedCategory === null ? 'tag-selected' : ''}`}
+            className={`tag tag-interactive focus-ring ${selectedCategory === null ? 'tag-selected' : ''}`}
             onClick={() => setSelectedCategory(null)}
             type="button"
           >
@@ -142,7 +142,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
           {categories.map((cat) => (
             <button
               aria-pressed={selectedCategory === cat}
-              className={`tag tag-interactive ${selectedCategory === cat ? 'tag-selected' : ''}`}
+              className={`tag tag-interactive focus-ring ${selectedCategory === cat ? 'tag-selected' : ''}`}
               key={cat}
               onClick={() => handleCategoryToggle(cat)}
               type="button"

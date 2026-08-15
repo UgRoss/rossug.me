@@ -10,7 +10,6 @@
 
 .tag-interactive {
   @apply cursor-pointer;
-  @apply focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:outline-none dark:focus-visible:ring-neutral-500;
 }
 
 .tag-interactive:hover {
