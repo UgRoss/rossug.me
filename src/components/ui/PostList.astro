@@ -26,7 +26,7 @@ const getPostExcerpt = (post: Props['posts'][number]): string =>
         <article>
           <a class="link-row group -mx-4 block px-4 py-4" href={blogPath(post.id)}>
             {post.data.image && (
-              <div class="mb-5 overflow-hidden rounded-2xl bg-(--code-bg)">
+              <div class="mb-5 overflow-hidden rounded-2xl border border-(--border) bg-(--code-bg)">
                 <Image
                   alt={post.data.title}
                   class="h-auto w-full object-cover transition-transform duration-300 group-hover:scale-[1.01]"
