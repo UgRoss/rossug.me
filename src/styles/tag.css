@@ -2,7 +2,7 @@
 
 .tag {
   @apply relative z-10 inline-flex items-center rounded-lg px-3 py-1.5;
-  @apply text-[length:var(--font-size-m)] font-normal;
+  @apply font-normal;
   @apply no-underline transition-colors;
   border: 1px solid var(--border);
   color: var(--text-primary);
@@ -10,7 +10,6 @@
 
 .tag-interactive {
   @apply cursor-pointer;
-  @apply focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:outline-none dark:focus-visible:ring-neutral-500;
 }
 
 .tag-interactive:hover {

@@ -14,10 +14,7 @@ const THEME_OPTIONS: { label: string; value: ThemeMode }[] = [
 ---
 
 <Dropdown align="right" triggerAriaLabel="Theme settings">
-  <span
-    class="flex size-8 cursor-pointer items-center justify-center rounded-md text-secondary transition-colors duration-150 hover:bg-(--selection) hover:text-(--text-primary)"
-    slot="trigger"
-  >
+  <span class="menu-item flex size-8 cursor-pointer items-center justify-center" slot="trigger">
     <svg
       aria-hidden="true"
       class="size-4.5 dark:hidden"
@@ -50,7 +47,7 @@ const THEME_OPTIONS: { label: string; value: ThemeMode }[] = [
     THEME_OPTIONS.map(({ label, value }) => (
       <button
         aria-pressed="false"
-        class="theme-option flex w-full cursor-pointer items-center gap-2 rounded-md border-none bg-transparent px-3 py-1.5 text-left text-[length:var(--font-size-m)] font-medium text-secondary transition-colors duration-150 hover:bg-(--selection) hover:text-(--text-primary)"
+        class="theme-option menu-item flex w-full cursor-pointer items-center gap-2 border-none bg-transparent px-3 py-1.5 text-left font-medium"
         data-theme-option={value}
         type="button"
       >

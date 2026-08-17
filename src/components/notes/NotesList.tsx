@@ -112,7 +112,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
         <div className="relative">
           <input
             aria-label="Search notes"
-            className="h-10 w-full rounded-lg border border-(--border) bg-(--code-bg) pr-9 pl-3 text-(--text-primary) outline-none placeholder:text-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--border) focus-visible:outline-solid"
+            className="focus-ring h-10 w-full rounded-lg border border-(--border) bg-(--code-bg) pr-9 pl-3 text-(--text-primary) placeholder:text-secondary"
             onChange={(e) => handleSearchChange(e.target.value)}
             placeholder="Search notes…"
             type="text"
@@ -121,7 +121,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
           {searchQuery !== '' && (
             <button
               aria-label="Clear search"
-              className="absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-sm text-secondary transition-colors hover:text-(--text-primary)"
+              className="link-muted absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-sm"
               onClick={() => setSearchQuery('')}
               type="button"
             >
@@ -133,7 +133,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
         <div className="flex flex-wrap items-center gap-2">
           <button
             aria-pressed={selectedCategory === null}
-            className={`tag tag-interactive ${selectedCategory === null ? 'tag-selected' : ''}`}
+            className={`tag tag-interactive focus-ring ${selectedCategory === null ? 'tag-selected' : ''}`}
             onClick={() => setSelectedCategory(null)}
             type="button"
           >
@@ -142,7 +142,7 @@ export default function NotesList({ categories, notes: initialNotes }: NotesList
           {categories.map((cat) => (
             <button
               aria-pressed={selectedCategory === cat}
-              className={`tag tag-interactive ${selectedCategory === cat ? 'tag-selected' : ''}`}
+              className={`tag tag-interactive focus-ring ${selectedCategory === cat ? 'tag-selected' : ''}`}
               key={cat}
               onClick={() => handleCategoryToggle(cat)}
               type="button"
@@ -169,7 +169,7 @@ function NoteItem({ note }: { note: NoteMetadata }) {
   return (
     <li className="group list-none">
       <a
-        className="-mx-2 flex items-center justify-between gap-6 rounded-sm px-2 py-1.5 no-underline transition-colors hover:bg-(--selection) focus-visible:bg-(--selection)"
+        className="link-row -mx-2 flex items-center justify-between gap-6 px-2 py-1.5"
         href={notePath(note.id)}
         title={note.title}
       >

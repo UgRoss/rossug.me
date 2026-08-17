@@ -3,11 +3,12 @@ interface Props {
   href?: string
   interactive?: boolean
   label: string
+  selected?: boolean
 }
 
-const { href, interactive = true, label } = Astro.props
+const { href, interactive = true, label, selected = false } = Astro.props
 
-const classes = `tag ${interactive ? 'tag-interactive' : ''}`
+const classes = `tag ${interactive ? 'tag-interactive focus-ring' : ''} ${selected ? 'tag-selected' : ''}`
 ---
 
 {
