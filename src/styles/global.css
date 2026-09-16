@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
 
 @theme {
 	--font-sans:
@@ -132,5 +133,35 @@
 	.rich-text a:hover::after,
 	.rich-text a:focus-visible::after {
 		transform: scaleX(1);
+	}
+
+	.astro-code,
+	.astro-code span {
+		color: var(--shiki-light) !important;
+		background-color: var(--shiki-light-bg) !important;
+	}
+
+	[data-theme='dark'] .astro-code,
+	[data-theme='dark'] .astro-code span {
+		color: var(--shiki-dark) !important;
+		background-color: var(--shiki-dark-bg) !important;
+	}
+
+	.prose {
+		--tw-prose-body: var(--color-ink);
+		--tw-prose-headings: var(--color-ink-strong);
+		--tw-prose-bold: var(--color-ink-strong);
+		--tw-prose-links: var(--color-ink-strong);
+		--tw-prose-counters: var(--color-ink-muted);
+		--tw-prose-bullets: var(--color-line);
+		--tw-prose-hr: var(--color-line);
+		--tw-prose-quotes: var(--color-ink-muted);
+		--tw-prose-quote-borders: var(--color-line);
+		--tw-prose-captions: var(--color-ink-muted);
+		--tw-prose-code: var(--color-ink-strong);
+		--tw-prose-pre-code: inherit;
+		--tw-prose-pre-bg: transparent;
+		--tw-prose-th-borders: var(--color-line);
+		--tw-prose-td-borders: var(--color-line-faint);
 	}
 }
