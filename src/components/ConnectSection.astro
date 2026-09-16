@@ -12,7 +12,11 @@ const { heading, paragraphs, email } = Astro.props;
 ---
 
 <Divider />
-<section class="connect-section rich-text" aria-labelledby="connect-title">
+<section
+	class="connect-section rich-text appear"
+	style="--appear-delay: 215ms"
+	aria-labelledby="connect-title"
+>
 	<h2 id="connect-title">{heading}</h2>
 	<div class="connect-copy">
 		{paragraphs.map((text) => (

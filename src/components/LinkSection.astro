@@ -12,7 +12,11 @@ const headingId = `${title.toLowerCase().replace(/\s+/g, '-')}-title`;
 ---
 
 <Divider />
-<section class="link-section rich-text" aria-labelledby={headingId}>
+<section
+	class="link-section rich-text appear"
+	style="--appear-delay: 180ms"
+	aria-labelledby={headingId}
+>
 	<h2 id={headingId}>{title}</h2>
 	<div class="link-row">
 		{items.map((item) => {

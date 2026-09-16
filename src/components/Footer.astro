@@ -8,7 +8,11 @@ interface Props {
 const { locale, timeZone, mark } = Astro.props;
 ---
 
-<footer class="site-footer" data-timezone={timeZone}>
+<footer
+	class="site-footer appear"
+	style="--appear-delay: 250ms"
+	data-timezone={timeZone}
+>
 	<div class="footer-row">
 		<span class="footer-meta">
 			<span class="footer-locale">{locale}</span>
