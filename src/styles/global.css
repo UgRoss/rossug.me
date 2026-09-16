@@ -40,6 +40,35 @@
 	}
 }
 
+/* Unlayered on purpose: @tailwindcss/typography defines its own .prose
+   custom properties and link styling inside Tailwind's utilities layer,
+   which wins over anything in @layer components regardless of selector
+   specificity — layer order beats specificity for equal-specificity
+   normal declarations. Unlayered rules beat every layered rule, so this
+   is the only reliable way to re-theme .prose to the site's own tokens. */
+.prose {
+	--tw-prose-body: var(--color-ink);
+	--tw-prose-headings: var(--color-ink-strong);
+	--tw-prose-bold: var(--color-ink-strong);
+	--tw-prose-links: var(--color-ink-strong);
+	--tw-prose-counters: var(--color-ink-muted);
+	--tw-prose-bullets: var(--color-line);
+	--tw-prose-hr: var(--color-line);
+	--tw-prose-quotes: var(--color-ink-muted);
+	--tw-prose-quote-borders: var(--color-line);
+	--tw-prose-captions: var(--color-ink-muted);
+	--tw-prose-code: var(--color-ink-strong);
+	--tw-prose-pre-code: inherit;
+	--tw-prose-pre-bg: transparent;
+	--tw-prose-th-borders: var(--color-line);
+	--tw-prose-td-borders: var(--color-line-faint);
+}
+
+.prose.rich-text a {
+	text-decoration: none;
+	font-weight: inherit;
+}
+
 @layer base {
 	html,
 	body {
@@ -145,23 +174,5 @@
 	[data-theme='dark'] .astro-code span {
 		color: var(--shiki-dark) !important;
 		background-color: var(--shiki-dark-bg) !important;
-	}
-
-	.prose {
-		--tw-prose-body: var(--color-ink);
-		--tw-prose-headings: var(--color-ink-strong);
-		--tw-prose-bold: var(--color-ink-strong);
-		--tw-prose-links: var(--color-ink-strong);
-		--tw-prose-counters: var(--color-ink-muted);
-		--tw-prose-bullets: var(--color-line);
-		--tw-prose-hr: var(--color-line);
-		--tw-prose-quotes: var(--color-ink-muted);
-		--tw-prose-quote-borders: var(--color-line);
-		--tw-prose-captions: var(--color-ink-muted);
-		--tw-prose-code: var(--color-ink-strong);
-		--tw-prose-pre-code: inherit;
-		--tw-prose-pre-bg: transparent;
-		--tw-prose-th-borders: var(--color-line);
-		--tw-prose-td-borders: var(--color-line-faint);
 	}
 }

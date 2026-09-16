@@ -1,5 +1,6 @@
 ---
 import Layout from './Layout.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import { readingTime } from '../utils/reading-time';
 
@@ -28,10 +29,14 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
 
 <Layout title={title} description={description}>
 	<main class="post-page">
-		<div class="post-grid">
-			<aside class="post-toc">
-				<TableOfContents headings={headings} />
-			</aside>
+		<ThemeToggle />
+		<aside class="post-toc">
+			<TableOfContents headings={headings} />
+		</aside>
+		<div class="post-container">
+			<div class="back-link rich-text">
+				<a href="/">← Back to home</a>
+			</div>
 			<article class="post-content">
 				<h1>{title}</h1>
 				<p class="post-byline">
@@ -51,30 +56,33 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
 		padding: 64px 0 80px;
 	}
 
-	.post-grid {
-		display: grid;
-		grid-template-columns: minmax(0, 560px);
-		column-gap: 48px;
+	.post-container {
 		width: calc(100% - 40px);
 		max-width: 560px;
 		margin: 0 auto;
+	}
+
+	.back-link {
+		margin-bottom: 24px;
+		font-size: 13px;
+		line-height: 20px;
+	}
+
+	.back-link a {
+		color: var(--color-ink-muted);
 	}
 
 	.post-toc {
 		display: none;
 	}
 
-	@media (min-width: 1024px) {
-		.post-grid {
-			grid-template-columns: 220px minmax(0, 560px);
-			max-width: 828px;
-		}
-
+	@media (min-width: 1280px) {
 		.post-toc {
 			display: block;
-			position: sticky;
-			top: 64px;
-			align-self: start;
+			position: fixed;
+			top: 96px;
+			left: max(20px, calc(50% - 280px - 32px - 220px));
+			width: 220px;
 		}
 	}
 
