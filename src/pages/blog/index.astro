@@ -9,25 +9,27 @@ const posts = await getSortedPosts();
 ---
 
 <Layout title="Blog" description="All posts.">
-	<main class="mx-auto flex max-w-140 flex-col items-start gap-6.5 px-5 pt-16 pb-20">
-		<ThemeToggle />
-		<BackLink />
-		<h1 class="text-xl m-0 font-semibold text-ink-strong">Blog</h1>
-		<div class="rich-text flex w-full flex-col items-start gap-5">
-			{posts.map((post) => (
-				<>
-					<Divider />
-					<article class="flex w-full flex-col gap-1.5">
-						<h2 class="text-base m-0 font-semibold">
-							<a href={`/blog/${post.id}/`}>{post.data.title}</a>
-						</h2>
-						<p class="text-meta m-0 text-ink-muted">
-							{postDateFormatter.format(post.data.date)}
-						</p>
-						<p class="text-body m-0 text-ink">{post.data.description}</p>
-					</article>
-				</>
-			))}
+	<main class="w-full px-5 pt-16 pb-20">
+		<div class="mx-auto flex max-w-140 flex-col items-start gap-6.5">
+			<ThemeToggle />
+			<BackLink />
+			<h1 class="text-xl m-0 font-semibold text-ink-strong">Blog</h1>
+			<div class="rich-text flex w-full flex-col items-start gap-5">
+				{posts.map((post) => (
+					<>
+						<Divider />
+						<article class="flex w-full flex-col gap-1.5">
+							<h2 class="text-base m-0 font-semibold">
+								<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+							</h2>
+							<p class="text-meta m-0 text-ink-muted">
+								{postDateFormatter.format(post.data.date)}
+							</p>
+							<p class="text-body m-0 text-ink">{post.data.description}</p>
+						</article>
+					</>
+				))}
+			</div>
 		</div>
 	</main>
 </Layout>
