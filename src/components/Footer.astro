@@ -1,0 +1,78 @@
+---
+interface Props {
+	locale: string;
+	timeZone: string;
+	mark: string;
+}
+
+const { locale, timeZone, mark } = Astro.props;
+---
+
+<footer class="site-footer" data-timezone={timeZone}>
+	<div class="footer-row">
+		<span class="footer-meta">
+			<span class="footer-locale">{locale}</span>
+			<span class="footer-time" id="footer-time"></span>
+		</span>
+		<span class="footer-mark" aria-hidden="true">
+			{mark}
+		</span>
+	</div>
+</footer>
+
+<script>
+	function updateClock() {
+		const el = document.getElementById('footer-time');
+		if (!el) return;
+
+		const timeZone =
+			el.closest<HTMLElement>('[data-timezone]')?.dataset.timezone;
+		const formatter = new Intl.DateTimeFormat('en-GB', {
+			hour: '2-digit',
+			minute: '2-digit',
+			timeZone,
+		});
+
+		el.textContent = formatter.format(new Date());
+	}
+
+	updateClock();
+	setInterval(updateClock, 1000 * 30);
+</script>
+
+<style>
+	.site-footer {
+		width: calc(100% - 40px);
+		max-width: 560px;
+		margin: 0 auto;
+		padding: 24px 0 48px;
+		color: var(--color-ink-muted);
+		font-size: 13px;
+		line-height: 20px;
+	}
+
+	.footer-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+	}
+
+	.footer-meta {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 10px;
+		letter-spacing: 0.02em;
+		white-space: nowrap;
+	}
+
+	.footer-time {
+		font-variant-numeric: tabular-nums;
+	}
+
+	.footer-mark {
+		color: var(--color-ink-strong);
+		font-size: 16px;
+	}
+</style>

@@ -6,7 +6,15 @@ import Greeting from '../components/Greeting.astro';
 import Bio from '../components/Bio.astro';
 import LinkSection from '../components/LinkSection.astro';
 import ConnectSection from '../components/ConnectSection.astro';
-import { avatar, bio, linkSections, connect, siteMeta } from '../data/site';
+import Footer from '../components/Footer.astro';
+import {
+	avatar,
+	bio,
+	linkSections,
+	connect,
+	footer,
+	siteMeta,
+} from '../data/site';
 ---
 
 <Layout title={siteMeta.title} description={siteMeta.description}>
@@ -33,6 +41,11 @@ import { avatar, bio, linkSections, connect, siteMeta } from '../data/site';
 				</div>
 			</div>
 		</section>
+		<Footer
+			locale={footer.locale}
+			timeZone={footer.timeZone}
+			mark={footer.mark}
+		/>
 	</main>
 </Layout>
 
