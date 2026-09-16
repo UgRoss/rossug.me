@@ -1,0 +1,25 @@
+---
+import { greetings } from '../data/site';
+---
+
+<div
+	class="greetings appear"
+	style="--appear-delay: 40ms"
+	aria-label="Greetings"
+>
+	{greetings.map((g) => (
+		<span lang={g.lang}>{g.text}</span>
+	))}
+</div>
+
+<style>
+	.greetings {
+		display: flex;
+		align-items: flex-end;
+		gap: 6px;
+		flex-wrap: wrap;
+		color: var(--color-ink-muted);
+		font-size: 14px;
+		line-height: 22px;
+	}
+</style>

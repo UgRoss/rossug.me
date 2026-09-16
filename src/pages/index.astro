@@ -1,8 +1,63 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
+import Avatar from '../components/Avatar.astro';
+import Greeting from '../components/Greeting.astro';
+import Bio from '../components/Bio.astro';
+import { avatar, bio, siteMeta } from '../data/site';
 ---
 
-<Layout title="Astro" description="Personal site, work in progress.">
-	<ThemeToggle />
+<Layout title={siteMeta.title} description={siteMeta.description}>
+	<main class="site">
+		<ThemeToggle />
+		<section class="intro">
+			<div class="content">
+				<Avatar initials={avatar.initials} />
+				<div class="stack">
+					<div class="body-copy">
+						<Greeting />
+						<Bio paragraphs={bio} />
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
 </Layout>
+
+<style>
+	.site {
+		width: 100%;
+		min-width: 320px;
+	}
+
+	.intro {
+		width: 100%;
+		padding: 64px 0 48px;
+	}
+
+	.content {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 26px;
+		width: calc(100% - 40px);
+		max-width: 560px;
+		margin: 0 auto;
+	}
+
+	.stack {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 18px;
+		width: 100%;
+	}
+
+	.body-copy {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 12px;
+		width: 100%;
+	}
+</style>
