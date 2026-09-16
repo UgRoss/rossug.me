@@ -7,6 +7,8 @@ import Bio from '../components/Bio.astro';
 import LinkSection from '../components/LinkSection.astro';
 import ConnectSection from '../components/ConnectSection.astro';
 import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
+import { readingTime } from '../utils/reading-time';
 import {
 	avatar,
 	bio,
@@ -15,6 +17,16 @@ import {
 	footer,
 	siteMeta,
 } from '../data/site';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+const blogItems = posts.map((post) => ({
+	name: post.data.title,
+	href: `/blog/${post.id}/`,
+	date: readingTime(post.body ?? ''),
+}));
 ---
 
 <Layout title={siteMeta.title} description={siteMeta.description}>
@@ -33,6 +45,7 @@ import {
 						{linkSections.map((section) => (
 							<LinkSection title={section.title} items={section.items} />
 						))}
+						<LinkSection title="Blog" items={blogItems} />
 						<ConnectSection
 							heading={connect.heading}
 							paragraphs={connect.paragraphs}
