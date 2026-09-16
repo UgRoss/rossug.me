@@ -4,7 +4,8 @@ import ThemeToggle from '../components/ThemeToggle.astro';
 import Avatar from '../components/Avatar.astro';
 import Greeting from '../components/Greeting.astro';
 import Bio from '../components/Bio.astro';
-import { avatar, bio, siteMeta } from '../data/site';
+import LinkSection from '../components/LinkSection.astro';
+import { avatar, bio, linkSections, siteMeta } from '../data/site';
 ---
 
 <Layout title={siteMeta.title} description={siteMeta.description}>
@@ -17,6 +18,11 @@ import { avatar, bio, siteMeta } from '../data/site';
 					<div class="body-copy">
 						<Greeting />
 						<Bio paragraphs={bio} />
+					</div>
+					<div class="link-groups">
+						{linkSections.map((section) => (
+							<LinkSection title={section.title} items={section.items} />
+						))}
 					</div>
 				</div>
 			</div>
@@ -58,6 +64,14 @@ import { avatar, bio, siteMeta } from '../data/site';
 		flex-direction: column;
 		align-items: flex-start;
 		gap: 12px;
+		width: 100%;
+	}
+
+	.link-groups {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 4px;
 		width: 100%;
 	}
 </style>
