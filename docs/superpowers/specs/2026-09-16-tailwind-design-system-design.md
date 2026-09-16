@@ -117,14 +117,20 @@ script, global stylesheet import, `<slot />`.
 `src/components/`:
 - `ThemeToggle.astro` — button flipping `data-theme` + persisting to
   `localStorage`.
-- `Avatar.astro` — 40×40 circular image, fade-in wrapper.
+- `Avatar.astro` — 40×40 circular image, fade-in wrapper. Falls back to
+  rendering initials in a plain circle when no image `src` is given, so
+  the homepage renders sensibly with only placeholder content (added
+  during implementation, not originally specified, but harmless and
+  needed since this project ships with no avatar image).
 - `Greeting.astro` — stacked "hello, / hola, / привіт" line.
 - `Bio.astro` — paragraph list; accepts bio copy as a prop; links use the
   shared arrow+underline hover style.
 - `LinkSection.astro` — generic: props `title: string`, `items: {name:
-  string, href: string, date: string}[]`. Renders a divider, heading, and
-  a grid of name/date rows. Reused for whatever categories Ross defines
-  later.
+  string, href: string, meta: string}[]`. Renders a divider, heading, and
+  a grid of name/meta rows. Reused for whatever categories Ross defines
+  later. (The third field was originally named `date`, renamed to `meta`
+  after implementation review found it also held reading-time strings
+  for blog links — see the blog spec's Homepage integration section.)
 - `Divider.astro` — hairline rule between sections.
 - `ConnectSection.astro` — heading + paragraph(s) with an inline
   `CopyButton.astro`.

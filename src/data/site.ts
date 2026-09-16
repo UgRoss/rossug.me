@@ -10,7 +10,8 @@ export interface BioParagraph {
 export interface LinkItem {
 	name: string;
 	href: string;
-	date: string;
+	/** Short label shown to the right of the link — a year, a date, "N min read", etc. */
+	meta: string;
 }
 
 export interface LinkSectionData {
@@ -44,7 +45,7 @@ export const linkSections: LinkSectionData[] = [
 	{
 		title: 'Links',
 		items: [
-			{ name: 'Example link — edit src/data/site.ts', href: '#', date: '2026' },
+			{ name: 'Example link — edit src/data/site.ts', href: '#', meta: '2026' },
 		],
 	},
 ];

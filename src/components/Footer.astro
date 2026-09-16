@@ -8,11 +8,7 @@ interface Props {
 const { locale, timeZone, mark } = Astro.props;
 ---
 
-<footer
-	class="site-footer appear"
-	style="--appear-delay: 250ms"
-	data-timezone={timeZone}
->
+<footer class="site-footer appear" style="--appear-delay: 250ms">
 	<div class="footer-row">
 		<span class="footer-meta">
 			<span class="footer-locale">{locale}</span>
@@ -24,13 +20,11 @@ const { locale, timeZone, mark } = Astro.props;
 	</div>
 </footer>
 
-<script>
+<script is:inline define:vars={{ timeZone }}>
 	function updateClock() {
 		const el = document.getElementById('footer-time');
 		if (!el) return;
 
-		const timeZone =
-			el.closest<HTMLElement>('[data-timezone]')?.dataset.timezone;
 		const formatter = new Intl.DateTimeFormat('en-GB', {
 			hour: '2-digit',
 			minute: '2-digit',

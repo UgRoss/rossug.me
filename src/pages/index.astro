@@ -7,7 +7,7 @@ import Bio from '../components/Bio.astro';
 import LinkSection from '../components/LinkSection.astro';
 import ConnectSection from '../components/ConnectSection.astro';
 import Footer from '../components/Footer.astro';
-import { getCollection } from 'astro:content';
+import { getSortedPosts } from '../utils/posts';
 import { readingTime } from '../utils/reading-time';
 import {
 	avatar,
@@ -18,14 +18,12 @@ import {
 	siteMeta,
 } from '../data/site';
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
+const posts = await getSortedPosts();
 
 const blogItems = posts.map((post) => ({
 	name: post.data.title,
 	href: `/blog/${post.id}/`,
-	date: readingTime(post.body ?? ''),
+	meta: readingTime(post.body ?? ''),
 }));
 ---
 

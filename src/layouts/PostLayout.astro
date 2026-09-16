@@ -2,13 +2,9 @@
 import Layout from './Layout.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import TableOfContents from '../components/TableOfContents.astro';
+import BackLink from '../components/BackLink.astro';
 import { readingTime } from '../utils/reading-time';
-
-interface Heading {
-	depth: number;
-	slug: string;
-	text: string;
-}
+import { postDateFormatter, type Heading } from '../utils/posts';
 
 interface Props {
 	title: string;
@@ -19,12 +15,6 @@ interface Props {
 }
 
 const { title, description, date, body, headings } = Astro.props;
-
-const dateFormatter = new Intl.DateTimeFormat('en-US', {
-	month: 'long',
-	day: 'numeric',
-	year: 'numeric',
-});
 ---
 
 <Layout title={title} description={description}>
@@ -34,13 +24,11 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
 			<TableOfContents headings={headings} />
 		</aside>
 		<div class="post-container">
-			<div class="back-link rich-text">
-				<a href="/">← Back to home</a>
-			</div>
+			<BackLink />
 			<article class="post-content">
 				<h1>{title}</h1>
 				<p class="post-byline">
-					{dateFormatter.format(date)} · {readingTime(body)}
+					{postDateFormatter.format(date)} · {readingTime(body)}
 				</p>
 				<div class="prose prose-sm rich-text">
 					<slot />
@@ -62,14 +50,8 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
 		margin: 0 auto;
 	}
 
-	.back-link {
+	.post-container :global(.back-link) {
 		margin-bottom: 24px;
-		font-size: 13px;
-		line-height: 20px;
-	}
-
-	.back-link a {
-		color: var(--color-ink-muted);
 	}
 
 	.post-toc {
