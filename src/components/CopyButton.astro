@@ -1,0 +1,69 @@
+---
+interface Props {
+	value: string;
+	label: string;
+}
+
+const { value, label } = Astro.props;
+---
+
+<button
+	type="button"
+	class="copy-button"
+	data-copy-value={value}
+	aria-label={label}
+>
+	<svg
+		viewBox="0 0 24 24"
+		width="14"
+		height="14"
+		fill="none"
+		stroke="currentColor"
+		stroke-width="2"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		aria-hidden="true"
+	>
+		<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+		<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+	</svg>
+</button>
+
+<script>
+	document
+		.querySelectorAll<HTMLButtonElement>('.copy-button')
+		.forEach((button) => {
+			const value = button.dataset.copyValue;
+			if (!value) return;
+
+			if (!navigator.clipboard) {
+				button.hidden = true;
+				return;
+			}
+
+			button.addEventListener('click', async () => {
+				await navigator.clipboard.writeText(value);
+			});
+		});
+</script>
+
+<style>
+	.copy-button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		margin-left: 4px;
+		padding: 0;
+		border: none;
+		background: none;
+		color: var(--color-ink-muted);
+		cursor: pointer;
+		vertical-align: -2px;
+		transition: color 0.16s;
+	}
+
+	.copy-button:hover,
+	.copy-button:focus-visible {
+		color: var(--color-ink-strong);
+	}
+</style>

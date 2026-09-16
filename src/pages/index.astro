@@ -5,7 +5,8 @@ import Avatar from '../components/Avatar.astro';
 import Greeting from '../components/Greeting.astro';
 import Bio from '../components/Bio.astro';
 import LinkSection from '../components/LinkSection.astro';
-import { avatar, bio, linkSections, siteMeta } from '../data/site';
+import ConnectSection from '../components/ConnectSection.astro';
+import { avatar, bio, linkSections, connect, siteMeta } from '../data/site';
 ---
 
 <Layout title={siteMeta.title} description={siteMeta.description}>
@@ -23,6 +24,11 @@ import { avatar, bio, linkSections, siteMeta } from '../data/site';
 						{linkSections.map((section) => (
 							<LinkSection title={section.title} items={section.items} />
 						))}
+						<ConnectSection
+							heading={connect.heading}
+							paragraphs={connect.paragraphs}
+							email={connect.email}
+						/>
 					</div>
 				</div>
 			</div>
