@@ -1,0 +1,45 @@
+---
+import '../styles/global.css';
+import '@fontsource-variable/inter';
+
+interface Props {
+	title: string;
+	description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<script is:inline>
+			(function () {
+				try {
+					const stored = localStorage.getItem('theme');
+					const prefersDark = window.matchMedia(
+						'(prefers-color-scheme: dark)',
+					).matches;
+					const theme =
+						stored === 'light' || stored === 'dark'
+							? stored
+							: prefersDark
+								? 'dark'
+								: 'light';
+					document.documentElement.dataset.theme = theme;
+				} catch {
+					// localStorage may be unavailable (e.g. disabled or private browsing); ignore and leave the default theme.
+				}
+			})();
+		</script>
+	</head>
+	<body class="bg-page text-ink">
+		<slot />
+	</body>
+</html>
