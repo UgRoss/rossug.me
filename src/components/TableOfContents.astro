@@ -12,48 +12,14 @@ const items = headings.filter(
 ---
 
 {items.length > 0 && (
-	<nav class="toc rich-text" aria-label="Table of contents">
-		<p class="toc-title">On this page</p>
-		<ul>
+	<nav class="rich-text flex flex-col gap-2" aria-label="Table of contents">
+		<p class="text-meta m-0 font-semibold text-ink-muted">On this page</p>
+		<ul class="m-0 flex list-none flex-col gap-1.5 p-0">
 			{items.map((item) => (
-				<li class:list={{ 'toc-sub': item.depth === 3 }}>
+				<li class="text-small" class:list={{ 'pl-3': item.depth === 3 }}>
 					<a href={`#${item.slug}`}>{item.text}</a>
 				</li>
 			))}
 		</ul>
 	</nav>
 )}
-
-<style>
-	.toc {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-	}
-
-	.toc-title {
-		margin: 0;
-		font-size: 12.5px;
-		font-weight: 600;
-		line-height: 18px;
-		color: var(--color-ink-muted);
-	}
-
-	.toc ul {
-		display: flex;
-		flex-direction: column;
-		gap: 6px;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-
-	.toc li {
-		font-size: 13px;
-		line-height: 20px;
-	}
-
-	.toc-sub {
-		padding-left: 12px;
-	}
-</style>

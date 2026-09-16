@@ -28,18 +28,18 @@ const blogItems = posts.map((post) => ({
 ---
 
 <Layout title={siteMeta.title} description={siteMeta.description}>
-	<main class="site">
+	<main class="w-full min-w-80">
 		<ThemeToggle />
-		<section class="intro">
-			<div class="content">
+		<section class="w-full pt-16 pb-12">
+			<div class="mx-auto flex max-w-140 flex-col items-start gap-6.5 px-5">
 				<h1 class="sr-only">{siteMeta.title}</h1>
 				<Avatar initials={avatar.initials} />
-				<div class="stack">
-					<div class="body-copy">
+				<div class="flex w-full flex-col items-start gap-4.5">
+					<div class="flex w-full flex-col items-start gap-3">
 						<Greeting />
 						<Bio paragraphs={bio} />
 					</div>
-					<div class="link-groups">
+					<div class="flex w-full flex-col items-start gap-1">
 						{linkSections.map((section) => (
 							<LinkSection title={section.title} items={section.items} />
 						))}
@@ -60,49 +60,3 @@ const blogItems = posts.map((post) => ({
 		/>
 	</main>
 </Layout>
-
-<style>
-	.site {
-		width: 100%;
-		min-width: 320px;
-	}
-
-	.intro {
-		width: 100%;
-		padding: 64px 0 48px;
-	}
-
-	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 26px;
-		width: calc(100% - 40px);
-		max-width: 560px;
-		margin: 0 auto;
-	}
-
-	.stack {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 18px;
-		width: 100%;
-	}
-
-	.body-copy {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 12px;
-		width: 100%;
-	}
-
-	.link-groups {
-		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 4px;
-		width: 100%;
-	}
-</style>

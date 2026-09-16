@@ -7,40 +7,23 @@ interface Props {
 const { initials, src } = Astro.props;
 ---
 
-<div class="avatar-wrap appear" style="--appear-delay: 0ms">
+<div
+	class="appear flex h-10 w-10 flex-none items-center"
+	style="--appear-delay: 0ms"
+>
 	{src ? (
-		<img class="avatar" src={src} alt="" draggable="false" />
+		<img
+			class="block h-10 w-10 rounded-full object-cover"
+			src={src}
+			alt=""
+			draggable="false"
+		/>
 	) : (
-		<div class="avatar avatar-fallback" aria-hidden="true">
+		<div
+			class="text-body flex h-10 w-10 items-center justify-center rounded-full bg-line-faint font-semibold text-ink-muted"
+			aria-hidden="true"
+		>
 			{initials}
 		</div>
 	)}
 </div>
-
-<style>
-	.avatar-wrap {
-		display: flex;
-		align-items: center;
-		width: 40px;
-		height: 40px;
-		flex: none;
-	}
-
-	.avatar {
-		display: block;
-		width: 40px;
-		height: 40px;
-		border-radius: 999px;
-		object-fit: cover;
-	}
-
-	.avatar-fallback {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background: var(--color-line-faint);
-		color: var(--color-ink-muted);
-		font-size: 14px;
-		font-weight: 600;
-	}
-</style>

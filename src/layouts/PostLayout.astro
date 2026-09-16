@@ -18,16 +18,16 @@ const { title, description, date, body, headings } = Astro.props;
 ---
 
 <Layout title={title} description={description}>
-	<main class="post-page">
+	<main class="w-full pt-16 pb-20">
 		<ThemeToggle />
 		<aside class="post-toc">
 			<TableOfContents headings={headings} />
 		</aside>
-		<div class="post-container">
+		<div class="post-container mx-auto max-w-140 px-5">
 			<BackLink />
-			<article class="post-content">
-				<h1>{title}</h1>
-				<p class="post-byline">
+			<article>
+				<h1 class="text-heading-lg m-0 mb-2 text-ink-strong">{title}</h1>
+				<p class="text-meta m-0 mb-6 text-ink-muted">
 					{postDateFormatter.format(date)} · {readingTime(body)}
 				</p>
 				<div class="prose prose-sm rich-text">
@@ -39,17 +39,10 @@ const { title, description, date, body, headings } = Astro.props;
 </Layout>
 
 <style>
-	.post-page {
-		width: 100%;
-		padding: 64px 0 80px;
-	}
-
-	.post-container {
-		width: calc(100% - 40px);
-		max-width: 560px;
-		margin: 0 auto;
-	}
-
+	/* Left unconverted for now: bespoke fixed-position math tied to a
+	   specific viewport-center calculation, and a contextual spacing
+	   override on a shared child component's root class — neither maps
+	   cleanly onto a utility class. */
 	.post-container :global(.back-link) {
 		margin-bottom: 24px;
 	}
@@ -66,20 +59,5 @@ const { title, description, date, body, headings } = Astro.props;
 			left: max(20px, calc(50% - 280px - 32px - 220px));
 			width: 220px;
 		}
-	}
-
-	.post-content h1 {
-		margin: 0 0 8px;
-		font-size: 22px;
-		font-weight: 600;
-		line-height: 30px;
-		color: var(--color-ink-strong);
-	}
-
-	.post-byline {
-		margin: 0 0 24px;
-		font-size: 12.5px;
-		line-height: 18px;
-		color: var(--color-ink-muted);
 	}
 </style>

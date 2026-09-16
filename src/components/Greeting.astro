@@ -3,7 +3,7 @@ import { greetings } from '../data/site';
 ---
 
 <div
-	class="greetings appear"
+	class="appear text-body flex flex-wrap items-end gap-1.5 text-ink-muted"
 	style="--appear-delay: 40ms"
 	role="group"
 	aria-label="Greetings"
@@ -12,15 +12,3 @@ import { greetings } from '../data/site';
 		<span lang={g.lang}>{g.text}</span>
 	))}
 </div>
-
-<style>
-	.greetings {
-		display: flex;
-		align-items: flex-end;
-		gap: 6px;
-		flex-wrap: wrap;
-		color: var(--color-ink-muted);
-		font-size: 14px;
-		line-height: 22px;
-	}
-</style>

@@ -8,30 +8,12 @@ interface Props {
 const { paragraphs } = Astro.props;
 ---
 
-<div class="information rich-text">
+<div class="rich-text flex w-full flex-col gap-2.5">
 	{paragraphs.map((p, i) => (
 		<p
-			class="appear"
+			class="appear text-body m-0 w-full wrap-anywhere text-ink"
 			style={`--appear-delay: ${75 + i * 35}ms`}
 			set:html={p.html}
 		/>
 	))}
 </div>
-
-<style>
-	.information {
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-		width: 100%;
-	}
-
-	.information p {
-		margin: 0;
-		width: 100%;
-		font-size: 14px;
-		line-height: 22px;
-		color: var(--color-ink);
-		overflow-wrap: anywhere;
-	}
-</style>

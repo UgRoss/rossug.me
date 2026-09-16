@@ -9,7 +9,7 @@ const { value, label } = Astro.props;
 
 <button
 	type="button"
-	class="copy-button"
+	class="ml-5 inline-flex cursor-pointer items-center justify-center border-none bg-transparent p-0 align-[-2px] text-ink-muted transition-colors duration-[160ms] hover:text-ink-strong focus-visible:text-ink-strong"
 	data-copy-value={value}
 	aria-label={label}
 >
@@ -31,7 +31,7 @@ const { value, label } = Astro.props;
 
 <script>
 	document
-		.querySelectorAll<HTMLButtonElement>('.copy-button')
+		.querySelectorAll<HTMLButtonElement>('[data-copy-value]')
 		.forEach((button) => {
 			const value = button.dataset.copyValue;
 			if (!value) return;
@@ -50,24 +50,3 @@ const { value, label } = Astro.props;
 			});
 		});
 </script>
-
-<style>
-	.copy-button {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		margin-left: 20px;
-		padding: 0;
-		border: none;
-		background: none;
-		color: var(--color-ink-muted);
-		cursor: pointer;
-		vertical-align: -2px;
-		transition: color 0.16s;
-	}
-
-	.copy-button:hover,
-	.copy-button:focus-visible {
-		color: var(--color-ink-strong);
-	}
-</style>

@@ -1,6 +1,6 @@
 <button
 	type="button"
-	class="theme-toggle"
+	class="fixed top-4 right-4 z-10 inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-line bg-surface text-ink-strong hover:bg-line-faint"
 	id="theme-toggle"
 	aria-label="Toggle color theme"
 >
@@ -17,26 +17,3 @@
 		localStorage.setItem('theme', next);
 	});
 </script>
-
-<style>
-	.theme-toggle {
-		position: fixed;
-		top: 16px;
-		right: 16px;
-		z-index: 10;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 32px;
-		height: 32px;
-		border: 1px solid var(--color-line);
-		border-radius: 999px;
-		background: var(--color-surface);
-		color: var(--color-ink-strong);
-		cursor: pointer;
-	}
-
-	.theme-toggle:hover {
-		background: var(--color-line-faint);
-	}
-</style>
