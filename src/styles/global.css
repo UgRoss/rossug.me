@@ -10,7 +10,7 @@
 	--color-surface: #ffffff;
 	--color-ink: #000000;
 	--color-ink-strong: #000000;
-	--color-ink-muted: #9f9f9f;
+	--color-ink-muted: #8a8a8a;
 	--color-line: #e4e4e4;
 	--color-line-faint: #f5f5f5;
 	--color-accent: #fb5ab2;
@@ -79,7 +79,7 @@
 
 .prose.rich-text a {
 	text-decoration: none;
-	font-weight: inherit;
+	font-weight: calc(var(--text-weight, var(--font-weight-normal)) + 100);
 }
 
 /* Genuine element resets — no Tailwind utility can target the bare `html`
@@ -98,6 +98,20 @@
 	a {
 		color: inherit;
 		text-decoration: none;
+	}
+
+	/* Tailwind's own --tw-font-weight is registered via @property with
+	   inherits: false, so it can't be read from an ancestor to compute a
+	   link weight relative to its surrounding text. This variable mirrors
+	   the same two weights the site actually uses (font-normal,
+	   font-semibold) but inherits normally, so .rich-text a below can
+	   read "the current text weight" from any ancestor. */
+	:root {
+		--text-weight: var(--font-weight-normal);
+	}
+
+	.font-semibold {
+		--text-weight: var(--font-weight-semibold);
 	}
 }
 
@@ -124,6 +138,7 @@
 		position: relative;
 		color: var(--color-ink-strong);
 		text-decoration: none;
+		font-weight: calc(var(--text-weight, var(--font-weight-normal)) + 100);
 		padding-bottom: 3px;
 		background-image:
 			linear-gradient(var(--color-ink-strong), var(--color-ink-strong)),
@@ -142,6 +157,17 @@
 
 	.rich-text a:hover,
 	.rich-text a:focus-visible {
+		background-size:
+			100% 1px,
+			100% 1px;
+	}
+
+	/* .post-card stretches its title link over the whole card (see
+	   after:absolute after:inset-0 in blog/[...page].astro) so the entire
+	   area is clickable; this mirrors that same underline hover state
+	   whenever the pointer is anywhere in the card, not just over the
+	   title text itself. */
+	.rich-text .post-card:hover .post-card-title {
 		background-size:
 			100% 1px,
 			100% 1px;
@@ -185,5 +211,23 @@
 	[data-theme='dark'] .astro-code span {
 		color: var(--shiki-dark) !important;
 		background-color: var(--shiki-dark-bg) !important;
+	}
+
+	/* Dimming a row's siblings based on ITS hover/focus state is a
+	   relationship between list items, not something a per-item Tailwind
+	   class can express (group-hover only reacts to an element's own
+	   ancestor, not a sibling's). :has() on the list is the only way to
+	   ask "does any item in here currently have the pointer/focus."
+	   Targets each item's direct children rather than the item itself so
+	   the dimming doesn't wash out its border — the border belongs to the
+	   article's own box, not a child, so it's untouched either way. */
+	.til-item > * {
+		transition: opacity 0.2s;
+	}
+
+	.til-list:has(.til-item:hover, .til-item:focus-within)
+		.til-item:not(:hover):not(:focus-within)
+		> * {
+		opacity: 0.4;
 	}
 }

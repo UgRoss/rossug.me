@@ -3,12 +3,13 @@ import { greetings } from '../data/site';
 ---
 
 <div
-	class="appear text-body flex flex-wrap items-end gap-1.5 text-ink-muted"
+	class="appear text-body flex flex-wrap items-end gap-1.5 text-ink-muted font-semibold"
 	style="--appear-delay: 40ms"
 	role="group"
 	aria-label="Greetings"
 >
 	{greetings.map((g) => (
 		<span lang={g.lang}>{g.text}</span>
-	))}
+	))}{' '}
+	👋
 </div>

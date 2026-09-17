@@ -1,0 +1,43 @@
+---
+import Layout from './Layout.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import BackLink from '../components/BackLink.astro';
+import { postDateFormatter } from '../utils/posts';
+
+interface Props {
+	title: string;
+	category: string;
+	pubDate: Date;
+	updateDate?: Date;
+	excerpt?: string;
+}
+
+const { title, category, pubDate, updateDate, excerpt } = Astro.props;
+---
+
+<Layout title={title} description={excerpt ?? title}>
+	<main class="w-full px-5 pt-16 pb-20">
+		<ThemeToggle />
+		<div class="note-container mx-auto max-w-140">
+			<BackLink href="/notes/" label="← Back to notes" />
+			<article>
+				<h1 class="text-heading-lg m-0 mb-2 text-ink-strong">{title}</h1>
+				<p class="text-meta m-0 mb-6 text-ink-muted">
+					{category} · {postDateFormatter.format(pubDate)}
+					{updateDate && <> · Updated {postDateFormatter.format(updateDate)}</>}
+				</p>
+				<div class="prose prose-sm rich-text">
+					<slot />
+				</div>
+			</article>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	/* Same non-Tailwind-expressible override as PostLayout.astro: contextual
+	   spacing on a shared child component's root class. */
+	.note-container :global(.back-link) {
+		margin-bottom: 24px;
+	}
+</style>

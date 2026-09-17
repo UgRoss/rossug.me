@@ -16,7 +16,7 @@ const items = headings.filter(
 		<p class="text-meta m-0 font-semibold text-ink-muted">On this page</p>
 		<ul class="m-0 flex list-none flex-col gap-1.5 p-0">
 			{items.map((item) => (
-				<li class="text-small" class:list={{ 'pl-3': item.depth === 3 }}>
+				<li class="text-body" class:list={{ 'pl-3': item.depth === 3 }}>
 					<a href={`#${item.slug}`}>{item.text}</a>
 				</li>
 			))}

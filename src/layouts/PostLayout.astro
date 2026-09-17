@@ -24,7 +24,7 @@ const { title, description, date, body, headings } = Astro.props;
 			<TableOfContents headings={headings} />
 		</aside>
 		<div class="post-container mx-auto max-w-140">
-			<BackLink />
+			<BackLink href="/blog/" label="← Back to blog" />
 			<article>
 				<h1 class="text-heading-lg m-0 mb-2 text-ink-strong">{title}</h1>
 				<p class="text-meta m-0 mb-6 text-ink-muted">

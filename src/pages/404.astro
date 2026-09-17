@@ -1,0 +1,18 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import BackLink from '../components/BackLink.astro';
+---
+
+<Layout title="Page not found" description="This page doesn't exist.">
+	<main class="w-full px-5 pt-16 pb-20">
+		<div class="mx-auto flex max-w-140 flex-col items-start gap-6.5">
+			<ThemeToggle />
+			<BackLink />
+			<h1 class="text-xl m-0 font-semibold text-ink-strong">Page not found</h1>
+			<p class="text-body m-0 text-ink-muted">
+				The page you're looking for doesn't exist.
+			</p>
+		</div>
+	</main>
+</Layout>

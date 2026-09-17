@@ -5,20 +5,17 @@ import Avatar from '../components/Avatar.astro';
 import Greeting from '../components/Greeting.astro';
 import Bio from '../components/Bio.astro';
 import LinkSection from '../components/LinkSection.astro';
-import ConnectSection from '../components/ConnectSection.astro';
 import Footer from '../components/Footer.astro';
 import { getSortedPosts } from '../utils/posts';
 import { readingTime } from '../utils/reading-time';
-import {
-	avatar,
-	bio,
-	linkSections,
-	connect,
-	footer,
-	siteMeta,
-} from '../data/site';
+import { getEntry, render } from 'astro:content';
+import { avatar, footer, siteMeta } from '../data/site';
 
 const posts = await getSortedPosts();
+
+const about = await getEntry('about', 'index');
+if (!about) throw new Error('Missing content entry: about/index.md');
+const { Content: AboutContent } = await render(about);
 
 const blogItems = posts.map((post) => ({
 	name: post.data.title,
@@ -37,18 +34,12 @@ const blogItems = posts.map((post) => ({
 				<div class="flex w-full flex-col items-start gap-4.5">
 					<div class="flex w-full flex-col items-start gap-3">
 						<Greeting />
-						<Bio paragraphs={bio} />
+						<Bio>
+							<AboutContent />
+						</Bio>
 					</div>
 					<div class="flex w-full flex-col items-start gap-1">
-						{linkSections.map((section) => (
-							<LinkSection title={section.title} items={section.items} />
-						))}
 						<LinkSection title="Blog" items={blogItems} />
-						<ConnectSection
-							heading={connect.heading}
-							paragraphs={connect.paragraphs}
-							email={connect.email}
-						/>
 					</div>
 				</div>
 			</div>

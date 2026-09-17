@@ -1,19 +1,9 @@
 ---
-import type { BioParagraph } from '../data/site';
-
-interface Props {
-	paragraphs: BioParagraph[];
-}
-
-const { paragraphs } = Astro.props;
 ---
 
-<div class="rich-text flex w-full flex-col gap-2.5">
-	{paragraphs.map((p, i) => (
-		<p
-			class="appear text-body m-0 w-full wrap-anywhere text-ink"
-			style={`--appear-delay: ${75 + i * 35}ms`}
-			set:html={p.html}
-		/>
-	))}
+<div
+	class="appear rich-text flex w-full flex-col gap-2.5 text-body text-ink [&>p]:m-0 [&>p]:wrap-anywhere"
+	style="--appear-delay: 75ms"
+>
+	<slot />
 </div>
