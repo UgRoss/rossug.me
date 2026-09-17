@@ -221,12 +221,12 @@
 	   Targets each item's direct children rather than the item itself so
 	   the dimming doesn't wash out its border — the border belongs to the
 	   article's own box, not a child, so it's untouched either way. */
-	.til-item > * {
+	.note-item > * {
 		transition: opacity 0.2s;
 	}
 
-	.til-list:has(.til-item:hover, .til-item:focus-within)
-		.til-item:not(:hover):not(:focus-within)
+	.note-list:has(.note-item:hover, .note-item:focus-within)
+		.note-item:not(:hover):not(:focus-within)
 		> * {
 		opacity: 0.4;
 	}

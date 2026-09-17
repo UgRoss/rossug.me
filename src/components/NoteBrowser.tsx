@@ -9,7 +9,7 @@ interface Props {
 	notes: NoteSummary[];
 }
 
-export default function TilBrowser({ notes }: Props) {
+export default function NoteBrowser({ notes }: Props) {
 	const [query, setQuery] = useState('');
 	const [activeCategory, setActiveCategory] = useState<string | null>(null);
 	const [page, setPage] = useState(1);
@@ -53,11 +53,11 @@ export default function TilBrowser({ notes }: Props) {
 		<div className="flex w-full flex-col items-start gap-7">
 			<div className="flex w-full flex-col items-start gap-3">
 				<div className="w-full">
-					<label htmlFor="til-search" className="sr-only">
+					<label htmlFor="note-search" className="sr-only">
 						Search notes
 					</label>
 					<input
-						id="til-search"
+						id="note-search"
 						type="text"
 						value={query}
 						onChange={(event) => updateQuery(event.target.value)}
@@ -91,7 +91,7 @@ export default function TilBrowser({ notes }: Props) {
 				)}
 			</div>
 
-			<div className="til-list border-line flex w-full flex-col items-start border-t">
+			<div className="note-list border-line flex w-full flex-col items-start border-t">
 				{notes.length === 0 ? (
 					<p className="text-body text-ink-muted m-0 py-4">No notes yet.</p>
 				) : visible.length === 0 ? (
@@ -102,12 +102,12 @@ export default function TilBrowser({ notes }: Props) {
 					visible.map((note) => (
 						<article
 							key={note.slug}
-							className="til-item group border-line relative grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 border-b py-3"
+							className="note-item group border-line relative grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 border-b py-3"
 						>
 							<h2 className="text-body m-0 flex min-w-0 items-center gap-2 font-normal">
 								<a
 									href={`/notes/${note.slug}/`}
-									className="til-item-title text-ink-strong min-w-0 truncate after:absolute after:inset-0 after:content-['']"
+									className="note-item-title text-ink-strong min-w-0 truncate after:absolute after:inset-0 after:content-['']"
 								>
 									{note.title}
 								</a>

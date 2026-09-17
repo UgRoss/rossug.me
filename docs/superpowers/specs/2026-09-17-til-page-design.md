@@ -66,7 +66,7 @@ pasted, for consistency with the rest of the repo.)
 - **`src/pages/notes/index.astro`** — fetches and sorts all notes, maps them
   to plain serializable summaries (`slug`, `title`, `category`, `excerpt`,
   raw ISO `pubDate` string — see **List display** below for why it isn't
-  pre-formatted), and renders `<TilBrowser client:load notes={summaries} />`
+  pre-formatted), and renders `<NoteBrowser client:load notes={summaries} />`
   inside the standard page chrome (`Layout`, `ThemeToggle` — no `BackLink`;
   listing pages don't get one, see **BackLink placement** below). `<Layout
   title="Notes" description="Quick things I've learned.">` for the browser
@@ -93,7 +93,7 @@ pasted, for consistency with the rest of the repo.)
   existing one — the name being post-flavored is a minor nit, not worth a
   cross-module refactor of unrelated blog code for this task.
 
-## The `TilBrowser` island (`src/components/TilBrowser.tsx`)
+## The `NoteBrowser` island (`src/components/NoteBrowser.tsx`)
 
 All notes are passed in as props at build time (needed anyway for
 client-side search across everything, not just one page), so pagination
@@ -151,7 +151,7 @@ needs, because this list isn't wrapped in `.rich-text` (see **Filter row**
 below for why), so the anchor never inherits a conflicting
 `position: relative` in the first place.
 
-Rows are visually dense, not spaced-out cards: each `<article class="til-item">`
+Rows are visually dense, not spaced-out cards: each `<article class="note-item">`
 has its own `border-b border-line` (not `border-line-faint`, which turned
 out to read as "hardly visible"), plus a `border-t` on the list wrapper for
 the leading edge — a tight, bordered list rather than the blog's
@@ -161,13 +161,13 @@ big-gap/no-divider treatment.
 *other* row's content to `opacity: 0.4` and reveals a small "→" that slides
 and fades in just before that row's date. Two implementation details worth
 flagging: (1) the dimming rule targets each row's direct children
-(`.til-item > *`), not the row element itself, specifically so the row's
+(`.note-item > *`), not the row element itself, specifically so the row's
 own border stays fully visible while its text dims — the border belongs to
 the `<article>`'s own box, not to a child; (2) which rows are "other" is a
 relationship between list items that no per-item Tailwind class can
 express (`group-hover` only lets an element react to its own ancestor, not
 a sibling's), so it's a plain CSS rule using `:has()` on the list:
-`.til-list:has(.til-item:hover, .til-item:focus-within) .til-item:not(:hover):not(:focus-within) > *`.
+`.note-list:has(.note-item:hover, .note-item:focus-within) .note-item:not(:hover):not(:focus-within) > *`.
 
 The date itself is relative ("4 days ago", "2 months ago"), falling back to
 just the year once a note is a year or older — `formatRelativeDate` in
@@ -177,7 +177,7 @@ baked into the string at build time: the page is fully static, so a
 relative label formatted once at build time would freeze — "3 days ago"
 would still say that months after the last deploy. `NoteSummary.pubDate`
 therefore carries the raw ISO string (from `date.toISOString()` in
-`notes/index.astro`), and `TilBrowser` calls `formatRelativeDate` on it at
+`notes/index.astro`), and `NoteBrowser` calls `formatRelativeDate` on it at
 render time, so it's correct whenever someone actually loads the page.
 Known, accepted tradeoff: since the server-rendered HTML (for `client:load`)
 is generated at build time and the client then re-renders with "now" at
@@ -222,7 +222,7 @@ link from would be redundant.
 Code-quality notes for the implementation:
 - `NoteSummary` (the shape passed from the Astro page into the island) is
   defined once in `src/utils/notes.ts` and imported by both
-  `notes/index.astro` and `TilBrowser.tsx`, rather than duplicating an
+  `notes/index.astro` and `NoteBrowser.tsx`, rather than duplicating an
   inline type in each place.
 - The filtered/paged list is derived via `useMemo` keyed on
   `[notes, query, activeCategory, page]` — cheap given the dataset size,

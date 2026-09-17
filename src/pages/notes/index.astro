@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ThemeToggle from '../../components/ThemeToggle.astro';
-import TilBrowser from '../../components/TilBrowser';
+import NoteBrowser from '../../components/NoteBrowser';
 import { getSortedNotes, type NoteSummary } from '../../utils/notes';
 
 const notes = await getSortedNotes();
@@ -20,7 +20,7 @@ const summaries: NoteSummary[] = notes.map((note) => ({
 		<div class="mx-auto flex max-w-140 flex-col items-start gap-6.5">
 			<ThemeToggle />
 			<h1 class="text-xl m-0 font-semibold text-ink-strong">Today I Learned</h1>
-			<TilBrowser client:load notes={summaries} />
+			<NoteBrowser client:load notes={summaries} />
 		</div>
 	</main>
 </Layout>
