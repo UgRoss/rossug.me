@@ -31,25 +31,25 @@
 
 [data-theme='dark'] {
 	color-scheme: dark;
-	--color-page: #0e0e0e;
+	--color-page: #1c1d1b;
 	--color-surface: #111111;
-	--color-ink: #b0b0b0;
+	--color-ink: #eeeeee;
 	--color-ink-strong: #ffffff;
 	--color-ink-muted: #6e6e6e;
-	--color-line: #1c1c1c;
-	--color-line-faint: #141414;
+	--color-line: #2a2a2a;
+	--color-line-faint: #222222;
 }
 
 @media (prefers-color-scheme: dark) {
 	:root:not([data-theme='light']):not([data-theme='dark']) {
 		color-scheme: dark;
-		--color-page: #0e0e0e;
+		--color-page: #1c1d1b;
 		--color-surface: #111111;
-		--color-ink: #b0b0b0;
+		--color-ink: #eeeeee;
 		--color-ink-strong: #ffffff;
 		--color-ink-muted: #6e6e6e;
-		--color-line: #1c1c1c;
-		--color-line-faint: #141414;
+		--color-line: #2a2a2a;
+		--color-line-faint: #222222;
 	}
 }
 
@@ -213,21 +213,4 @@
 		background-color: var(--shiki-dark-bg) !important;
 	}
 
-	/* Dimming a row's siblings based on ITS hover/focus state is a
-	   relationship between list items, not something a per-item Tailwind
-	   class can express (group-hover only reacts to an element's own
-	   ancestor, not a sibling's). :has() on the list is the only way to
-	   ask "does any item in here currently have the pointer/focus."
-	   Targets each item's direct children rather than the item itself so
-	   the dimming doesn't wash out its border — the border belongs to the
-	   article's own box, not a child, so it's untouched either way. */
-	.note-item > * {
-		transition: opacity 0.2s;
-	}
-
-	.note-list:has(.note-item:hover, .note-item:focus-within)
-		.note-item:not(:hover):not(:focus-within)
-		> * {
-		opacity: 0.4;
-	}
 }

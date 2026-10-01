@@ -2,7 +2,7 @@
 import Layout from './Layout.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import TableOfContents from '../components/TableOfContents.astro';
-import BackLink from '../components/BackLink.astro';
+import Button from '../components/Button';
 import { readingTime } from '../utils/reading-time';
 import { postDateFormatter, type Heading } from '../utils/posts';
 
@@ -24,7 +24,7 @@ const { title, description, date, body, headings } = Astro.props;
 			<TableOfContents headings={headings} />
 		</aside>
 		<div class="post-container mx-auto max-w-140">
-			<BackLink href="/blog/" label="← Back to blog" />
+			<Button href="/blog/" icon="←" className="mb-6">Back to blog</Button>
 			<article>
 				<h1 class="text-heading-lg m-0 mb-2 text-ink-strong">{title}</h1>
 				<p class="text-meta m-0 mb-6 text-ink-muted">
@@ -40,13 +40,8 @@ const { title, description, date, body, headings } = Astro.props;
 
 <style>
 	/* Left unconverted for now: bespoke fixed-position math tied to a
-	   specific viewport-center calculation, and a contextual spacing
-	   override on a shared child component's root class — neither maps
-	   cleanly onto a utility class. */
-	.post-container :global(.back-link) {
-		margin-bottom: 24px;
-	}
-
+	   specific viewport-center calculation that doesn't map cleanly onto
+	   a utility class. */
 	.post-toc {
 		display: none;
 	}

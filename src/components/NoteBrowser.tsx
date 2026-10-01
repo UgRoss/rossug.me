@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { matchSorter } from 'match-sorter';
 import type { NoteSummary } from '../utils/notes';
 import { formatRelativeDate } from '../utils/date';
+import Button from './Button';
 
 const PAGE_SIZE = 10;
 
@@ -50,7 +51,7 @@ export default function NoteBrowser({ notes }: Props) {
 	}
 
 	return (
-		<div className="flex w-full flex-col items-start gap-7">
+		<div className="flex w-full flex-col items-start gap-10">
 			<div className="flex w-full flex-col items-start gap-3">
 				<div className="w-full">
 					<label htmlFor="note-search" className="sr-only">
@@ -107,7 +108,7 @@ export default function NoteBrowser({ notes }: Props) {
 							<h2 className="text-body m-0 flex min-w-0 items-center gap-2 font-normal">
 								<a
 									href={`/notes/${note.slug}/`}
-									className="note-item-title text-ink-strong min-w-0 truncate after:absolute after:inset-0 after:content-['']"
+									className="note-item-title text-ink-strong min-w-0 truncate underline-offset-2 after:absolute after:inset-0 after:content-[''] group-hover:underline group-focus-within:underline"
 								>
 									{note.title}
 								</a>
@@ -134,28 +135,24 @@ export default function NoteBrowser({ notes }: Props) {
 			{pageCount > 1 && (
 				<nav
 					aria-label="Notes pagination"
-					className="rich-text text-body text-ink-muted flex w-full items-center justify-between"
+					className="text-body flex w-full items-center justify-between"
 				>
 					<div>
 						{currentPage > 1 && (
-							<button
-								type="button"
-								onClick={() => setPage(currentPage - 1)}
-								className="text-body text-ink-muted hover:text-ink-strong cursor-pointer border-none bg-transparent p-0 font-sans underline decoration-transparent underline-offset-2 hover:decoration-current"
-							>
-								← Newer notes
-							</button>
+							<Button icon="←" onClick={() => setPage(currentPage - 1)}>
+								Newer notes
+							</Button>
 						)}
 					</div>
 					<div>
 						{currentPage < pageCount && (
-							<button
-								type="button"
+							<Button
+								icon="→"
+								iconPosition="after"
 								onClick={() => setPage(currentPage + 1)}
-								className="text-body text-ink-muted hover:text-ink-strong cursor-pointer border-none bg-transparent p-0 font-sans underline decoration-transparent underline-offset-2 hover:decoration-current"
 							>
-								Older notes →
-							</button>
+								Older notes
+							</Button>
 						)}
 					</div>
 				</nav>
