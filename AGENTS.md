@@ -1,4 +1,20 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 ## Development
+
+This project uses pnpm (see `pnpm-workspace.yaml`), not npm or yarn.
+
+| Command            | Action                                     |
+| :----------------- | :----------------------------------------- |
+| `pnpm install`     | Install dependencies                       |
+| `pnpm dev`         | Start local dev server at `localhost:4321` |
+| `pnpm build`       | Build production site to `./dist/`         |
+| `pnpm preview`     | Preview the production build locally       |
+| `pnpm astro check` | Type-check `.astro` files                  |
+
+There is no test suite or linter configured in this repository yet.
 
 When starting the dev server, use background mode:
 
