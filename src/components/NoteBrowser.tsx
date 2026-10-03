@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { matchSorter } from 'match-sorter';
-import type { NoteSummary } from '../utils/notes';
-import { formatRelativeDate } from '../utils/date';
-import { attachSlideHighlight } from '../utils/slide-highlight';
+import type { NoteSummary } from '@/utils/notes';
+import { formatRelativeDate } from '@/utils/date';
+import { attachSlideHighlight } from '@/utils/slide-highlight';
 import Button from './Button';
 
 const PAGE_SIZE = 10;

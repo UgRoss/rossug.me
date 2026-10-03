@@ -1,7 +1,7 @@
 import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
-import { siteMeta } from '../data/site';
-import { getSortedPosts, postHref } from '../utils/posts';
+import { siteMeta } from '@/data/site';
+import { getSortedPosts, postHref } from '@/utils/posts';
 
 export async function GET(context: APIContext) {
 	if (!context.site) throw new Error('`site` must be set in astro.config.mjs');

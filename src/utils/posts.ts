@@ -1,5 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
-import type { LinkItem } from '../types';
+import type { LinkItem } from '@/types';
 import { formatDate } from './date';
 
 export async function getSortedPosts(): Promise<CollectionEntry<'blog'>[]> {

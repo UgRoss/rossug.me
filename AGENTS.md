@@ -58,5 +58,6 @@ Domain vocabulary (Post, Note, Category, Tag, Description, Bio) lives in `CONTEX
 - Components in `src/components/`, one per file; layouts in `src/layouts/`; routes in `src/pages/`.
 - `src/data/` holds lists and values used in more than one place (site meta, Uses list). Copy used by exactly one page stays in that page.
 - `src/utils/` holds pure helpers (dates, collection sorting, URLs). Types owned by one module live in it; types shared across modules live in `src/types.ts`.
+- Import from `src/` with the `@/` alias (`@/components/Nav.astro`); sibling files in the same folder stay relative (`./Button`).
 - Content lives in `content/` (not `src/`), loaded by the glob loaders in `src/content.config.ts`.
 - Don't add `client:*` directives casually: React ships only for `NoteBrowser` (see `docs/adr/0001`).

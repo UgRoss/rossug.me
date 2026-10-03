@@ -1,13 +1,13 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Avatar from '../components/Avatar.astro';
-import Greeting from '../components/Greeting.astro';
-import Bio from '../components/Bio.astro';
-import LinkSection from '../components/LinkSection.astro';
-import Footer from '../components/Footer.astro';
-import { getSortedPosts, postToLinkItem } from '../utils/posts';
+import Layout from '@/layouts/Layout.astro';
+import Avatar from '@/components/Avatar.astro';
+import Greeting from '@/components/Greeting.astro';
+import Bio from '@/components/Bio.astro';
+import LinkSection from '@/components/LinkSection.astro';
+import Footer from '@/components/Footer.astro';
+import { getSortedPosts, postToLinkItem } from '@/utils/posts';
 import { getEntry, render } from 'astro:content';
-import { avatar, footer, siteMeta } from '../data/site';
+import { avatar, footer, siteMeta } from '@/data/site';
 
 const posts = await getSortedPosts();
 

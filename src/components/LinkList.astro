@@ -1,5 +1,5 @@
 ---
-import type { LinkItem } from '../types';
+import type { LinkItem } from '@/types';
 
 interface Props {
 	items: LinkItem[];
@@ -35,7 +35,7 @@ const { items } = Astro.props;
 </div>
 
 <script>
-	import { attachSlideHighlight } from '../utils/slide-highlight';
+	import { attachSlideHighlight } from '@/utils/slide-highlight';
 
 	document
 		.querySelectorAll<HTMLElement>('.link-list')
