@@ -60,6 +60,13 @@ Domain vocabulary (Post, Note, Category, Tag, Description, Bio) lives in `CONTEX
 
 `docs/superpowers/` and `docs/internal/` are gitignored. Never commit them, and skip the "commit the spec/plan" step in superpowers workflows. If something in them turns out to be a lasting decision, distill it into an ADR instead of moving the file.
 
+## Theming
+
+- All colors are semantic tokens in `src/styles/global.css` `@theme`, each written as `light-dark(#light, #dark)` with 6-digit hex. Use them through utilities (`text-ink-muted`, `bg-page`, `border-line-strong`); never hardcode colors or add `dark:` variants.
+- Light or dark comes from `color-scheme` on `<html>`: it follows the system unless the visitor chose a theme, in which case `data-theme` is set (inline script in `Layout.astro`, `ThemeToggle.astro`, helpers in `src/utils/theme.ts`).
+- Contrast is enforced by `src/styles/__tests__/contrast.test.ts`: text pairs need 4.5:1 and control borders (`line-strong`) 3:1. Adding a token means adding it to that test.
+- Heading weight and tracking live on the type tokens (`--text-display--font-weight`, ...), so headings only need `text-display` or `text-heading-lg`.
+
 ## Code organization
 
 - Components in `src/components/`, one per file; layouts in `src/layouts/`; routes in `src/pages/`.

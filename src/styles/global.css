@@ -7,17 +7,23 @@
 	--font-sans: var(--font-inter);
 }
 
+/* Every color is a light-dark(light, dark) pair, so both palettes sit side by
+   side. Which one applies comes from `color-scheme` on <html>: it follows the
+   system unless the visitor picked a theme, in which case Layout.astro sets
+   `data-theme` (see the rules below). Keep text pairs at 4.5:1 and control
+   borders at 3:1; src/styles/__tests__/contrast.test.ts enforces both. */
 @theme {
-	--color-page: #ffffff;
-	--color-surface: #ffffff;
-	--color-ink: lab(15.204% 0 -0.00000596046);
-	--color-ink-strong: lab(15.204% 0 -0.00000596046);
-	--color-ink-muted: #8a8a8a;
-	--color-line: #e4e4e4;
-	--color-line-faint: #f5f5f5;
+	--color-page: light-dark(#ffffff, #1c1d1b);
+	--color-surface: light-dark(#ffffff, #111111);
+	--color-ink: light-dark(#262626, #eeeeee);
+	--color-ink-strong: light-dark(#262626, #ffffff);
+	--color-ink-muted: light-dark(#6f6f6f, #8a8a8a);
+	--color-line: light-dark(#e4e4e4, #2a2a2a);
+	--color-line-strong: light-dark(#8e8e8e, #6a6a6a);
+	--color-line-faint: light-dark(#f5f5f5, #222222);
 
-	/* Type scale. text-base and text-xl override Tailwind's defaults so
-	   headings stay clearly larger than the 15px body. */
+	/* Type scale. text-base overrides Tailwind's default so headings stay
+	   clearly larger than the 15px body. */
 	--text-body: 15px;
 	--text-body--line-height: 24px;
 	--text-meta: 13.5px;
@@ -26,36 +32,26 @@
 	--text-small--line-height: 22px;
 	--text-base: 17px;
 	--text-base--line-height: 26px;
-	--text-xl: 21px;
-	--text-xl--line-height: 30px;
 	--text-heading-lg: 24px;
 	--text-heading-lg--line-height: 32px;
+	--text-heading-lg--font-weight: 600;
+	--text-heading-lg--letter-spacing: -0.025em;
 	--text-display: 40px;
 	--text-display--line-height: 44px;
+	--text-display--font-weight: 600;
+	--text-display--letter-spacing: -0.025em;
 }
 
-[data-theme='dark'] {
+:root {
+	color-scheme: light dark;
+}
+
+:root[data-theme='light'] {
+	color-scheme: light;
+}
+
+:root[data-theme='dark'] {
 	color-scheme: dark;
-	--color-page: #1c1d1b;
-	--color-surface: #111111;
-	--color-ink: #eeeeee;
-	--color-ink-strong: #ffffff;
-	--color-ink-muted: #6e6e6e;
-	--color-line: #2a2a2a;
-	--color-line-faint: #222222;
-}
-
-@media (prefers-color-scheme: dark) {
-	:root:not([data-theme='light']):not([data-theme='dark']) {
-		color-scheme: dark;
-		--color-page: #1c1d1b;
-		--color-surface: #111111;
-		--color-ink: #eeeeee;
-		--color-ink-strong: #ffffff;
-		--color-ink-muted: #6e6e6e;
-		--color-line: #2a2a2a;
-		--color-line-faint: #222222;
-	}
 }
 
 /* Unlayered on purpose: @tailwindcss/typography defines its own .prose
@@ -87,8 +83,8 @@
 .prose h2 {
 	font-size: var(--text-heading-lg);
 	line-height: 1.25;
-	font-weight: 600;
-	letter-spacing: -0.02em;
+	font-weight: var(--text-heading-lg--font-weight);
+	letter-spacing: var(--text-heading-lg--letter-spacing);
 	margin-top: 2.5em;
 	margin-bottom: 0.75em;
 }
@@ -115,9 +111,10 @@
 	content: none;
 }
 
+/* The typography plugin underlines links; drop that here, where it can win. */
 .prose.rich-text a {
 	text-decoration: none;
-	font-weight: calc(var(--text-weight, var(--font-weight-normal)) + 100);
+	font-weight: var(--font-weight-medium);
 }
 
 /* Genuine element resets — no Tailwind utility can target the bare `html`
@@ -136,20 +133,6 @@
 	a {
 		color: inherit;
 		text-decoration: none;
-	}
-
-	/* Tailwind's own --tw-font-weight is registered via @property with
-	   inherits: false, so it can't be read from an ancestor to compute a
-	   link weight relative to its surrounding text. This variable mirrors
-	   the same two weights the site actually uses (font-normal,
-	   font-semibold) but inherits normally, so .rich-text a below can
-	   read "the current text weight" from any ancestor. */
-	:root {
-		--text-weight: var(--font-weight-normal);
-	}
-
-	.font-semibold {
-		--text-weight: var(--font-weight-semibold);
 	}
 }
 
@@ -193,7 +176,7 @@
 		position: relative;
 		color: var(--color-ink-strong);
 		text-decoration: none;
-		font-weight: calc(var(--text-weight, var(--font-weight-normal)) + 100);
+		font-weight: var(--font-weight-medium);
 		padding-bottom: 3px;
 		background-image:
 			linear-gradient(var(--color-ink-strong), var(--color-ink-strong)),
@@ -254,11 +237,6 @@
 
 	.astro-code,
 	.astro-code span {
-		color: var(--shiki-light) !important;
-	}
-
-	[data-theme='dark'] .astro-code,
-	[data-theme='dark'] .astro-code span {
-		color: var(--shiki-dark) !important;
+		color: light-dark(var(--shiki-light), var(--shiki-dark)) !important;
 	}
 }

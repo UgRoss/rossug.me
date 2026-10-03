@@ -1,8 +1,14 @@
 ---
 import '@/styles/global.css';
 import { Font } from 'astro:assets';
+import { THEME_STORAGE_KEY } from '@/utils/theme';
 import Nav from '@/components/Nav.astro';
 
+// Theme contract: <html data-theme> is set only once a visitor has chosen a
+// theme (ThemeToggle stores it under THEME_STORAGE_KEY). Without it,
+// global.css follows the system through `color-scheme: light dark`. The
+// inline script below applies a stored choice before first paint so the page
+// never flashes the wrong theme.
 interface Props {
 	title: string;
 	description: string;
@@ -27,24 +33,15 @@ const { title, description } = Astro.props;
 			title="RSS feed"
 			href="/rss.xml"
 		/>
-		<script is:inline>
-			(function () {
-				try {
-					const stored = localStorage.getItem('theme');
-					const prefersDark = window.matchMedia(
-						'(prefers-color-scheme: dark)',
-					).matches;
-					const theme =
-						stored === 'light' || stored === 'dark'
-							? stored
-							: prefersDark
-								? 'dark'
-								: 'light';
-					document.documentElement.dataset.theme = theme;
-				} catch {
-					// localStorage may be unavailable (e.g. disabled or private browsing); ignore and leave the default theme.
+		<script is:inline define:vars={{ storageKey: THEME_STORAGE_KEY }}>
+			try {
+				const chosen = localStorage.getItem(storageKey);
+				if (chosen === 'light' || chosen === 'dark') {
+					document.documentElement.dataset.theme = chosen;
 				}
-			})();
+			} catch {
+				// localStorage may be unavailable (e.g. disabled or private browsing); ignore and follow the system theme.
+			}
 		</script>
 	</head>
 	<body class="bg-page text-ink font-sans text-body font-normal antialiased">

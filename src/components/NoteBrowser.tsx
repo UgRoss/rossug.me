@@ -66,7 +66,7 @@ export default function NoteBrowser({ notes }: Props) {
 						value={query}
 						onChange={(event) => updateQuery(event.target.value)}
 						placeholder="Search notes…"
-						className="text-body border-line bg-surface text-ink placeholder:text-ink-muted focus:border-ink-strong w-full rounded-md border px-3 py-2 focus:outline-none"
+						className="text-body border-line-strong bg-surface text-ink placeholder:text-ink-muted focus:border-ink-strong w-full rounded-md border px-3 py-2 focus:outline-none"
 					/>
 				</div>
 				{categories.length > 0 && (

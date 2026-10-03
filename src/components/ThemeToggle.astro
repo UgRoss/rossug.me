@@ -1,6 +1,6 @@
 <button
 	type="button"
-	class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-line bg-surface text-ink-strong hover:bg-line-faint"
+	class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-line-strong bg-surface text-ink-strong hover:bg-line-faint"
 	id="theme-toggle"
 	aria-label="Toggle color theme"
 >
@@ -8,12 +8,38 @@
 </button>
 
 <script>
+	import {
+		THEME_STORAGE_KEY,
+		effectiveTheme,
+		oppositeTheme,
+	} from '@/utils/theme';
+
 	const button = document.getElementById('theme-toggle');
+	const root = document.documentElement;
+	const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+	const currentTheme = () =>
+		effectiveTheme(root.dataset.theme, systemDark.matches);
+
+	function updateLabel() {
+		button?.setAttribute(
+			'aria-label',
+			`Switch to ${oppositeTheme(currentTheme())} theme`,
+		);
+	}
 
 	button?.addEventListener('click', () => {
-		const root = document.documentElement;
-		const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+		const next = oppositeTheme(currentTheme());
 		root.dataset.theme = next;
-		localStorage.setItem('theme', next);
+		try {
+			localStorage.setItem(THEME_STORAGE_KEY, next);
+		} catch {
+			// Storage can be unavailable (e.g. private browsing); the choice then lasts for this page view only.
+		}
+		updateLabel();
 	});
+
+	// With no explicit choice the page follows the system, so the label must too.
+	systemDark.addEventListener('change', updateLabel);
+	updateLabel();
 </script>
