@@ -1,10 +1,11 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import type { LinkItem } from '@/types';
 import { formatDate } from './date';
+import { isPublished } from './publishing';
 import { postHref } from './routes';
 
 export async function getSortedPosts(): Promise<CollectionEntry<'blog'>[]> {
-	const posts = await getCollection('blog');
+	const posts = await getCollection('blog', (post) => isPublished(post));
 	return posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 }
 

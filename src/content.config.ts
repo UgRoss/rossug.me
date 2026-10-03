@@ -15,6 +15,7 @@ const blog = defineCollection({
 			description: z.string(),
 			image: image().optional(),
 			tags: z.array(z.string()).default([]),
+			draft: z.boolean().default(false),
 		}),
 });
 
@@ -33,6 +34,7 @@ const notes = defineCollection({
 		pubDate: z.coerce.date(),
 		description: z.string().optional(),
 		updateDate: z.coerce.date().optional(),
+		draft: z.boolean().default(false),
 	}),
 });
 
