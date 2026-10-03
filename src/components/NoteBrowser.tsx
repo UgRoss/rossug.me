@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { matchSorter } from 'match-sorter';
 import type { NoteSummary } from '@/types';
+import { filterNotes } from '@/utils/filter-notes';
 import { formatRelativeDate } from '@/utils/date';
 import { noteHref } from '@/utils/routes';
 import { attachSlideHighlight } from '@/utils/slide-highlight';
@@ -22,18 +22,10 @@ export default function NoteBrowser({ notes }: Props) {
 		[notes],
 	);
 
-	const filtered = useMemo(() => {
-		const byCategory = activeCategory
-			? notes.filter((note) => note.category === activeCategory)
-			: notes;
-
-		const trimmedQuery = query.trim();
-		if (!trimmedQuery) return byCategory;
-
-		return matchSorter(byCategory, trimmedQuery, {
-			keys: ['title', (note) => note.description ?? ''],
-		});
-	}, [notes, query, activeCategory]);
+	const filtered = useMemo(
+		() => filterNotes(notes, { query, category: activeCategory }),
+		[notes, query, activeCategory],
+	);
 
 	const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
 	const currentPage = Math.min(page, pageCount);
