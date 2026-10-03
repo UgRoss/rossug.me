@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # subagent-driven-development scratch workspace
 .superpowers/
+
+# Playwright MCP session artifacts
+.playwright-mcp/
