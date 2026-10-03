@@ -4,7 +4,7 @@ export interface NoteSummary {
 	slug: string;
 	title: string;
 	category: string;
-	excerpt?: string;
+	description?: string;
 	/** ISO string — formatted client-side so "time ago" stays accurate after the build. */
 	pubDate: string;
 }

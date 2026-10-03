@@ -1,5 +1,6 @@
 ---
 import Layout from './Layout.astro';
+import PageShell from '../components/PageShell.astro';
 import ArticleHeader from '../components/ArticleHeader.astro';
 
 interface Props {
@@ -7,26 +8,24 @@ interface Props {
 	category: string;
 	pubDate: Date;
 	updateDate?: Date;
-	excerpt?: string;
+	description?: string;
 }
 
-const { title, category, pubDate, updateDate, excerpt } = Astro.props;
+const { title, category, pubDate, updateDate, description } = Astro.props;
 ---
 
-<Layout title={title} description={excerpt ?? title}>
-	<main class="w-full px-5 pt-16 pb-20">
-		<div class="note-container mx-auto max-w-150">
-			<article>
-				<ArticleHeader
-					title={title}
-					date={pubDate}
-					updated={updateDate}
-					labels={[category]}
-				/>
-				<div class="prose prose-sm rich-text">
-					<slot />
-				</div>
-			</article>
-		</div>
-	</main>
+<Layout title={title} description={description ?? title}>
+	<PageShell>
+		<article>
+			<ArticleHeader
+				title={title}
+				date={pubDate}
+				updated={updateDate}
+				labels={[category]}
+			/>
+			<div class="prose prose-sm rich-text">
+				<slot />
+			</div>
+		</article>
+	</PageShell>
 </Layout>

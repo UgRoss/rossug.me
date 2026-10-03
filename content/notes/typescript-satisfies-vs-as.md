@@ -2,7 +2,7 @@
 title: 'satisfies vs as in TypeScript'
 category: 'TypeScript'
 pubDate: 2026-09-14
-excerpt: 'satisfies checks the shape without widening or discarding the literal type.'
+description: 'satisfies checks the shape without widening or discarding the literal type.'
 updateDate: 2026-09-15
 ---
 

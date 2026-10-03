@@ -2,7 +2,7 @@
 title: 'Using fzf for fuzzy history search'
 category: 'CLI'
 pubDate: 2026-09-10
-excerpt: 'Binding fzf to reverse history search makes recalling long commands painless.'
+description: 'Binding fzf to reverse history search makes recalling long commands painless.'
 ---
 
 Bound `fzf` to `Ctrl+R` for fuzzy shell history search — much faster than

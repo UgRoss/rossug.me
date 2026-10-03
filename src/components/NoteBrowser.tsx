@@ -30,7 +30,7 @@ export default function NoteBrowser({ notes }: Props) {
 		if (!trimmedQuery) return byCategory;
 
 		return matchSorter(byCategory, trimmedQuery, {
-			keys: ['title', (note) => note.excerpt ?? ''],
+			keys: ['title', (note) => note.description ?? ''],
 		});
 	}, [notes, query, activeCategory]);
 
@@ -104,7 +104,7 @@ export default function NoteBrowser({ notes }: Props) {
 
 			<div
 				ref={listRef}
-				className="note-list relative -mx-3 flex w-[calc(100%+1.5rem)] flex-col items-start"
+				className="relative -mx-3 flex w-[calc(100%+1.5rem)] flex-col items-start"
 			>
 				{notes.length === 0 ? (
 					<p className="text-body text-ink-muted m-0 px-3 py-4">

@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import PageShell from '../../components/PageShell.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import NoteBrowser from '../../components/NoteBrowser';
 import { getSortedNotes, type NoteSummary } from '../../utils/notes';
@@ -11,16 +12,14 @@ const summaries: NoteSummary[] = notes.map((note) => ({
 	slug: note.id,
 	title: note.data.title,
 	category: note.data.category,
-	excerpt: note.data.excerpt,
+	description: note.data.description,
 	pubDate: note.data.pubDate.toISOString(),
 }));
 ---
 
 <Layout title="Notes" description={description}>
-	<main class="w-full px-5 pt-16 pb-20">
-		<div class="mx-auto flex max-w-150 flex-col items-start gap-6.5">
-			<PageHeader title="Today I Learned" description={description} />
-			<NoteBrowser client:load notes={summaries} />
-		</div>
-	</main>
+	<PageShell stack>
+		<PageHeader title="Today I Learned" description={description} />
+		<NoteBrowser client:load notes={summaries} />
+	</PageShell>
 </Layout>
