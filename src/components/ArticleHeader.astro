@@ -1,0 +1,32 @@
+---
+import { format } from 'date-fns';
+
+interface Props {
+	title: string;
+	date: Date;
+	updated?: Date;
+	/** `#`-prefixed labels shown after the date: a Post's Tags, or a Note's Category. */
+	labels?: string[];
+}
+
+const { title, date, updated, labels = [] } = Astro.props;
+const formatDate = (value: Date) => format(value, 'MMM d, yyyy');
+---
+
+<header class="mb-10 flex flex-col gap-4">
+	<h1 class="text-display m-0 font-semibold tracking-tight text-ink-strong">
+		{title}
+	</h1>
+	<p class="text-meta m-0 flex flex-wrap items-baseline gap-x-4 gap-y-1 text-ink-muted">
+		<time datetime={date.toISOString()}>{formatDate(date)}</time>
+		{updated && (
+			<span>
+				Updated{' '}
+				<time datetime={updated.toISOString()}>{formatDate(updated)}</time>
+			</span>
+		)}
+		{labels.map((label) => (
+			<span class="text-ink-strong">#{label}</span>
+		))}
+	</p>
+</header>

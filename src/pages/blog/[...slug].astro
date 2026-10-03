@@ -18,7 +18,8 @@ const { Content, headings } = await render(post);
 	title={post.data.title}
 	description={post.data.description}
 	date={post.data.date}
-	body={post.body ?? ''}
+	image={post.data.image}
+	tags={post.data.tags}
 	headings={headings}
 >
 	<Content />

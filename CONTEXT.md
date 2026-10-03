@@ -6,8 +6,8 @@ day-to-day learnings, and a bio, built as a static Astro site.
 ## Language
 
 **Post**:
-A long-form, dated piece of writing. Always has a Description, shown
-beneath its title in the blog list.
+A long-form, dated piece of writing. Always has a Description and may
+have a hero image and any number of Tags.
 _Avoid_: Article, blog entry
 
 **Note**:
@@ -18,12 +18,18 @@ _Avoid_: TIL, TIL item
 **Category**:
 The single, fixed classification a Note belongs to — exactly one per
 Note, not several.
-_Avoid_: Tag, tags
+_Avoid_: Tag, tags — those belong to Posts
+
+**Tag**:
+A free-form label on a Post; a Post can have zero or more. Shown as
+`#tag` under the title.
+_Avoid_: Category — that is the one-per-Note classification
 
 **Description**:
 A short summary written separately from a Post or Note's body. Required
-and always displayed for a Post; for a Note it's optional and only
-improves search matching, never displayed.
+for a Post, where it feeds the page's meta description and is not shown
+in the blog list; for a Note it's optional and only improves search
+matching, never displayed.
 _Avoid_: Excerpt
 
 **Bio**:
