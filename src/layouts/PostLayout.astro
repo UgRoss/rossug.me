@@ -1,9 +1,9 @@
 ---
 import Layout from './Layout.astro';
-import PageShell from '../components/PageShell.astro';
-import TableOfContents from '../components/TableOfContents.astro';
+import PageShell from '@/components/PageShell.astro';
+import TableOfContents from '@/components/TableOfContents.astro';
 import { Image } from 'astro:assets';
-import ArticleHeader from '../components/ArticleHeader.astro';
+import ArticleHeader from '@/components/ArticleHeader.astro';
 import type { ImageMetadata, MarkdownHeading } from 'astro';
 
 interface Props {
@@ -27,7 +27,7 @@ const { title, description, date, image, tags, headings } = Astro.props;
 					alt=""
 					width={1120}
 					class="mb-10 block h-auto w-full"
-					loading="eager"
+					priority
 				/>
 			)}
 			<!-- The TOC is anchored to the top of the title block, not the
