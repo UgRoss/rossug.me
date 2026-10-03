@@ -1,0 +1,61 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import workspace from '../assets/workspace.png';
+import { usesIntro, usesSections } from '../data/uses';
+
+const description = usesIntro;
+const headingId = (title: string) =>
+	`${title.toLowerCase().replace(/\s+/g, '-')}-title`;
+---
+
+<Layout title="Uses" description={description}>
+	<main class="w-full px-5 pt-16 pb-20">
+		<div class="mx-auto flex max-w-150 flex-col items-start gap-6.5">
+			<PageHeader title="Uses" description={description} />
+			<Image
+				src={workspace}
+				alt="My desk: a laptop and monitor under a window, with a lamp and a plant."
+				width={1120}
+				class="mb-6 block h-auto w-full"
+				loading="eager"
+			/>
+			<div class="rich-text flex w-full flex-col gap-12">
+				{usesSections.map((section) => (
+					<section
+						class="flex flex-col gap-4"
+						aria-labelledby={headingId(section.title)}
+					>
+						<h2
+							id={headingId(section.title)}
+							class="text-heading-lg m-0 font-semibold tracking-tight text-ink-strong"
+						>
+							{section.title}
+						</h2>
+						<ul class="m-0 flex list-none flex-col gap-3 p-0">
+							{section.items.map((item) => (
+								<li class="flex flex-col gap-0.5">
+									<span class="text-body font-medium text-ink-strong">
+										{item.href ? (
+											<a
+												href={item.href}
+												target="_blank"
+												rel="noopener noreferrer"
+											>
+												{item.name}
+											</a>
+										) : (
+											item.name
+										)}
+									</span>
+									<span class="text-body text-ink-muted">{item.note}</span>
+								</li>
+							))}
+						</ul>
+					</section>
+				))}
+			</div>
+		</div>
+	</main>
+</Layout>
