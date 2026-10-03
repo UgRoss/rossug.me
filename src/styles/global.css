@@ -3,30 +3,34 @@
 
 @theme {
 	--font-sans:
-		'Inter Variable', Inter, -apple-system, BlinkMacSystemFont,
-		'Helvetica Neue', Arial, sans-serif;
+		'Open Runde', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial,
+		sans-serif;
 
-	--color-page: #fafafa;
+	--color-page: #ffffff;
 	--color-surface: #ffffff;
-	--color-ink: #000000;
-	--color-ink-strong: #000000;
+	--color-ink: lab(15.204% 0 -0.00000596046);
+	--color-ink-strong: lab(15.204% 0 -0.00000596046);
 	--color-ink-muted: #8a8a8a;
 	--color-line: #e4e4e4;
 	--color-line-faint: #f5f5f5;
 	--color-accent: #fb5ab2;
 
-	/* Non-default type sizes used throughout the site. 16px/24px and
-	   20px/28px headings already match Tailwind's built-in text-base and
-	   text-xl exactly, so those are used directly instead of duplicating
-	   them here. */
-	--text-body: 14px;
-	--text-body--line-height: 22px;
-	--text-meta: 12.5px;
-	--text-meta--line-height: 18px;
-	--text-small: 13px;
-	--text-small--line-height: 20px;
-	--text-heading-lg: 22px;
-	--text-heading-lg--line-height: 30px;
+	/* Type scale. text-base and text-xl override Tailwind's defaults so
+	   headings stay clearly larger than the 15px body. */
+	--text-body: 15px;
+	--text-body--line-height: 24px;
+	--text-meta: 13.5px;
+	--text-meta--line-height: 20px;
+	--text-small: 14px;
+	--text-small--line-height: 22px;
+	--text-base: 17px;
+	--text-base--line-height: 26px;
+	--text-xl: 21px;
+	--text-xl--line-height: 30px;
+	--text-heading-lg: 24px;
+	--text-heading-lg--line-height: 32px;
+	--text-display: 40px;
+	--text-display--line-height: 44px;
 }
 
 [data-theme='dark'] {
@@ -60,7 +64,7 @@
    normal declarations. Unlayered rules beat every layered rule, so this
    is the only reliable way to re-theme .prose to the site's own tokens. */
 .prose {
-	--tw-prose-body: var(--color-ink);
+	--tw-prose-body: color-mix(in srgb, var(--color-ink) 72%, var(--color-page));
 	--tw-prose-headings: var(--color-ink-strong);
 	--tw-prose-bold: var(--color-ink-strong);
 	--tw-prose-links: var(--color-ink-strong);
@@ -72,9 +76,42 @@
 	--tw-prose-captions: var(--color-ink-muted);
 	--tw-prose-code: var(--color-ink-strong);
 	--tw-prose-pre-code: inherit;
-	--tw-prose-pre-bg: transparent;
+	--tw-prose-pre-bg: var(--color-line-faint);
 	--tw-prose-th-borders: var(--color-line);
 	--tw-prose-td-borders: var(--color-line-faint);
+	font-size: var(--text-body);
+	line-height: 1.6;
+}
+
+.prose h2 {
+	font-size: var(--text-heading-lg);
+	line-height: 1.25;
+	font-weight: 600;
+	letter-spacing: -0.02em;
+	margin-top: 2.5em;
+	margin-bottom: 0.75em;
+}
+
+/* 14px at the 15px body size; prose-sm's default .857em reads too small. */
+.prose pre,
+.prose code {
+	font-size: 0.933em;
+}
+
+/* Inline code only (not fenced blocks): a soft chip instead of the
+   typography plugin's backtick-wrapped text. The tint is mixed from the ink
+   and page colors so it reads the same in light and dark. */
+.prose :not(pre) > code {
+	padding: 0.15em 0.4em;
+	border-radius: 6px;
+	background: color-mix(in srgb, var(--color-ink) 8%, var(--color-page));
+	color: var(--color-ink-strong);
+	font-weight: var(--font-weight-normal);
+}
+
+.prose :not(pre) > code::before,
+.prose :not(pre) > code::after {
+	content: none;
 }
 
 .prose.rich-text a {
@@ -162,17 +199,6 @@
 			100% 1px;
 	}
 
-	/* .post-card stretches its title link over the whole card (see
-	   after:absolute after:inset-0 in blog/[...page].astro) so the entire
-	   area is clickable; this mirrors that same underline hover state
-	   whenever the pointer is anywhere in the card, not just over the
-	   title text itself. */
-	.rich-text .post-card:hover .post-card-title {
-		background-size:
-			100% 1px,
-			100% 1px;
-	}
-
 	.rich-text a[target='_blank']::before {
 		content: '';
 		display: block;
@@ -201,16 +227,20 @@
 		transform: translate(0, 0);
 	}
 
+	/* Syntax colors come from the Shiki themes; the block background and
+	   border come from the site's own tokens so code sits on the page the
+	   same way in both color schemes. */
+	.astro-code {
+		border: 1px solid var(--color-line);
+	}
+
 	.astro-code,
 	.astro-code span {
 		color: var(--shiki-light) !important;
-		background-color: var(--shiki-light-bg) !important;
 	}
 
 	[data-theme='dark'] .astro-code,
 	[data-theme='dark'] .astro-code span {
 		color: var(--shiki-dark) !important;
-		background-color: var(--shiki-dark-bg) !important;
 	}
-
 }

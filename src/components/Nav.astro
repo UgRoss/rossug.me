@@ -1,0 +1,38 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const links = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Posts', href: '/blog/' },
+	{ label: 'Notes', href: '/notes/' },
+	{ label: 'Uses', href: '/uses/' },
+];
+
+const pathname = Astro.url.pathname;
+const isActive = (href: string) =>
+	href === '/'
+		? pathname === '/'
+		: pathname.startsWith(href.replace(/\/$/, ''));
+---
+
+<nav class="w-full px-5 pt-8" aria-label="Main">
+	<div class="mx-auto flex max-w-150 items-center gap-5">
+		{links.map(({ label, href }) => (
+			<a
+				href={href}
+				aria-current={isActive(href) ? 'page' : undefined}
+				class:list={[
+					'text-body relative py-1 font-medium no-underline transition-colors duration-[160ms]',
+					'after:absolute after:bottom-0 after:left-0 after:h-px after:w-full after:origin-left after:bg-current after:transition-transform after:duration-200 after:ease-out after:content-[""]',
+					'hover:text-ink-strong focus-visible:text-ink-strong hover:after:scale-x-100 focus-visible:after:scale-x-100',
+					isActive(href)
+						? 'text-ink-strong after:scale-x-100'
+						: 'text-ink-muted after:scale-x-0',
+				]}
+			>
+				{label}
+			</a>
+		))}
+		<ThemeToggle />
+	</div>
+</nav>

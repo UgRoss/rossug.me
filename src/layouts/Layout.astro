@@ -1,6 +1,9 @@
 ---
 import '../styles/global.css';
-import '@fontsource-variable/inter';
+import '@fontsource/open-runde/400.css';
+import '@fontsource/open-runde/500.css';
+import '@fontsource/open-runde/600.css';
+import Nav from '../components/Nav.astro';
 
 interface Props {
 	title: string;
@@ -46,6 +49,7 @@ const { title, description } = Astro.props;
 		</script>
 	</head>
 	<body class="bg-page text-ink font-sans text-body font-normal antialiased">
+		<Nav />
 		<slot />
 	</body>
 </html>
