@@ -54,6 +54,10 @@ const mix = (a: Rgb, b: Rgb, weightOfA: number): Rgb => {
 // WCAG 2.1 AA: 4.5:1 for text (1.4.3), 3:1 for UI component boundaries (1.4.11).
 const TEXT = 4.5;
 const BOUNDARY = 3;
+// The hover highlight is the only hover cue on list rows. A light tint reads on
+// white at a lower ratio than a dark tint does on a dark page, which is why the
+// minimums differ.
+const HIGHLIGHT: Record<Theme, number> = { light: 1.05, dark: 1.25 };
 
 describe.each<Theme>(['light', 'dark'])('%s theme contrast', (theme) => {
 	const tokens = readTokens(theme);
@@ -63,6 +67,7 @@ describe.each<Theme>(['light', 'dark'])('%s theme contrast', (theme) => {
 	it('defines every token as a light-dark() pair', () => {
 		expect(Object.keys(tokens).sort()).toEqual(
 			[
+				'highlight',
 				'ink',
 				'ink-muted',
 				'ink-strong',
@@ -82,6 +87,8 @@ describe.each<Theme>(['light', 'dark'])('%s theme contrast', (theme) => {
 		['ink-muted', 'page'],
 		['ink-muted', 'line-faint'],
 		['ink-muted', 'surface'],
+		['ink-muted', 'highlight'],
+		['ink-strong', 'highlight'],
 	] as const)('text %s on %s meets AA', (fg, bg) => {
 		expect(ratio(fg, bg)).toBeGreaterThanOrEqual(TEXT);
 	});
@@ -89,6 +96,10 @@ describe.each<Theme>(['light', 'dark'])('%s theme contrast', (theme) => {
 	it('prose body text meets AA on the page', () => {
 		const body = mix(token(tokens, 'ink'), token(tokens, 'page'), 0.72);
 		expect(contrast(body, token(tokens, 'page'))).toBeGreaterThanOrEqual(TEXT);
+	});
+
+	it('hover highlight is distinguishable from the page', () => {
+		expect(ratio('highlight', 'page')).toBeGreaterThanOrEqual(HIGHLIGHT[theme]);
 	});
 
 	it.each(['page', 'surface'] as const)(
