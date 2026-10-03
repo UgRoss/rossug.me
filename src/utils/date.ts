@@ -10,9 +10,19 @@ export type DateValue = Date | string;
 const toDate = (value: DateValue): Date =>
 	typeof value === 'string' ? parseISO(value) : value;
 
+// Content dates are plain calendar days that parse to UTC midnight, so they
+// must be formatted in UTC; the build machine's timezone would otherwise show
+// the previous day anywhere west of Greenwich.
+const dateFormat = new Intl.DateTimeFormat('en-US', {
+	month: 'short',
+	day: 'numeric',
+	year: 'numeric',
+	timeZone: 'UTC',
+});
+
 /** "Jan 5, 2026" — the absolute date format used in lists and article headers. */
 export const formatDate = (value: DateValue): string =>
-	format(toDate(value), 'MMM d, yyyy');
+	dateFormat.format(toDate(value));
 
 /**
  * "3 days ago"-style relative date, falling back to just the year once a
