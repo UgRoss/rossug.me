@@ -1,9 +1,11 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import Layout from '../../layouts/Layout.astro';
-import ThemeToggle from '../../components/ThemeToggle.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import LinkList from '../../components/LinkList.astro';
 import Pagination from '../../components/Pagination.astro';
-import { getSortedPosts, postDateFormatter } from '../../utils/posts';
+import { format } from 'date-fns';
+import { getSortedPosts } from '../../utils/posts';
 
 export const getStaticPaths = (async ({ paginate }) => {
 	const PAGE_SIZE = 10;
@@ -13,43 +15,29 @@ export const getStaticPaths = (async ({ paginate }) => {
 
 const { page } = Astro.props;
 
+const description = 'Posts on frontend engineering, React, and TypeScript.';
+
+const items = page.data.map((post) => ({
+	name: post.data.title,
+	href: `/blog/${post.id}/`,
+	meta: format(post.data.date, 'MMM d, yyyy'),
+}));
+
 // paginate() omits the trailing slash the rest of the site uses (post
 // links, RSS); add it back so pagination links match that convention.
 const withTrailingSlash = (url: string | undefined) =>
 	url && !url.endsWith('/') ? `${url}/` : url;
 ---
 
-<Layout title="Blog" description="All posts.">
+<Layout title="Blog" description={description}>
 	<main class="w-full px-5 pt-16 pb-20">
-		<div class="mx-auto flex max-w-140 flex-col items-start gap-6.5">
-			<ThemeToggle />
-			<h1 class="text-xl m-0 font-semibold text-ink-strong">Blog</h1>
-			<div class="rich-text flex w-full flex-col items-start gap-7">
-				{page.data.length === 0 ? (
-					<p class="text-body m-0 text-ink-muted">No posts yet.</p>
-				) : (
-					page.data.map((post) => (
-						<article class="post-card relative flex w-full flex-col gap-1.5">
-							<div class="grid w-full grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-4">
-								<h2 class="text-base m-0 font-semibold">
-									<a
-										href={`/blog/${post.id}/`}
-										class="post-card-title static after:absolute after:inset-0 after:content-['']"
-									>
-										{post.data.title}
-									</a>
-								</h2>
-								<p class="text-meta m-0 whitespace-nowrap text-ink-muted">
-									{postDateFormatter.format(post.data.date)}
-								</p>
-							</div>
-							<p class="text-body m-0 text-ink-muted">
-								{post.data.description}
-							</p>
-						</article>
-					))
-				)}
-			</div>
+		<div class="mx-auto flex max-w-150 flex-col items-start gap-6.5">
+			<PageHeader title="Blog" description={description} />
+			{items.length === 0 ? (
+				<p class="text-body m-0 text-ink-muted">No posts yet.</p>
+			) : (
+				<LinkList items={items} />
+			)}
 			<Pagination
 				prevUrl={withTrailingSlash(page.url.prev)}
 				nextUrl={withTrailingSlash(page.url.next)}

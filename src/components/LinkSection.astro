@@ -1,5 +1,6 @@
 ---
 import type { LinkItem } from '../data/site';
+import LinkList from './LinkList.astro';
 
 interface Props {
 	title: string;
@@ -11,33 +12,12 @@ const headingId = `${title.toLowerCase().replace(/\s+/g, '-')}-title`;
 ---
 
 <section
-	class="rich-text appear flex w-full flex-col items-start gap-3.5"
+	class="appear flex w-full flex-col items-start gap-3.5"
 	style="--appear-delay: 180ms"
 	aria-labelledby={headingId}
 >
 	<h2 id={headingId} class="text-body m-0 font-normal text-ink-muted">
 		{title}
 	</h2>
-	<div class="grid w-full grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-4 gap-y-1.5">
-		{items.map((item) => {
-			const external = item.href.startsWith('http');
-			return (
-				<>
-					<div class="min-w-0 text-ink-strong">
-						<a
-							href={item.href}
-							target={external ? '_blank' : undefined}
-							rel={external ? 'noopener noreferrer' : undefined}
-							class="w-fit"
-						>
-							{item.name}
-						</a>
-					</div>
-					<div class="text-meta whitespace-nowrap text-right text-ink-muted">
-						<span>{item.meta}</span>
-					</div>
-				</>
-			);
-		})}
-	</div>
+	<LinkList items={items} />
 </section>

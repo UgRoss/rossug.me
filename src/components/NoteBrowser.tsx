@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { matchSorter } from 'match-sorter';
 import type { NoteSummary } from '../utils/notes';
 import { formatRelativeDate } from '../utils/date';
+import { attachSlideHighlight } from '../utils/slide-highlight';
 import Button from './Button';
 
 const PAGE_SIZE = 10;
@@ -39,6 +40,15 @@ export default function NoteBrowser({ notes }: Props) {
 		(currentPage - 1) * PAGE_SIZE,
 		currentPage * PAGE_SIZE,
 	);
+
+	const listRef = useRef<HTMLDivElement>(null);
+
+	// Re-attach whenever the visible rows change so the highlight is hidden
+	// rather than left over a row that no longer exists.
+	useEffect(() => {
+		if (!listRef.current) return;
+		return attachSlideHighlight(listRef.current);
+	}, [visible]);
 
 	function selectCategory(category: string | null) {
 		setActiveCategory(category);
@@ -92,43 +102,47 @@ export default function NoteBrowser({ notes }: Props) {
 				)}
 			</div>
 
-			<div className="note-list border-line flex w-full flex-col items-start border-t">
+			<div
+				ref={listRef}
+				className="note-list relative -mx-3 flex w-[calc(100%+1.5rem)] flex-col items-start"
+			>
 				{notes.length === 0 ? (
-					<p className="text-body text-ink-muted m-0 py-4">No notes yet.</p>
+					<p className="text-body text-ink-muted m-0 px-3 py-4">
+						No notes yet.
+					</p>
 				) : visible.length === 0 ? (
-					<p className="text-body text-ink-muted m-0 py-4">
+					<p className="text-body text-ink-muted m-0 px-3 py-4">
 						No matching notes.
 					</p>
 				) : (
-					visible.map((note) => (
-						<article
-							key={note.slug}
-							className="note-item group border-line relative grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 border-b py-3"
-						>
-							<h2 className="text-body m-0 flex min-w-0 items-center gap-2 font-normal">
-								<a
-									href={`/notes/${note.slug}/`}
-									className="note-item-title text-ink-strong min-w-0 truncate underline-offset-2 after:absolute after:inset-0 after:content-[''] group-hover:underline group-focus-within:underline"
-								>
-									{note.title}
-								</a>
-								<span className="text-meta text-ink-muted">
-									#{note.category}
+					<>
+						<div
+							aria-hidden="true"
+							className="link-highlight bg-line-faint pointer-events-none absolute top-0 left-0 w-full rounded-lg opacity-0 transition-[transform,height,opacity] duration-200 ease-out motion-reduce:transition-none"
+						/>
+						{visible.map((note) => (
+							<a
+								key={note.slug}
+								href={`/notes/${note.slug}/`}
+								className="link-row text-ink-strong relative flex w-full items-baseline justify-between gap-4 px-3 py-1.5 no-underline focus-visible:outline-none"
+							>
+								<span className="text-body flex min-w-0 items-baseline gap-2">
+									<span className="min-w-0 truncate font-medium">
+										{note.title}
+									</span>
+									<span className="text-meta text-ink-muted hidden shrink-0 sm:inline">
+										#{note.category}
+									</span>
 								</span>
-							</h2>
-							<p className="text-meta text-ink-muted m-0 flex items-center gap-1.5 whitespace-nowrap">
-								<span
-									aria-hidden="true"
-									className="-translate-x-1 opacity-0 transition duration-200 ease-out group-focus-within:translate-x-0 group-focus-within:opacity-100 group-hover:translate-x-0 group-hover:opacity-100"
+								<time
+									dateTime={note.pubDate}
+									className="text-meta text-ink-muted shrink-0 whitespace-nowrap"
 								>
-									→
-								</span>
-								<time dateTime={note.pubDate}>
 									{formatRelativeDate(note.pubDate)}
 								</time>
-							</p>
-						</article>
-					))
+							</a>
+						))}
+					</>
 				)}
 			</div>
 

@@ -1,0 +1,43 @@
+---
+import type { LinkItem } from '../data/site';
+
+interface Props {
+	items: LinkItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<!-- Rows are padded and pulled back out by the same amount so the hover
+     highlight has room around the text while the text itself stays
+     aligned with the rest of the column. -->
+<div class="link-list relative -mx-3 w-[calc(100%+1.5rem)]">
+	<div
+		class="link-highlight pointer-events-none absolute top-0 left-0 w-full rounded-lg bg-line-faint opacity-0 transition-[transform,height,opacity] duration-200 ease-out motion-reduce:transition-none"
+		aria-hidden="true"
+	></div>
+	{items.map((item) => {
+		const external = item.href.startsWith('http');
+		return (
+			<a
+				href={item.href}
+				target={external ? '_blank' : undefined}
+				rel={external ? 'noopener noreferrer' : undefined}
+				class="link-row relative flex items-baseline justify-between gap-4 px-3 py-1.5 text-ink-strong no-underline focus-visible:outline-none"
+			>
+				<span class="text-body min-w-0 truncate font-medium">{item.name}</span>
+				<span class="text-meta shrink-0 whitespace-nowrap text-ink-muted">
+					{item.meta}
+				</span>
+			</a>
+		);
+	})}
+</div>
+
+<script>
+	import { attachSlideHighlight } from '../utils/slide-highlight';
+
+	document
+		.querySelectorAll<HTMLElement>('.link-list')
+		.forEach(attachSlideHighlight);
+</script>
