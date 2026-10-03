@@ -28,3 +28,8 @@ pnpm-debug.log*
 
 # Playwright MCP session artifacts
 .playwright-mcp/
+
+# Session-scoped docs (superpowers specs/plans, working trackers) — local only.
+# Durable docs live in docs/adr/ and CONTEXT.md and are tracked.
+docs/superpowers/
+docs/internal/
