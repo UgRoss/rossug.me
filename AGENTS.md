@@ -70,7 +70,7 @@ Domain vocabulary (Post, Note, Category, Tag, Description, Bio) lives in `CONTEX
 ## Head, SEO and drafts
 
 - The document head lives in `src/components/BaseHead.astro`. Pages describe themselves through `Layout`'s `PageMeta` props (`title`, `description`, optional `image`, `type`, `publishedTime`, `noindex`); the title gets the site-name suffix and canonical, Open Graph and Twitter tags are generated from those props.
-- Posts use their hero image as the social image; everything else uses `public/og-default.png`. That card is a rendered image with the site tagline baked in, so re-render it by hand if the tagline in `src/data/site.ts` changes. `public/favicon.*` and `public/apple-touch-icon.png` are rendered from the same flower mark.
+- Posts use their hero image as the social image; everything else uses `public/og-default.png`. That card is a rendered image with the name, "Frontend Engineer" and the domain baked in, so re-render it by hand if any of those change. `public/favicon.*` and `public/apple-touch-icon.png` are rendered from the same flower mark.
 - `theme-color` values live in `src/data/site.ts` and must match `--color-page` (a test enforces it).
 - Posts and Notes accept `draft: true`: shown by `astro dev`, excluded from production pages, listings, RSS and the sitemap. Always read collections through `getSortedPosts` / `getSortedNotes`, never `getCollection` directly, so drafts stay filtered.
 
