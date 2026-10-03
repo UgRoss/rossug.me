@@ -1,0 +1,19 @@
+---
+interface Props {
+	/** Stack children vertically with a gap, as list pages do; articles lay out their own content. */
+	stack?: boolean;
+}
+
+const { stack = false } = Astro.props;
+---
+
+<main class="w-full px-5 pt-16 pb-20">
+	<div
+		class:list={[
+			'mx-auto max-w-150',
+			stack && 'flex flex-col items-start gap-6.5',
+		]}
+	>
+		<slot />
+	</div>
+</main>

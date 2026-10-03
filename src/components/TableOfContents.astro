@@ -1,8 +1,8 @@
 ---
-import type { Heading } from '../utils/posts';
+import type { MarkdownHeading } from 'astro';
 
 interface Props {
-	headings: Heading[];
+	headings: MarkdownHeading[];
 }
 
 const { headings } = Astro.props;

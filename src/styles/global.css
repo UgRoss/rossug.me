@@ -13,7 +13,6 @@
 	--color-ink-muted: #8a8a8a;
 	--color-line: #e4e4e4;
 	--color-line-faint: #f5f5f5;
-	--color-accent: #fb5ab2;
 
 	/* Type scale. text-base and text-xl override Tailwind's defaults so
 	   headings stay clearly larger than the 15px body. */

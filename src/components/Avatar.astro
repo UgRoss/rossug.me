@@ -1,29 +1,19 @@
 ---
 interface Props {
 	initials: string;
-	src?: string;
 }
 
-const { initials, src } = Astro.props;
+const { initials } = Astro.props;
 ---
 
 <div
 	class="appear flex h-10 w-10 flex-none items-center"
 	style="--appear-delay: 0ms"
 >
-	{src ? (
-		<img
-			class="block h-10 w-10 rounded-full object-cover"
-			src={src}
-			alt=""
-			draggable="false"
-		/>
-	) : (
-		<div
-			class="text-body flex h-10 w-10 items-center justify-center rounded-full bg-line-faint font-semibold text-ink-muted"
-			aria-hidden="true"
-		>
-			{initials}
-		</div>
-	)}
+	<div
+		class="text-body flex h-10 w-10 items-center justify-center rounded-full bg-line-faint font-semibold text-ink-muted"
+		aria-hidden="true"
+	>
+		{initials}
+	</div>
 </div>

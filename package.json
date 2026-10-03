@@ -1,5 +1,5 @@
 {
-  "name": "rossug-me-testnew",
+  "name": "rossug-me",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -22,8 +22,6 @@
     "@fontsource/open-runde": "^5.3.0",
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.3",
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
     "astro": "^7.3.2",
     "date-fns": "^4.4.0",
     "match-sorter": "^8.3.0",
@@ -38,6 +36,8 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@eslint/js": "^10.0.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "eslint": "^10.10.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^3.1.0",

@@ -1,14 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import PageShell from '../components/PageShell.astro';
 import PageHeader from '../components/PageHeader.astro';
 
 const description = "The page you're looking for doesn't exist.";
 ---
 
 <Layout title="Page not found" description={description}>
-	<main class="w-full px-5 pt-16 pb-20">
-		<div class="mx-auto flex max-w-150 flex-col items-start gap-6.5">
-			<PageHeader title="Page not found" description={description} />
-		</div>
-	</main>
+	<PageShell stack>
+		<PageHeader title="Page not found" description={description} />
+	</PageShell>
 </Layout>

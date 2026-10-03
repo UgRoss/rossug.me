@@ -10,8 +10,23 @@ const { prevUrl, nextUrl } = Astro.props;
 ---
 
 {(prevUrl || nextUrl) && (
-	<nav class="text-body flex w-full items-center justify-between" aria-label="Blog pagination">
-		<div>{prevUrl && <Button href={prevUrl} icon="←">Newer posts</Button>}</div>
-		<div>{nextUrl && <Button href={nextUrl} icon="→" iconPosition="after">Older posts</Button>}</div>
+	<nav
+		class="text-body flex w-full items-center justify-between"
+		aria-label="Blog pagination"
+	>
+		<div>
+			{prevUrl && (
+				<Button href={prevUrl} icon="←">
+					Newer posts
+				</Button>
+			)}
+		</div>
+		<div>
+			{nextUrl && (
+				<Button href={nextUrl} icon="→" iconPosition="after">
+					Older posts
+				</Button>
+			)}
+		</div>
 	</nav>
 )}

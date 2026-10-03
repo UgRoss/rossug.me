@@ -1,5 +1,5 @@
 ---
-import { format } from 'date-fns';
+import { formatDate } from '../utils/date';
 
 interface Props {
 	title: string;
@@ -10,7 +10,6 @@ interface Props {
 }
 
 const { title, date, updated, labels = [] } = Astro.props;
-const formatDate = (value: Date) => format(value, 'MMM d, yyyy');
 ---
 
 <header class="mb-10 flex flex-col gap-4">

@@ -5,8 +5,7 @@ import Greeting from '../components/Greeting.astro';
 import Bio from '../components/Bio.astro';
 import LinkSection from '../components/LinkSection.astro';
 import Footer from '../components/Footer.astro';
-import { getSortedPosts } from '../utils/posts';
-import { format } from 'date-fns';
+import { getSortedPosts, postToLinkItem } from '../utils/posts';
 import { getEntry, render } from 'astro:content';
 import { avatar, footer, siteMeta } from '../data/site';
 
@@ -16,11 +15,7 @@ const about = await getEntry('about', 'index');
 if (!about) throw new Error('Missing content entry: about/index.md');
 const { Content: AboutContent } = await render(about);
 
-const blogItems = posts.map((post) => ({
-	name: post.data.title,
-	href: `/blog/${post.id}/`,
-	meta: format(post.data.date, 'MMM d, yyyy'),
-}));
+const blogItems = posts.map(postToLinkItem);
 ---
 
 <Layout title={siteMeta.title} description={siteMeta.description}>
