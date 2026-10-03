@@ -1,5 +1,11 @@
 ---
-import { greetings } from '@/data/site';
+import type { GreetingItem } from '@/data/site';
+
+interface Props {
+	items: GreetingItem[];
+}
+
+const { items } = Astro.props;
 ---
 
 <div
@@ -8,7 +14,7 @@ import { greetings } from '@/data/site';
 	role="group"
 	aria-label="Greetings"
 >
-	{greetings.map((g) => (
+	{items.map((g) => (
 		<span lang={g.lang}>{g.text}</span>
 	))}{' '}
 	👋

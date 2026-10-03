@@ -7,7 +7,7 @@ import LinkSection from '@/components/LinkSection.astro';
 import Footer from '@/components/Footer.astro';
 import { getSortedPosts, postToLinkItem } from '@/utils/posts';
 import { getEntry, render } from 'astro:content';
-import { avatar, footer, siteMeta } from '@/data/site';
+import { avatar, footer, greetings, siteMeta } from '@/data/site';
 
 const posts = await getSortedPosts();
 
@@ -26,7 +26,7 @@ const blogItems = posts.map(postToLinkItem);
 				<Avatar initials={avatar.initials} />
 				<div class="flex w-full flex-col items-start gap-9">
 					<div class="flex w-full flex-col items-start gap-3">
-						<Greeting />
+						<Greeting items={greetings} />
 						<Bio>
 							<AboutContent />
 						</Bio>

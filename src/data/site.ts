@@ -1,4 +1,4 @@
-export interface Greeting {
+export interface GreetingItem {
 	lang: string;
 	text: string;
 }
@@ -13,7 +13,7 @@ export const avatar = {
 	initials: 'RU',
 };
 
-export const greetings: Greeting[] = [
+export const greetings: GreetingItem[] = [
 	{ lang: 'en', text: 'hello,' },
 	{ lang: 'es', text: 'hola,' },
 	{ lang: 'uk', text: 'привіт' },
