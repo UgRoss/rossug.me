@@ -13,10 +13,12 @@ export async function GET(context: APIContext) {
 		title: siteMeta.title,
 		description: siteMeta.description,
 		site: context.site,
+		customData: '<language>en</language>',
 		items: posts.map((post) => ({
 			title: post.data.title,
 			description: post.data.description,
 			pubDate: post.data.date,
+			categories: post.data.tags,
 			link: postHref(post.id),
 		})),
 	});

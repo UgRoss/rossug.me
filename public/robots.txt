@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rossug.me/sitemap-index.xml

@@ -14,7 +14,12 @@ interface Props {
 const { title, category, pubDate, updateDate, description } = Astro.props;
 ---
 
-<Layout title={title} description={description ?? title}>
+<Layout
+	title={title}
+	description={description ?? title}
+	type="article"
+	publishedTime={pubDate}
+>
 	<PageShell>
 		<article>
 			<ArticleHeader

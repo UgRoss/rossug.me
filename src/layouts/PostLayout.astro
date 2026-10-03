@@ -18,7 +18,13 @@ interface Props {
 const { title, description, date, image, tags, headings } = Astro.props;
 ---
 
-<Layout title={title} description={description}>
+<Layout
+	title={title}
+	description={description}
+	image={image}
+	type="article"
+	publishedTime={date}
+>
 	<PageShell>
 		<article>
 			{image && (
