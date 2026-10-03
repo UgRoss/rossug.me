@@ -1,6 +1,7 @@
 {
   "name": "rossug-me",
   "type": "module",
+  "packageManager": "pnpm@12.4.1",
   "version": "0.0.1",
   "engines": {
     "node": ">=22.12.0"
@@ -10,10 +11,14 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "check": "astro check",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "validate": "pnpm format:check && pnpm lint && pnpm check && pnpm test && pnpm build"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.0.1",

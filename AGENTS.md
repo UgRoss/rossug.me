@@ -13,10 +13,17 @@ This project uses pnpm (see `pnpm-workspace.yaml`), not npm or yarn.
 | `pnpm build`       | Build production site to `./dist/`         |
 | `pnpm preview`     | Preview the production build locally       |
 | `pnpm astro check` | Type-check `.astro` files                  |
+| `pnpm check`       | Type-check (`astro check`)                 |
+| `pnpm test`        | Vitest unit tests (`pnpm test:watch` to watch) |
 | `pnpm lint`        | ESLint (`pnpm lint:fix` to autofix)        |
 | `pnpm format`      | Prettier write (`pnpm format:check` to verify) |
+| `pnpm validate`    | Everything CI runs: format check, lint, type-check, tests, build |
 
-There is no test suite in this repository yet. Verify changes with `pnpm build`, `pnpm astro check`, `pnpm lint`, and `pnpm format:check`.
+Run `pnpm validate` before committing. GitHub Actions runs the same command on pushes to `main` and on pull requests.
+
+## Testing
+
+Vitest covers pure logic in `src/utils/`. Tests live in a nested `__tests__` folder next to the code they cover (`src/utils/__tests__/date.test.ts`), never beside the source file and never in a top-level folder. Astro ignores underscore-prefixed folders when routing. Write the failing test first, then the code.
 
 When starting the dev server, use background mode:
 
