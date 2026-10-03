@@ -103,10 +103,7 @@ export default function NoteBrowser({ notes }: Props) {
 				)}
 			</div>
 
-			<div
-				ref={listRef}
-				className="relative -mx-3 flex w-[calc(100%+1.5rem)] flex-col items-start"
-			>
+			<div ref={listRef} className="link-list">
 				{notes.length === 0 ? (
 					<p className="text-body text-ink-muted m-0 px-3 py-4">
 						No notes yet.
@@ -117,15 +114,12 @@ export default function NoteBrowser({ notes }: Props) {
 					</p>
 				) : (
 					<>
-						<div
-							aria-hidden="true"
-							className="link-highlight bg-line-faint pointer-events-none absolute top-0 left-0 w-full rounded-lg opacity-0 transition-[transform,height,opacity] duration-200 ease-out motion-reduce:transition-none"
-						/>
+						<div aria-hidden="true" className="link-highlight" />
 						{visible.map((note) => (
 							<a
 								key={note.slug}
 								href={noteHref(note.slug)}
-								className="link-row text-ink-strong relative flex w-full items-baseline justify-between gap-4 px-3 py-1.5 no-underline focus-visible:outline-none"
+								className="link-row"
 							>
 								<span className="text-body flex min-w-0 items-baseline gap-2">
 									<span className="min-w-0 truncate font-medium">

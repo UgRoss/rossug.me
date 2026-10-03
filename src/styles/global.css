@@ -172,6 +172,23 @@
 		}
 	}
 
+	/* Sliding hover highlight for lists of link rows. These class names are
+	   also the hooks utils/slide-highlight.ts looks up, so LinkList.astro and
+	   NoteBrowser.tsx only need to apply them. Rows are padded and the list is
+	   pulled back out by the same amount so the highlight has room around the
+	   text while the text stays aligned with the rest of the column. */
+	.link-list {
+		@apply relative -mx-3 flex w-[calc(100%+1.5rem)] flex-col items-start;
+	}
+
+	.link-highlight {
+		@apply bg-line-faint pointer-events-none absolute top-0 left-0 w-full rounded-lg opacity-0 transition-[transform,height,opacity] duration-200 ease-out motion-reduce:transition-none;
+	}
+
+	.link-row {
+		@apply text-ink-strong relative flex w-full items-baseline justify-between gap-4 px-3 py-1.5 no-underline focus-visible:outline-none;
+	}
+
 	.rich-text a {
 		position: relative;
 		color: var(--color-ink-strong);

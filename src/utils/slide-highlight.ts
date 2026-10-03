@@ -2,9 +2,9 @@
  * Hover highlight that slides between rows instead of each row fading its
  * own background, so quick pointer movement reads as one continuous motion.
  *
- * `list` must contain one `.link-highlight` element (absolutely positioned
- * at the list's top-left, full width) and any number of `.link-row`
- * elements. Row geometry is read on every hover, so rows can be added or
+ * `list` must contain one `.link-highlight` element and any number of
+ * `.link-row` elements; global.css defines the look of both (the highlight is
+ * absolutely positioned at the list's top-left, full width). Row geometry is read on every hover, so rows can be added or
  * removed freely. Returns a cleanup function that detaches the listeners
  * and hides the highlight.
  */
