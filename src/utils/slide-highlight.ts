@@ -10,7 +10,7 @@
  */
 export function attachSlideHighlight(list: HTMLElement): () => void {
 	const highlight = list.querySelector<HTMLElement>('.link-highlight');
-	if (!highlight) return () => {};
+	if (!highlight) return () => undefined;
 
 	const canHover = window.matchMedia('(hover: hover)');
 
@@ -31,7 +31,7 @@ export function attachSlideHighlight(list: HTMLElement): () => void {
 		highlight.style.opacity = '0';
 	};
 	const rowFrom = (target: EventTarget | null) =>
-		(target as HTMLElement | null)?.closest<HTMLElement>('.link-row') ?? null;
+		target instanceof Element ? target.closest<HTMLElement>('.link-row') : null;
 
 	const onPointerOver = (event: PointerEvent) => {
 		if (!canHover.matches) return;
