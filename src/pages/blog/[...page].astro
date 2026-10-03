@@ -20,9 +20,9 @@ const description = 'Posts on frontend engineering, React, and TypeScript.';
 const items = page.data.map(postToLinkItem);
 ---
 
-<Layout title="Blog" description={description}>
+<Layout title="Posts" description={description}>
 	<PageShell stack>
-		<PageHeader title="Blog" description={description} />
+		<PageHeader title="Posts" description={description} />
 		{items.length === 0 ? (
 			<p class="text-body m-0 text-ink-muted">No posts yet.</p>
 		) : (

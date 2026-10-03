@@ -10,10 +10,16 @@ A long-form, dated piece of writing. Always has a Description and may
 have a hero image and any number of Tags.
 _Avoid_: Article, blog entry
 
+The list of Posts is labelled "Posts" in the nav and as its page title; the
+route stays `/blog/` and the collection is `blog`.
+
 **Note**:
 A short "Today I Learned" entry capturing one quick discovery, tagged
 with exactly one Category.
 _Avoid_: TIL, TIL item
+
+The Notes list page is titled "Today I Learned" (its heading and document
+title); everywhere else, including the nav, they are just "Notes".
 
 **Category**:
 The single, fixed classification a Note belongs to — exactly one per
@@ -37,3 +43,8 @@ The personal introduction shown at the top of the homepage.
 _Avoid_: About — the content collection backing it is named `about`,
 but there's no separate `/about` page; it only ever renders inline on
 the homepage.
+
+**Draft**:
+A Post or Note with `draft: true` in its frontmatter. Drafts render while
+developing (`astro dev`) and are left out of production builds, so they never
+reach pages, listings, RSS or the sitemap.

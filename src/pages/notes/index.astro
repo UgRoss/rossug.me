@@ -18,7 +18,7 @@ const summaries: NoteSummary[] = notes.map((note) => ({
 }));
 ---
 
-<Layout title="Notes" description={description}>
+<Layout title="Today I Learned" description={description}>
 	<PageShell stack>
 		<PageHeader title="Today I Learned" description={description} />
 		<NoteBrowser client:load notes={summaries} />
