@@ -1,10 +1,10 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 
-/* --font-open-runde is defined by Astro's Fonts API (see astro.config.mjs)
+/* --font-inter is defined by Astro's Fonts API (see astro.config.mjs)
    and already includes the fallback stack. */
 @theme inline {
-	--font-sans: var(--font-open-runde);
+	--font-sans: var(--font-inter);
 }
 
 @theme {

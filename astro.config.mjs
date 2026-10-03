@@ -12,10 +12,11 @@ export default defineConfig({
 	fonts: [
 		{
 			provider: fontProviders.fontsource(),
-			name: 'Open Runde',
-			cssVariable: '--font-open-runde',
-			weights: [400, 500, 600],
+			name: 'Inter',
+			cssVariable: '--font-inter',
+			weights: ['100 900'],
 			styles: ['normal'],
+			subsets: ['latin', 'cyrillic'],
 			fallbacks: [
 				'-apple-system',
 				'BlinkMacSystemFont',
