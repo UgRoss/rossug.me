@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { NoteSummary } from '@/types';
-import { filterNotes } from '../filter-notes';
+import { describeResults, filterNotes } from '../filter-notes';
 
 const note = (overrides: Partial<NoteSummary>): NoteSummary => ({
 	slug: 'a-note',
@@ -77,5 +77,19 @@ describe('filterNotes', () => {
 		expect(
 			filterNotes([inDescription, inTitle], { query: 'git', category: null }),
 		).toEqual([inTitle, inDescription]);
+	});
+});
+
+describe('describeResults', () => {
+	it('says when nothing matches', () => {
+		expect(describeResults(0)).toBe('No matching notes');
+	});
+
+	it('uses the singular for one note', () => {
+		expect(describeResults(1)).toBe('1 note');
+	});
+
+	it('counts several notes', () => {
+		expect(describeResults(12)).toBe('12 notes');
 	});
 });

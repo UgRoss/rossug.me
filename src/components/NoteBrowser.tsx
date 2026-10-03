@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { NoteSummary } from '@/types';
-import { filterNotes } from '@/utils/filter-notes';
+import { describeResults, filterNotes } from '@/utils/filter-notes';
 import { formatRelativeDate } from '@/utils/date';
 import { noteHref } from '@/utils/routes';
 import { attachSlideHighlight } from '@/utils/slide-highlight';
@@ -94,6 +94,12 @@ export default function NoteBrowser({ notes }: Props) {
 					</div>
 				)}
 			</div>
+
+			{notes.length > 0 && (
+				<p role="status" className="sr-only">
+					{describeResults(filtered.length)}
+				</p>
+			)}
 
 			<div ref={listRef} className="link-list">
 				{notes.length === 0 ? (

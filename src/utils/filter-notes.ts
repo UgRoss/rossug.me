@@ -21,3 +21,9 @@ export function filterNotes(
 		keys: ['title', (note) => note.description ?? ''],
 	});
 }
+
+/** Spoken summary of a search or filter, announced by a status region. */
+export function describeResults(count: number): string {
+	if (count === 0) return 'No matching notes';
+	return count === 1 ? '1 note' : `${count} notes`;
+}
