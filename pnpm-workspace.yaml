@@ -1,6 +1,9 @@
 allowBuilds:
   esbuild: true
   sharp: true
+  # Cloudflare local runtime; its postinstall is not needed for `wrangler deploy`.
+  # Set to true if `wrangler dev` complains about a missing binary.
+  workerd: false
 # eslint-plugin-jsx-a11y declares support up to ESLint 9; it works with 10.
 peerDependencyRules:
   allowedVersions:
