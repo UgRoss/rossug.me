@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { matchSorter } from 'match-sorter';
 import type { NoteSummary } from '@/types';
 import { formatRelativeDate } from '@/utils/date';
+import { noteHref } from '@/utils/routes';
 import { attachSlideHighlight } from '@/utils/slide-highlight';
 import Button from './Button';
 
@@ -123,7 +124,7 @@ export default function NoteBrowser({ notes }: Props) {
 						{visible.map((note) => (
 							<a
 								key={note.slug}
-								href={`/notes/${note.slug}/`}
+								href={noteHref(note.slug)}
 								className="link-row text-ink-strong relative flex w-full items-baseline justify-between gap-4 px-3 py-1.5 no-underline focus-visible:outline-none"
 							>
 								<span className="text-body flex min-w-0 items-baseline gap-2">
