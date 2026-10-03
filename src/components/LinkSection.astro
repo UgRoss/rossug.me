@@ -1,6 +1,7 @@
 ---
 import type { LinkItem } from '@/types';
 import LinkList from './LinkList.astro';
+import { headingId } from '@/utils/ids';
 
 interface Props {
 	title: string;
@@ -8,15 +9,15 @@ interface Props {
 }
 
 const { title, items } = Astro.props;
-const headingId = `${title.toLowerCase().replace(/\s+/g, '-')}-title`;
+const titleId = headingId(title);
 ---
 
 <section
 	class="appear flex w-full flex-col items-start gap-3.5"
 	style="--appear-delay: 180ms"
-	aria-labelledby={headingId}
+	aria-labelledby={titleId}
 >
-	<h2 id={headingId} class="text-body m-0 font-normal text-ink-muted">
+	<h2 id={titleId} class="text-body m-0 font-normal text-ink-muted">
 		{title}
 	</h2>
 	<LinkList items={items} />

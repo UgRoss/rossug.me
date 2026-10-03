@@ -5,7 +5,7 @@ import {
 	parseISO,
 } from 'date-fns';
 
-export type DateValue = Date | string;
+type DateValue = Date | string;
 
 const toDate = (value: DateValue): Date =>
 	typeof value === 'string' ? parseISO(value) : value;

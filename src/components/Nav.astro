@@ -10,9 +10,7 @@ const links = [
 
 const pathname = Astro.url.pathname;
 const isActive = (href: string) =>
-	href === '/'
-		? pathname === '/'
-		: pathname.startsWith(href.replace(/\/$/, ''));
+	href === '/' ? pathname === '/' : pathname.startsWith(href);
 ---
 
 <nav class="w-full px-5 pt-8" aria-label="Main">
