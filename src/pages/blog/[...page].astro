@@ -18,11 +18,6 @@ const { page } = Astro.props;
 const description = 'Posts on frontend engineering, React, and TypeScript.';
 
 const items = page.data.map(postToLinkItem);
-
-// paginate() omits the trailing slash the rest of the site uses (post
-// links, RSS); add it back so pagination links match that convention.
-const withTrailingSlash = (url: string | undefined) =>
-	url && !url.endsWith('/') ? `${url}/` : url;
 ---
 
 <Layout title="Blog" description={description}>
@@ -33,9 +28,6 @@ const withTrailingSlash = (url: string | undefined) =>
 		) : (
 			<LinkList items={items} />
 		)}
-		<Pagination
-			prevUrl={withTrailingSlash(page.url.prev)}
-			nextUrl={withTrailingSlash(page.url.next)}
-		/>
+		<Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
 	</PageShell>
 </Layout>

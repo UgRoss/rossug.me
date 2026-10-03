@@ -7,6 +7,8 @@ import react from '@astrojs/react';
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://rossug.me',
+	trailingSlash: 'always',
+	prefetch: { prefetchAll: true },
 	integrations: [mdx(), react()],
 	vite: {
 		plugins: [tailwindcss()],
