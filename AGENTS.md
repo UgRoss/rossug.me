@@ -67,6 +67,13 @@ Domain vocabulary (Post, Note, Category, Tag, Description, Bio) lives in `CONTEX
 - Contrast is enforced by `src/styles/__tests__/contrast.test.ts`: text pairs need 4.5:1 and control borders (`line-strong`) 3:1. Adding a token means adding it to that test.
 - Heading weight and tracking live on the type tokens (`--text-display--font-weight`, ...), so headings only need `text-display` or `text-heading-lg`.
 
+## Head, SEO and drafts
+
+- The document head lives in `src/components/BaseHead.astro`. Pages describe themselves through `Layout`'s `PageMeta` props (`title`, `description`, optional `image`, `type`, `publishedTime`, `noindex`); the title gets the site-name suffix and canonical, Open Graph and Twitter tags are generated from those props.
+- Posts use their hero image as the social image; everything else uses `public/og-default.png`. That card is a rendered image with the site tagline baked in, so re-render it by hand if the tagline in `src/data/site.ts` changes. `public/favicon.*` and `public/apple-touch-icon.png` are rendered from the same flower mark.
+- `theme-color` values live in `src/data/site.ts` and must match `--color-page` (a test enforces it).
+- Posts and Notes accept `draft: true`: shown by `astro dev`, excluded from production pages, listings, RSS and the sitemap. Always read collections through `getSortedPosts` / `getSortedNotes`, never `getCollection` directly, so drafts stay filtered.
+
 ## Code organization
 
 - Components in `src/components/`, one per file; layouts in `src/layouts/`; routes in `src/pages/`.
