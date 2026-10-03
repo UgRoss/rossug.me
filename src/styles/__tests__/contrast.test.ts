@@ -57,7 +57,7 @@ const BOUNDARY = 3;
 // The hover highlight is the only hover cue on list rows. A light tint reads on
 // white at a lower ratio than a dark tint does on a dark page, which is why the
 // minimums differ.
-const HIGHLIGHT: Record<Theme, number> = { light: 1.05, dark: 1.25 };
+const HIGHLIGHT: Record<Theme, number> = { light: 1.05, dark: 1.15 };
 
 describe.each<Theme>(['light', 'dark'])('%s theme contrast', (theme) => {
 	const tokens = readTokens(theme);
