@@ -1,11 +1,13 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/typography';
 
-@theme {
-	--font-sans:
-		'Open Runde', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial,
-		sans-serif;
+/* --font-open-runde is defined by Astro's Fonts API (see astro.config.mjs)
+   and already includes the fallback stack. */
+@theme inline {
+	--font-sans: var(--font-open-runde);
+}
 
+@theme {
 	--color-page: #ffffff;
 	--color-surface: #ffffff;
 	--color-ink: lab(15.204% 0 -0.00000596046);

@@ -19,7 +19,6 @@
     "@astrojs/mdx": "^8.0.1",
     "@astrojs/react": "^6.0.6",
     "@astrojs/rss": "^4.0.19",
-    "@fontsource/open-runde": "^5.3.0",
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.2",

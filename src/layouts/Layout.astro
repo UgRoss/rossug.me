@@ -1,8 +1,6 @@
 ---
 import '@/styles/global.css';
-import '@fontsource/open-runde/400.css';
-import '@fontsource/open-runde/500.css';
-import '@fontsource/open-runde/600.css';
+import { Font } from 'astro:assets';
 import Nav from '@/components/Nav.astro';
 
 interface Props {
@@ -22,6 +20,7 @@ const { title, description } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		<Font cssVariable="--font-open-runde" preload />
 		<link
 			rel="alternate"
 			type="application/rss+xml"
