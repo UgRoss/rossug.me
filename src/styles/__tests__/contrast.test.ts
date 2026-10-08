@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 type Rgb = [number, number, number];
-type Theme = 'light' | 'dark';
+type Theme = 'dark' | 'light';
 type Tokens = Record<string, Rgb>;
 
 const css = readFileSync(new URL('../global.css', import.meta.url), 'utf8');
@@ -57,7 +57,7 @@ const BOUNDARY = 3;
 // The hover highlight is the only hover cue on list rows. A light tint reads on
 // white at a lower ratio than a dark tint does on a dark page, which is why the
 // minimums differ.
-const HIGHLIGHT: Record<Theme, number> = { light: 1.05, dark: 1.15 };
+const HIGHLIGHT: Record<Theme, number> = { dark: 1.15, light: 1.05 };
 
 describe.each<Theme>(['light', 'dark'])('%s theme contrast', (theme) => {
 	const tokens = readTokens(theme);
@@ -67,6 +67,7 @@ describe.each<Theme>(['light', 'dark'])('%s theme contrast', (theme) => {
 	it('defines every token as a light-dark() pair', () => {
 		expect(Object.keys(tokens).sort()).toEqual(
 			[
+				'focus',
 				'highlight',
 				'ink',
 				'ink-muted',
@@ -75,6 +76,7 @@ describe.each<Theme>(['light', 'dark'])('%s theme contrast', (theme) => {
 				'line-faint',
 				'line-strong',
 				'page',
+				'selection',
 				'surface',
 			].sort(),
 		);
@@ -89,6 +91,8 @@ describe.each<Theme>(['light', 'dark'])('%s theme contrast', (theme) => {
 		['ink-muted', 'surface'],
 		['ink-muted', 'highlight'],
 		['ink-strong', 'highlight'],
+		['ink', 'selection'],
+		['ink-strong', 'selection'],
 	] as const)('text %s on %s meets AA', (fg, bg) => {
 		expect(ratio(fg, bg)).toBeGreaterThanOrEqual(TEXT);
 	});
@@ -106,6 +110,13 @@ describe.each<Theme>(['light', 'dark'])('%s theme contrast', (theme) => {
 		'control borders (line-strong) have 3:1 against %s',
 		(bg) => {
 			expect(ratio('line-strong', bg)).toBeGreaterThanOrEqual(BOUNDARY);
+		},
+	);
+
+	it.each(['page', 'surface'] as const)(
+		'focus indicator (focus) has 3:1 against %s',
+		(bg) => {
+			expect(ratio('focus', bg)).toBeGreaterThanOrEqual(BOUNDARY);
 		},
 	);
 });

@@ -1,29 +1,34 @@
 ---
+import ArrowIcon from './ArrowIcon';
 import Button from './Button';
 
 interface Props {
-	prevUrl?: string;
 	nextUrl?: string;
+	prevUrl?: string;
 }
 
-const { prevUrl, nextUrl } = Astro.props;
+const { nextUrl, prevUrl } = Astro.props;
 ---
 
 {(prevUrl || nextUrl) && (
 	<nav
-		class="text-body flex w-full items-center justify-between"
 		aria-label="Posts pagination"
+		class="text-body flex w-full items-center justify-between"
 	>
 		<div>
 			{prevUrl && (
-				<Button href={prevUrl} icon="←">
+				<Button href={prevUrl} icon={<ArrowIcon direction="left" />}>
 					Newer posts
 				</Button>
 			)}
 		</div>
 		<div>
 			{nextUrl && (
-				<Button href={nextUrl} icon="→" iconPosition="after">
+				<Button
+					href={nextUrl}
+					icon={<ArrowIcon direction="right" />}
+					iconPosition="after"
+				>
 					Older posts
 				</Button>
 			)}

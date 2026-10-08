@@ -1,10 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+
 import type { NoteSummary } from '@/types';
-import { describeResults, filterNotes } from '@/utils/filter-notes';
+
 import { formatRelativeDate } from '@/utils/date';
+import { describeResults, filterNotes } from '@/utils/filter-notes';
 import { noteHref } from '@/utils/routes';
 import { attachSlideHighlight } from '@/utils/slide-highlight';
+
+import ArrowIcon from './ArrowIcon';
 import Button from './Button';
+import Input from './Input';
 
 const PAGE_SIZE = 10;
 
@@ -14,7 +19,7 @@ interface Props {
 
 export default function NoteBrowser({ notes }: Props) {
 	const [query, setQuery] = useState('');
-	const [activeCategory, setActiveCategory] = useState<string | null>(null);
+	const [activeCategory, setActiveCategory] = useState<null | string>(null);
 	const [page, setPage] = useState(1);
 
 	const categories = useMemo(
@@ -23,7 +28,7 @@ export default function NoteBrowser({ notes }: Props) {
 	);
 
 	const filtered = useMemo(
-		() => filterNotes(notes, { query, category: activeCategory }),
+		() => filterNotes(notes, { category: activeCategory, query }),
 		[notes, query, activeCategory],
 	);
 
@@ -43,7 +48,7 @@ export default function NoteBrowser({ notes }: Props) {
 		return attachSlideHighlight(listRef.current);
 	}, [visible]);
 
-	function selectCategory(category: string | null) {
+	function selectCategory(category: null | string) {
 		setActiveCategory(category);
 		setPage(1);
 	}
@@ -56,36 +61,30 @@ export default function NoteBrowser({ notes }: Props) {
 	return (
 		<div className="flex w-full flex-col items-start gap-10">
 			<div className="flex w-full flex-col items-start gap-3">
-				<div className="w-full">
-					<label htmlFor="note-search" className="sr-only">
-						Search notes
-					</label>
-					<input
-						id="note-search"
-						type="text"
-						value={query}
-						onChange={(event) => updateQuery(event.target.value)}
-						placeholder="Search notes…"
-						className="text-body border-line-strong bg-surface text-ink placeholder:text-ink-muted focus:border-ink-strong w-full rounded-md border px-3 py-2 focus:outline-none"
-					/>
-				</div>
+				<Input
+					hideLabel
+					label="Search notes"
+					onChange={(event) => updateQuery(event.target.value)}
+					placeholder="Search notes…"
+					value={query}
+				/>
 				{categories.length > 0 && (
 					<div
-						role="group"
 						aria-label="Filter by category"
 						className="text-body flex flex-wrap items-baseline gap-x-4 gap-y-1.5"
+						role="group"
 					>
 						<span className="text-ink-muted">Filter:</span>
 						<CategoryFilter
-							label="All"
 							active={activeCategory === null}
+							label="All"
 							onClick={() => selectCategory(null)}
 						/>
 						{categories.map((category) => (
 							<CategoryFilter
+								active={activeCategory === category}
 								key={category}
 								label={category}
-								active={activeCategory === category}
 								onClick={() =>
 									selectCategory(activeCategory === category ? null : category)
 								}
@@ -96,12 +95,12 @@ export default function NoteBrowser({ notes }: Props) {
 			</div>
 
 			{notes.length > 0 && (
-				<p role="status" className="sr-only">
+				<p className="sr-only" role="status">
 					{describeResults(filtered.length)}
 				</p>
 			)}
 
-			<div ref={listRef} className="link-list">
+			<div className="link-list" ref={listRef}>
 				{notes.length === 0 ? (
 					<p className="text-body text-ink-muted m-0 px-3 py-4">
 						No notes yet.
@@ -115,9 +114,9 @@ export default function NoteBrowser({ notes }: Props) {
 						<div aria-hidden="true" className="link-highlight" />
 						{visible.map((note) => (
 							<a
-								key={note.slug}
-								href={noteHref(note.slug)}
 								className="link-row"
+								href={noteHref(note.slug)}
+								key={note.slug}
 							>
 								<span className="text-body flex min-w-0 items-baseline gap-2">
 									<span className="min-w-0 truncate font-medium">
@@ -128,8 +127,8 @@ export default function NoteBrowser({ notes }: Props) {
 									</span>
 								</span>
 								<time
-									dateTime={note.pubDate}
 									className="text-meta text-ink-muted shrink-0 whitespace-nowrap"
+									dateTime={note.pubDate}
 								>
 									{formatRelativeDate(note.pubDate)}
 								</time>
@@ -146,7 +145,10 @@ export default function NoteBrowser({ notes }: Props) {
 				>
 					<div>
 						{currentPage > 1 && (
-							<Button icon="←" onClick={() => setPage(currentPage - 1)}>
+							<Button
+								icon={<ArrowIcon direction="left" />}
+								onClick={() => setPage(currentPage - 1)}
+							>
 								Newer notes
 							</Button>
 						)}
@@ -154,7 +156,7 @@ export default function NoteBrowser({ notes }: Props) {
 					<div>
 						{currentPage < pageCount && (
 							<Button
-								icon="→"
+								icon={<ArrowIcon direction="right" />}
 								iconPosition="after"
 								onClick={() => setPage(currentPage + 1)}
 							>
@@ -169,24 +171,24 @@ export default function NoteBrowser({ notes }: Props) {
 }
 
 function CategoryFilter({
-	label,
 	active,
+	label,
 	onClick,
 }: {
-	label: string;
 	active: boolean;
+	label: string;
 	onClick: () => void;
 }) {
 	return (
 		<button
-			type="button"
 			aria-pressed={active}
-			onClick={onClick}
 			className={
 				active
 					? 'text-body text-ink-strong cursor-pointer'
 					: 'text-body text-ink-muted hover:text-ink-strong cursor-pointer transition-colors'
 			}
+			onClick={onClick}
+			type="button"
 		>
 			{label}
 		</button>

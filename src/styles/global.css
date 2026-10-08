@@ -22,6 +22,8 @@
 	--color-line-strong: light-dark(#8e8e8e, #6a6a6a);
 	--color-line-faint: light-dark(#f5f5f5, #222222);
 	--color-highlight: light-dark(#f5f5f5, #2a2a2a);
+	--color-focus: light-dark(#4a78c0, #6f95d4);
+	--color-selection: light-dark(#fdecc0, #5c4a1e);
 
 	/* Type scale. text-base overrides Tailwind's default so headings stay
 	   clearly larger than the 15px body. */
@@ -94,6 +96,11 @@
 .prose pre,
 .prose code {
 	font-size: 0.933em;
+}
+
+/* Text selection: a warm highlight, with the text keeping its own color. */
+::selection {
+	background-color: var(--color-selection);
 }
 
 /* Inline code only (not fenced blocks): a soft chip instead of the

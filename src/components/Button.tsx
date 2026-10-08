@@ -11,21 +11,21 @@ import type { ReactNode } from 'react';
  * ship React + ReactDOM on whatever page it's used on.
  */
 interface Props {
-	href?: string;
-	icon?: string;
-	iconPosition?: 'before' | 'after';
-	onClick?: () => void;
-	className?: string;
 	children: ReactNode;
+	className?: string;
+	href?: string;
+	icon?: ReactNode;
+	iconPosition?: 'after' | 'before';
+	onClick?: () => void;
 }
 
 export default function Button({
+	children,
+	className,
 	href,
 	icon,
 	iconPosition = 'before',
 	onClick,
-	className,
-	children,
 }: Props) {
 	const classes = [
 		'group inline-flex w-fit cursor-pointer items-center gap-1 border-none bg-transparent p-0 text-ink-muted transition-colors duration-[160ms] hover:text-ink-strong focus-visible:text-ink-strong',
@@ -54,7 +54,7 @@ export default function Button({
 
 	if (href) {
 		return (
-			<a href={href} className={classes}>
+			<a className={classes} href={href}>
 				{iconBefore}
 				{children}
 				{iconAfter}
@@ -63,7 +63,7 @@ export default function Button({
 	}
 
 	return (
-		<button type="button" onClick={onClick} className={classes}>
+		<button className={classes} onClick={onClick} type="button">
 			{iconBefore}
 			{children}
 			{iconAfter}
