@@ -1,5 +1,6 @@
 ---
 import { render } from 'astro:content';
+
 import NoteLayout from '@/layouts/NoteLayout.astro';
 import { getSortedNotes } from '@/utils/notes';
 
@@ -16,11 +17,11 @@ const { Content } = await render(note);
 ---
 
 <NoteLayout
-	title={note.data.title}
 	category={note.data.category}
-	pubDate={note.data.pubDate}
-	updateDate={note.data.updateDate}
 	description={note.data.description}
+	pubDate={note.data.pubDate}
+	title={note.data.title}
+	updateDate={note.data.updateDate}
 >
 	<Content />
 </NoteLayout>

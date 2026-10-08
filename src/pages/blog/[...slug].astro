@@ -1,5 +1,6 @@
 ---
 import { render } from 'astro:content';
+
 import PostLayout from '@/layouts/PostLayout.astro';
 import { getSortedPosts } from '@/utils/posts';
 
@@ -16,12 +17,12 @@ const { Content, headings } = await render(post);
 ---
 
 <PostLayout
-	title={post.data.title}
-	description={post.data.description}
 	date={post.data.date}
+	description={post.data.description}
+	headings={headings}
 	image={post.data.image}
 	tags={post.data.tags}
-	headings={headings}
+	title={post.data.title}
 >
 	<Content />
 </PostLayout>

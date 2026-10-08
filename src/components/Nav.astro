@@ -2,10 +2,10 @@
 import ThemeToggle from './ThemeToggle.astro';
 
 const links = [
-	{ label: 'Home', href: '/' },
-	{ label: 'Posts', href: '/blog/' },
-	{ label: 'Notes', href: '/notes/' },
-	{ label: 'Uses', href: '/uses/' },
+	{ href: '/', label: 'Home' },
+	{ href: '/blog/', label: 'Posts' },
+	{ href: '/notes/', label: 'Notes' },
+	{ href: '/uses/', label: 'Uses' },
 ];
 
 const pathname = Astro.url.pathname;
@@ -13,11 +13,10 @@ const isActive = (href: string) =>
 	href === '/' ? pathname === '/' : pathname.startsWith(href);
 ---
 
-<nav class="w-full px-5 pt-8" aria-label="Main">
+<nav aria-label="Main" class="w-full px-5 pt-8">
 	<div class="mx-auto flex max-w-150 items-center gap-5">
-		{links.map(({ label, href }) => (
+		{links.map(({ href, label }) => (
 			<a
-				href={href}
 				aria-current={isActive(href) ? 'page' : undefined}
 				class:list={[
 					'text-body relative py-1 font-medium no-underline transition-colors duration-[160ms]',
@@ -27,6 +26,7 @@ const isActive = (href: string) =>
 						? 'text-ink-strong after:scale-x-100'
 						: 'text-ink-muted after:scale-x-0',
 				]}
+				href={href}
 			>
 				{label}
 			</a>

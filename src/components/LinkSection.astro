@@ -1,23 +1,25 @@
 ---
 import type { LinkItem } from '@/types';
-import LinkList from './LinkList.astro';
+
 import { headingId } from '@/utils/ids';
 
+import LinkList from './LinkList.astro';
+
 interface Props {
-	title: string;
 	items: LinkItem[];
+	title: string;
 }
 
-const { title, items } = Astro.props;
+const { items, title } = Astro.props;
 const titleId = headingId(title);
 ---
 
 <section
+	aria-labelledby={titleId}
 	class="appear flex w-full flex-col items-start gap-3.5"
 	style="--appear-delay: 180ms"
-	aria-labelledby={titleId}
 >
-	<h2 id={titleId} class="text-body m-0 font-normal text-ink-muted">
+	<h2 class="text-body m-0 font-normal text-ink-muted" id={titleId}>
 		{title}
 	</h2>
 	<LinkList items={items} />

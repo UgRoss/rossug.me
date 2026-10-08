@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+
 import { noteHref, postHref } from '../routes';
 
 describe('routes', () => {

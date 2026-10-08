@@ -9,10 +9,10 @@ const { items } = Astro.props;
 ---
 
 <div
-	class="appear text-body flex flex-wrap items-end gap-1.5 text-ink-muted font-semibold"
-	style="--appear-delay: 40ms"
-	role="group"
 	aria-label="Greetings"
+	class="appear text-body flex flex-wrap items-end gap-1.5 text-ink-muted font-semibold"
+	role="group"
+	style="--appear-delay: 40ms"
 >
 	{items.map((g) => (
 		<span lang={g.lang}>{g.text}</span>

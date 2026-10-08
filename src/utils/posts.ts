@@ -1,5 +1,7 @@
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { type CollectionEntry, getCollection } from 'astro:content';
+
 import type { LinkItem } from '@/types';
+
 import { formatDate } from './date';
 import { isPublished } from './publishing';
 import { postHref } from './routes';
@@ -10,7 +12,7 @@ export async function getSortedPosts(): Promise<CollectionEntry<'blog'>[]> {
 }
 
 export const postToLinkItem = (post: CollectionEntry<'blog'>): LinkItem => ({
-	name: post.data.title,
 	href: postHref(post.id),
 	meta: formatDate(post.data.date),
+	name: post.data.title,
 });

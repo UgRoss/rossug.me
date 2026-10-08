@@ -2,14 +2,14 @@
 import { formatDate } from '@/utils/date';
 
 interface Props {
-	title: string;
 	date: Date;
-	updated?: Date;
 	/** `#`-prefixed labels shown after the date: a Post's Tags, or a Note's Category. */
 	labels?: string[];
+	title: string;
+	updated?: Date;
 }
 
-const { title, date, updated, labels = [] } = Astro.props;
+const { date, labels = [], title, updated } = Astro.props;
 ---
 
 <header class="mb-10 flex flex-col gap-4">

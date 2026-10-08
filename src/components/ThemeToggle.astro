@@ -1,17 +1,17 @@
 <button
-	type="button"
+	aria-label="Toggle color theme"
 	class="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-line-faint text-ink-strong hover:bg-line"
 	id="theme-toggle"
-	aria-label="Toggle color theme"
+	type="button"
 >
 	<span aria-hidden="true">◐</span>
 </button>
 
 <script>
 	import {
-		THEME_STORAGE_KEY,
 		effectiveTheme,
 		oppositeTheme,
+		THEME_STORAGE_KEY,
 	} from '@/utils/theme';
 
 	const button = document.getElementById('theme-toggle');

@@ -12,15 +12,15 @@ const { items } = Astro.props;
      highlight has room around the text while the text itself stays
      aligned with the rest of the column. -->
 <div class="link-list">
-	<div class="link-highlight" aria-hidden="true"></div>
+	<div aria-hidden="true" class="link-highlight"></div>
 	{items.map((item) => {
 		const external = item.href.startsWith('http');
 		return (
 			<a
-				href={item.href}
-				target={external ? '_blank' : undefined}
-				rel={external ? 'noopener noreferrer' : undefined}
 				class="link-row"
+				href={item.href}
+				rel={external ? 'noopener noreferrer' : undefined}
+				target={external ? '_blank' : undefined}
 			>
 				<span class="text-body min-w-0 truncate font-medium">{item.name}</span>
 				<span class="text-meta shrink-0 whitespace-nowrap text-ink-muted">

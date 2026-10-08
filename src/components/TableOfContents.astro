@@ -12,7 +12,7 @@ const items = headings.filter(
 ---
 
 {items.length > 0 && (
-	<nav class="rich-text flex flex-col gap-2" aria-label="Table of contents">
+	<nav aria-label="Table of contents" class="rich-text flex flex-col gap-2">
 		<p class="text-meta m-0 font-semibold text-ink-muted">On this page</p>
 		<ul class="m-0 flex list-none flex-col gap-1.5 p-0">
 			{items.map((item) => (

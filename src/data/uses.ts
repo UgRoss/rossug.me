@@ -1,13 +1,13 @@
 export interface UsesItem {
+	href?: string;
 	name: string;
 	/** Short note on how or why it's used. */
 	note: string;
-	href?: string;
 }
 
 export interface UsesSection {
-	title: string;
 	items: UsesItem[];
+	title: string;
 }
 
 export const usesIntro =
@@ -15,21 +15,20 @@ export const usesIntro =
 
 export const usesSections: UsesSection[] = [
 	{
-		title: 'Hardware',
 		items: [
 			{
+				href: 'https://www.apple.com/macbook-pro/',
 				name: 'MacBook Pro 14"',
 				note: 'Main machine for everything, from writing code to video calls.',
-				href: 'https://www.apple.com/macbook-pro/',
 			},
 			{
 				name: 'External 27" monitor',
 				note: 'A second screen for docs and the browser while the laptop holds the editor.',
 			},
 			{
+				href: 'https://www.keychron.com',
 				name: 'Keychron K2',
 				note: 'Compact wireless mechanical keyboard with tactile switches.',
-				href: 'https://www.keychron.com',
 			},
 			{
 				name: 'Wireless mouse',
@@ -40,71 +39,71 @@ export const usesSections: UsesSection[] = [
 				note: 'For focus sessions and calls in a loud room.',
 			},
 		],
+		title: 'Hardware',
 	},
 	{
-		title: 'Editor and terminal',
 		items: [
 			{
+				href: 'https://ghostty.org',
 				name: 'Ghostty',
 				note: 'Fast, native terminal with sensible defaults.',
-				href: 'https://ghostty.org',
 			},
 			{
 				name: 'Zsh',
 				note: 'Shell, with a short config and a handful of aliases.',
 			},
 			{
+				href: 'https://code.visualstudio.com',
 				name: 'VS Code',
 				note: 'Editor for TypeScript and Astro work.',
-				href: 'https://code.visualstudio.com',
 			},
 			{
+				href: 'https://claude.com/claude-code',
 				name: 'Claude Code',
 				note: 'Coding assistant in the terminal for refactors, reviews, and boring chores.',
-				href: 'https://claude.com/claude-code',
 			},
 		],
+		title: 'Editor and terminal',
 	},
 	{
-		title: 'Development',
 		items: [
 			{
+				href: 'https://astro.build',
 				name: 'Astro',
 				note: 'This site, and my default for anything content-heavy.',
-				href: 'https://astro.build',
 			},
 			{
 				name: 'React and TypeScript',
 				note: 'For anything that needs real interactivity.',
 			},
 			{
+				href: 'https://tailwindcss.com',
 				name: 'Tailwind CSS',
 				note: 'Utility classes with a small set of design tokens.',
-				href: 'https://tailwindcss.com',
 			},
 			{
+				href: 'https://pnpm.io',
 				name: 'pnpm',
 				note: 'Package manager. Fast, strict, and disk-friendly.',
-				href: 'https://pnpm.io',
 			},
 		],
+		title: 'Development',
 	},
 	{
-		title: 'Writing and notes',
 		items: [
 			{
+				href: 'https://obsidian.md',
 				name: 'Obsidian',
 				note: 'Plain Markdown notes that I can also publish to this site.',
-				href: 'https://obsidian.md',
 			},
 			{
 				name: 'Pen and notebook',
 				note: 'For sketching layouts and thinking before I open an editor.',
 			},
 		],
+		title: 'Writing and notes',
 	},
 	{
-		title: 'Workspace',
 		items: [
 			{
 				name: 'Standing desk',
@@ -119,5 +118,6 @@ export const usesSections: UsesSection[] = [
 				note: 'Surprisingly hard to kill. A good reminder to look away from the screen.',
 			},
 		],
+		title: 'Workspace',
 	},
 ];

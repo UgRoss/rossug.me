@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { expect, it } from 'vitest';
+
 import { themeColors } from '../../data/site';
 
 const css = readFileSync(new URL('../global.css', import.meta.url), 'utf8');
@@ -11,5 +12,5 @@ it('theme-color meta values match the page background tokens', () => {
 		/--color-page:\s*light-dark\(\s*(#[0-9a-f]{6})\s*,\s*(#[0-9a-f]{6})\s*\)/,
 	);
 	expect(match).not.toBeNull();
-	expect(themeColors).toEqual({ light: match?.[1], dark: match?.[2] });
+	expect(themeColors).toEqual({ dark: match?.[2], light: match?.[1] });
 });

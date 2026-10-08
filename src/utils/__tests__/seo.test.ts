@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+
 import { pageTitle } from '../seo';
 
 describe('pageTitle', () => {

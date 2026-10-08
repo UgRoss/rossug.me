@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+
 import { effectiveTheme, isTheme, oppositeTheme } from '../theme';
 
 describe('isTheme', () => {

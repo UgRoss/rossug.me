@@ -1,81 +1,83 @@
 import { describe, expect, it } from 'vitest';
+
 import type { NoteSummary } from '@/types';
+
 import { describeResults, filterNotes } from '../filter-notes';
 
 const note = (overrides: Partial<NoteSummary>): NoteSummary => ({
-	slug: 'a-note',
-	title: 'A note',
 	category: 'Git',
 	pubDate: '2026-01-01T00:00:00.000Z',
+	slug: 'a-note',
+	title: 'A note',
 	...overrides,
 });
 
 const rebase = note({
-	slug: 'rebase',
-	title: 'Interactive rebase',
 	category: 'Git',
 	description: 'Squash and reorder commits.',
+	slug: 'rebase',
+	title: 'Interactive rebase',
 });
 const jq = note({
-	slug: 'jq',
-	title: 'jq one-liners',
 	category: 'CLI',
 	description: 'Filters for JSON on the command line.',
+	slug: 'jq',
+	title: 'jq one-liners',
 });
 const enums = note({
+	category: 'TypeScript',
 	slug: 'enums',
 	title: 'Why no enums',
-	category: 'TypeScript',
 });
 const notes = [rebase, jq, enums];
 
 describe('filterNotes', () => {
 	it('returns every note when there is no query or category', () => {
-		expect(filterNotes(notes, { query: '', category: null })).toEqual(notes);
+		expect(filterNotes(notes, { category: null, query: '' })).toEqual(notes);
 	});
 
 	it('treats a whitespace-only query as no query', () => {
-		expect(filterNotes(notes, { query: '   ', category: null })).toEqual(notes);
+		expect(filterNotes(notes, { category: null, query: '   ' })).toEqual(notes);
 	});
 
 	it('keeps only notes in the chosen category', () => {
-		expect(filterNotes(notes, { query: '', category: 'CLI' })).toEqual([jq]);
+		expect(filterNotes(notes, { category: 'CLI', query: '' })).toEqual([jq]);
 	});
 
 	it('matches the query against titles', () => {
-		expect(filterNotes(notes, { query: 'enums', category: null })).toEqual([
+		expect(filterNotes(notes, { category: null, query: 'enums' })).toEqual([
 			enums,
 		]);
 	});
 
 	it('matches the query against descriptions', () => {
-		expect(filterNotes(notes, { query: 'squash', category: null })).toEqual([
+		expect(filterNotes(notes, { category: null, query: 'squash' })).toEqual([
 			rebase,
 		]);
 	});
 
 	it('applies the category and the query together', () => {
-		expect(filterNotes(notes, { query: 'rebase', category: 'CLI' })).toEqual(
+		expect(filterNotes(notes, { category: 'CLI', query: 'rebase' })).toEqual(
 			[],
 		);
-		expect(filterNotes(notes, { query: 'rebase', category: 'Git' })).toEqual([
+		expect(filterNotes(notes, { category: 'Git', query: 'rebase' })).toEqual([
 			rebase,
 		]);
 	});
 
 	it('returns nothing when no note matches', () => {
-		expect(filterNotes(notes, { query: 'zzzz', category: null })).toEqual([]);
+		expect(filterNotes(notes, { category: null, query: 'zzzz' })).toEqual([]);
 	});
 
 	it('ranks a title match above a description-only match', () => {
 		const inDescription = note({
+			description: 'I use git all the time.',
 			slug: 'shell',
 			title: 'Shell tips',
-			description: 'I use git all the time.',
 		});
 		const inTitle = note({ slug: 'git', title: 'Git switch' });
 		expect(
-			filterNotes([inDescription, inTitle], { query: 'git', category: null }),
+			filterNotes([inDescription, inTitle], { category: null, query: 'git' }),
 		).toEqual([inTitle, inDescription]);
 	});
 });

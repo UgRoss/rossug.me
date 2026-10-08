@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { formatDate, formatRelativeDate } from '../date';
 
 describe('formatDate', () => {

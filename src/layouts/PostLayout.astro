@@ -1,39 +1,42 @@
 ---
-import Layout from './Layout.astro';
-import PageShell from '@/components/PageShell.astro';
-import TableOfContents from '@/components/TableOfContents.astro';
-import { Image } from 'astro:assets';
-import ArticleHeader from '@/components/ArticleHeader.astro';
 import type { ImageMetadata, MarkdownHeading } from 'astro';
 
+import { Image } from 'astro:assets';
+
+import ArticleHeader from '@/components/ArticleHeader.astro';
+import PageShell from '@/components/PageShell.astro';
+import TableOfContents from '@/components/TableOfContents.astro';
+
+import Layout from './Layout.astro';
+
 interface Props {
-	title: string;
-	description: string;
 	date: Date;
+	description: string;
+	headings: MarkdownHeading[];
 	image?: ImageMetadata;
 	tags?: string[];
-	headings: MarkdownHeading[];
+	title: string;
 }
 
-const { title, description, date, image, tags, headings } = Astro.props;
+const { date, description, headings, image, tags, title } = Astro.props;
 ---
 
 <Layout
-	title={title}
 	description={description}
 	image={image}
-	type="article"
 	publishedTime={date}
+	title={title}
+	type="article"
 >
 	<PageShell>
 		<article>
 			{image && (
 				<Image
-					src={image}
 					alt=""
-					width={1120}
 					class="mb-10 block h-auto w-full"
 					priority
+					src={image}
+					width={1120}
 				/>
 			)}
 			<!-- The TOC is anchored to the top of the title block, not the
@@ -49,7 +52,7 @@ const { title, description, date, image, tags, headings } = Astro.props;
 						<TableOfContents headings={headings} />
 					</div>
 				</aside>
-				<ArticleHeader title={title} date={date} labels={tags} />
+				<ArticleHeader date={date} labels={tags} title={title} />
 				<div class="prose prose-sm rich-text">
 					<slot />
 				</div>

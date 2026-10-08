@@ -1,23 +1,15 @@
-// @ts-check
-import { defineConfig, fontProviders } from 'astro/config';
-import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
+import tailwindcss from '@tailwindcss/vite';
+// @ts-check
+import { defineConfig, fontProviders } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://rossug.me',
-	trailingSlash: 'always',
-	prefetch: { prefetchAll: true },
 	fonts: [
 		{
-			provider: fontProviders.fontsource(),
-			name: 'Inter',
 			cssVariable: '--font-inter',
-			weights: ['100 900'],
-			styles: ['normal'],
-			subsets: ['latin', 'cyrillic'],
 			fallbacks: [
 				'-apple-system',
 				'BlinkMacSystemFont',
@@ -25,19 +17,27 @@ export default defineConfig({
 				'Arial',
 				'sans-serif',
 			],
+			name: 'Inter',
+			provider: fontProviders.fontsource(),
+			styles: ['normal'],
+			subsets: ['latin', 'cyrillic'],
+			weights: ['100 900'],
 		},
 	],
 	integrations: [mdx(), react(), sitemap()],
-	vite: {
-		plugins: [tailwindcss()],
-	},
 	markdown: {
 		shikiConfig: {
-			themes: {
-				light: 'catppuccin-latte',
-				dark: 'catppuccin-mocha',
-			},
 			defaultColor: false,
+			themes: {
+				dark: 'catppuccin-mocha',
+				light: 'catppuccin-latte',
+			},
 		},
+	},
+	prefetch: { prefetchAll: true },
+	site: 'https://rossug.me',
+	trailingSlash: 'always',
+	vite: {
+		plugins: [tailwindcss()],
 	},
 });

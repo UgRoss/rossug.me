@@ -1,5 +1,7 @@
-import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
+
+import rss from '@astrojs/rss';
+
 import { siteMeta } from '@/data/site';
 import { getSortedPosts } from '@/utils/posts';
 import { postHref } from '@/utils/routes';
@@ -10,16 +12,16 @@ export async function GET(context: APIContext) {
 	const posts = await getSortedPosts();
 
 	return rss({
-		title: siteMeta.title,
-		description: siteMeta.description,
-		site: context.site,
 		customData: '<language>en</language>',
+		description: siteMeta.description,
 		items: posts.map((post) => ({
-			title: post.data.title,
-			description: post.data.description,
-			pubDate: post.data.date,
 			categories: post.data.tags,
+			description: post.data.description,
 			link: postHref(post.id),
+			pubDate: post.data.date,
+			title: post.data.title,
 		})),
+		site: context.site,
+		title: siteMeta.title,
 	});
 }

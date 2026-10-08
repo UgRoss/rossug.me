@@ -1,13 +1,14 @@
 ---
-import Layout from '@/layouts/Layout.astro';
-import Avatar from '@/components/Avatar.astro';
-import Greeting from '@/components/Greeting.astro';
-import Bio from '@/components/Bio.astro';
-import LinkSection from '@/components/LinkSection.astro';
-import Footer from '@/components/Footer.astro';
-import { getSortedPosts, postToLinkItem } from '@/utils/posts';
 import { getEntry, render } from 'astro:content';
+
+import Avatar from '@/components/Avatar.astro';
+import Bio from '@/components/Bio.astro';
+import Footer from '@/components/Footer.astro';
+import Greeting from '@/components/Greeting.astro';
+import LinkSection from '@/components/LinkSection.astro';
 import { avatar, footer, greetings, siteMeta } from '@/data/site';
+import Layout from '@/layouts/Layout.astro';
+import { getSortedPosts, postToLinkItem } from '@/utils/posts';
 
 const posts = await getSortedPosts();
 
@@ -18,7 +19,7 @@ const { Content: AboutContent } = await render(about);
 const blogItems = posts.map(postToLinkItem);
 ---
 
-<Layout title={siteMeta.title} description={siteMeta.description}>
+<Layout description={siteMeta.description} title={siteMeta.title}>
 	<main class="w-full min-w-80">
 		<section class="w-full px-5 pt-16 pb-12">
 			<div class="mx-auto flex max-w-150 flex-col items-start gap-6.5">
@@ -32,15 +33,15 @@ const blogItems = posts.map(postToLinkItem);
 						</Bio>
 					</div>
 					<div class="flex w-full flex-col items-start gap-1">
-						<LinkSection title="Posts" items={blogItems} />
+						<LinkSection items={blogItems} title="Posts" />
 					</div>
 				</div>
 			</div>
 		</section>
 		<Footer
 			locale={footer.locale}
-			timeZone={footer.timeZone}
 			mark={footer.mark}
+			timeZone={footer.timeZone}
 		/>
 	</main>
 </Layout>

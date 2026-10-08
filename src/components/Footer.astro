@@ -1,11 +1,11 @@
 ---
 interface Props {
 	locale: string;
-	timeZone: string;
 	mark: string;
+	timeZone: string;
 }
 
-const { locale, timeZone, mark } = Astro.props;
+const { locale, mark, timeZone } = Astro.props;
 ---
 
 <footer
@@ -17,13 +17,13 @@ const { locale, timeZone, mark } = Astro.props;
 			<span>{locale}</span>
 			<span class="tabular-nums" id="footer-time"></span>
 		</span>
-		<span class="text-[16px] text-ink-strong" aria-hidden="true">
+		<span aria-hidden="true" class="text-[16px] text-ink-strong">
 			{mark}
 		</span>
 	</div>
 </footer>
 
-<script is:inline define:vars={{ timeZone }}>
+<script define:vars={{ timeZone }} is:inline>
 	function updateClock() {
 		const el = document.getElementById('footer-time');
 		if (!el) return;

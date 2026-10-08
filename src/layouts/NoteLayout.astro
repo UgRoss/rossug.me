@@ -1,32 +1,33 @@
 ---
-import Layout from './Layout.astro';
-import PageShell from '@/components/PageShell.astro';
 import ArticleHeader from '@/components/ArticleHeader.astro';
+import PageShell from '@/components/PageShell.astro';
+
+import Layout from './Layout.astro';
 
 interface Props {
-	title: string;
 	category: string;
-	pubDate: Date;
-	updateDate?: Date;
 	description?: string;
+	pubDate: Date;
+	title: string;
+	updateDate?: Date;
 }
 
-const { title, category, pubDate, updateDate, description } = Astro.props;
+const { category, description, pubDate, title, updateDate } = Astro.props;
 ---
 
 <Layout
-	title={title}
 	description={description ?? title}
-	type="article"
 	publishedTime={pubDate}
+	title={title}
+	type="article"
 >
 	<PageShell>
 		<article>
 			<ArticleHeader
-				title={title}
 				date={pubDate}
-				updated={updateDate}
 				labels={[category]}
+				title={title}
+				updated={updateDate}
 			/>
 			<div class="prose prose-sm rich-text">
 				<slot />

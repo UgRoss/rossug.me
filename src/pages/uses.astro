@@ -1,34 +1,35 @@
 ---
 import { Image } from 'astro:assets';
-import Layout from '@/layouts/Layout.astro';
-import PageShell from '@/components/PageShell.astro';
-import PageHeader from '@/components/PageHeader.astro';
+
 import workspace from '@/assets/workspace.png';
+import PageHeader from '@/components/PageHeader.astro';
+import PageShell from '@/components/PageShell.astro';
 import { usesIntro, usesSections } from '@/data/uses';
+import Layout from '@/layouts/Layout.astro';
 import { headingId } from '@/utils/ids';
 
 const description = usesIntro;
 ---
 
-<Layout title="Uses" description={description}>
+<Layout description={description} title="Uses">
 	<PageShell stack>
-		<PageHeader title="Uses" description={description} />
+		<PageHeader description={description} title="Uses" />
 		<Image
-			src={workspace}
 			alt="My desk: a laptop and monitor under a window, with a lamp and a plant."
-			width={1120}
 			class="mb-6 block h-auto w-full"
 			priority
+			src={workspace}
+			width={1120}
 		/>
 		<div class="rich-text flex w-full flex-col gap-12">
 			{usesSections.map((section) => (
 				<section
-					class="flex flex-col gap-4"
 					aria-labelledby={headingId(section.title)}
+					class="flex flex-col gap-4"
 				>
 					<h2
-						id={headingId(section.title)}
 						class="text-heading-lg m-0 text-ink-strong"
+						id={headingId(section.title)}
 					>
 						{section.title}
 					</h2>
@@ -39,8 +40,8 @@ const description = usesIntro;
 									{item.href ? (
 										<a
 											href={item.href}
-											target="_blank"
 											rel="noopener noreferrer"
+											target="_blank"
 										>
 											{item.name}
 										</a>

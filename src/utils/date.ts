@@ -14,10 +14,10 @@ const toDate = (value: DateValue): Date =>
 // must be formatted in UTC; the build machine's timezone would otherwise show
 // the previous day anywhere west of Greenwich.
 const dateFormat = new Intl.DateTimeFormat('en-US', {
-	month: 'short',
 	day: 'numeric',
-	year: 'numeric',
+	month: 'short',
 	timeZone: 'UTC',
+	year: 'numeric',
 });
 
 /** "Jan 5, 2026" — the absolute date format used in lists and article headers. */

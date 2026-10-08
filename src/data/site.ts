@@ -4,16 +4,16 @@ export interface GreetingItem {
 }
 
 export const siteMeta = {
-	title: 'Rostyslav Ugryniuk',
 	description:
 		'Personal site of Rostyslav "Ross" Ugryniuk, a frontend engineer building interfaces with React and TypeScript.',
+	title: 'Rostyslav Ugryniuk',
 };
 
 // Values for <meta name="theme-color">; they mirror --color-page in global.css
 // (enforced by src/styles/__tests__/theme-color.test.ts).
 export const themeColors = {
-	light: '#ffffff',
 	dark: '#1c1d1b',
+	light: '#ffffff',
 };
 
 export const avatar = {
@@ -28,6 +28,6 @@ export const greetings: GreetingItem[] = [
 
 export const footer = {
 	locale: 'UTC',
-	timeZone: 'UTC',
 	mark: 'Y.N.',
+	timeZone: 'UTC',
 };

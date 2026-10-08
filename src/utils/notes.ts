@@ -1,4 +1,5 @@
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { type CollectionEntry, getCollection } from 'astro:content';
+
 import { isPublished } from './publishing';
 
 export async function getSortedNotes(): Promise<CollectionEntry<'notes'>[]> {
